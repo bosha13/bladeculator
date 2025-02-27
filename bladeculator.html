@@ -1,241 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    .hidden-svg {
-      display: none;
-    }
-
-    body {
-      background-color: #008080;
-      font-family: 'Courier New', monospace;
-      color: #000000;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .window {
-      background-color: #c0c0c0;
-      border: 4px solid;
-      border-color: #ffffff #808080 #808080 #ffffff;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 2px;
-    }
-    .title-bar {
-      background-color: #000080;
-      color: #ffffff;
-      padding: 2px 2px 2px 8px;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .close-button {
-      background-color: #c0c0c0;
-      border: 2px outset #c0c0c0;
-      color: #000;
-      width: 16px;
-      height: 14px;
-      text-align: center;
-      line-height: 14px;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .content {
-      padding: 15px 10px 10px;
-    }
-    h1 {
-      font-size: 21px;
-      line-height: 100%;
-      margin: 5px 0 22px;
-      text-align: center;
-    }
-    .input-group {
-      margin-bottom: 10px;
-      font-weight: bold;
-      display: flex;
-      align-items: baseline;
-    }
-    .input-label {
-      width: 200px;
-    }
-    .input-control {
-      display: flex;
-      align-items: center;
-      margin-left: auto;
-      min-width: 165px;
-    }
-    .input-control-stock {
-      display: flex;
-      align-items: center;
-      margin-left: auto;
-      min-width: none;
-    }
-    .spinner-button {
-      width: 26px;
-      height: 26px;
-      background-color: #c0c0c0;
-      border-top: 2px solid #ffffff;
-      border-left: 2px solid #ffffff; 
-      border-bottom: 2px solid #565656; 
-      border-right: 2px solid #565656; 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      outline: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-    }
-    .spinner-button:active {
-      background-color: #acacac;
-      border-top: 2px solid #4C4C4C; 
-      border-left: 2px solid #4C4C4C; 
-      border-bottom: 2px solid #F4F4F4;
-      border-right: 2px solid #F4F4F4;
-    }    
-    .spinner-button svg {
-      width: 10px;
-      height: 10px;
-      fill: #000;
-    }
-    .spinner input {
-      width: 50px;
-      height: 26px;
-      text-align: center;
-      border: 2px inset #a0a0a0;
-      background-color: #ffffff;
-      font-family: inherit;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .results {
-      margin-top: 20px;
-      background-color: #ededed;
-      border: 2px inset #a0a0a0;
-      padding: 10px 40px;
-      text-align: center;
-      min-height: 105px;
-    }
-    .result-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .result-text {
-      font-size: 32px;
-      font-weight: bold;
-      color: #000080;
-      height: 36px;
-    }
-    .razor-stock {
-      margin-bottom: 15px;
-    }
-    .razor-stock-title {
-      font-weight: bold;
-      margin: 15px 0 5px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-    }
-    .header-container {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    .razor-image {
-      margin-bottom: 5px;
-      image-rendering: pixelated;
-    }
-    .unit-label {
-      margin-left: 5px;
-    }
-    .stock-item {
-      display: flex;
-      align-items: baseline;
-      padding-left: 20px;
-    }
-    .stock-label {
-      width: 210px;
-      text-align: left;
-    }
-    .stock-size {
-      width: 120px;
-      text-align: right;
-      padding-right: 10px;
-    }
-
-    @media (max-width: 530px) {
-      body {
-        padding: 4px 8px 0px;
-        min-height: 50vh;
-      }
-      .window {
-        width: 100%;
-        margin: 0 auto;
-      }
-      h1 {
-      font-size: 21px;
-      margin: 5px 0 5px;
-      text-align: center;
-    }
-    .header-container {
-      text-align: center;
-      margin-bottom: 5px;
-    }
-      .input-group {
-        flex-direction: row; 
-        justify-content: space-between;
-      }
-      .input-control {
-        margin-left: 0;
-        margin-top: 10px;
-      }
-      .input-label {
-        width: 50%;
-      }
-      .stock-item {
-        flex-direction: row;
-        justify-content: space-between;
-        padding-left: 0;
-      }
-      .stock-label {
-      width: 120px;
-      text-align: left;
-    }
-      .stock-size {
-
-        text-align: right;
-        padding-right: 15px;
-      }
-      .results {
-        padding: 10px 20px;
-      }
-      .result-text {
-        font-size: 24px;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="window">
     <div class="title-bar">
-      <span>Калькулятор запаса лезвий v1.0</span>
-      <div class="close-button">×</div>
+      <span>Калькулятор запаса лезвий v. 1.0</span>
+      <div class="close-button">
+        <img src="./images/close.svg" alt="close" width="11" height="11">
+      </div>
     </div>
     <div class="content">
       <div class="header-container">
         <div class="razor-image">
-          <svg xmlns="http://www.w3.org/2000/svg" width="86" height="44" fill="none">
-            <path fill="#000" d="M7 0h72v2H7V0Zm0 42h72v2H7v-2ZM0 12h2v20H0V12ZM5 2h2v6H5V2Zm0 34h2v6H5v-6ZM2 10h5v2H2v-2Zm0 22h5v2H2v-2ZM7 8h2v2H7V8Zm0 26h2v2H7v-2Zm2-18h2v12H9V16Zm77-4h-2v20h2V12ZM81 2h-2v6h2V2Zm0 34h-2v6h2v-6Zm3-26h-5v2h5v-2Zm0 22h-5v2h5v-2ZM79 8h-2v2h2V8Zm0 26h-2v2h2v-2Zm-2-18h-2v12h2V16Zm-30 8h8v2h-8v-2Zm-16 0h8v2h-8v-2Zm16-6h8v2h-8v-2Zm-16 0h8v2h-8v-2Zm40-2h2v2h-2v-2Zm-58 0h2v2h-2v-2Zm58 10h2v2h-2v-2Zm-58 0h2v2h-2v-2Z"/>
-            <path fill="#000" d="M75 16h2v12h-2V16Zm-2-2h2v2h-2v-2Zm-62 0h2v2h-2v-2Zm62 14h2v2h-2v-2Zm-62 0h2v2h-2v-2Zm50-2h2v2h-2v-2Zm2 2h2v2h-2v-2Zm2-2h2v2h-2v-2Zm-46 0h2v2h-2v-2Zm2 2h2v2h-2v-2Zm2-2h2v2h-2v-2Zm38-10h2v2h-2v-2Zm2-2h2v2h-2v-2Zm2 2h2v2h-2v-2Zm-46 0h2v2h-2v-2Zm2-2h2v2h-2v-2Zm2 2h2v2h-2v-2Zm34 2h4v2h-4v-2Zm-32 0h4v2h-4v-2Zm30-2h2v2h-2v-2Zm-26 0h2v2h-2v-2Zm26 10h2v2h-2v-2Zm-26 0h2v2h-2v-2Zm38-8h4v2h-4v-2Zm-52 0h4v2h-4v-2Zm52 6h4v2h-4v-2Zm-52 0h4v2h-4v-2Zm42 0h4v2h-4v-2Zm-32 0h4v2h-4v-2Zm14-8h2v2h-2v-2Zm0 10h2v2h-2v-2Zm2-12h4v2h-4v-2Zm0 14h4v2h-4v-2Zm4-12h2v2h-2v-2Zm0 10h2v2h-2v-2ZM40 9h2v2h-2V9Zm-4 3h2v2h-2v-2Zm2-2h2v2h-2v-2Zm4 0h4v2h-4v-2Zm4-1h2v2h-2V9Zm2-1h2v2h-2V8Zm2-1h2v2h-2V7Zm2-2h2v3h-2V5Zm-4-1h4v2h-4V4Zm-6 3h2v2h-2V7Zm2-1h2v2h-2V6Zm2-1h2v2h-2V5Z"/>
+          <svg width="86" height="44" class="blade-icon">
+            <use href="./images/blade-sprite.svg#blade"></use>
           </svg>
         </div>
         <h1>На сколько хватит моего запаса лезвий</h1>
@@ -245,61 +29,49 @@
         <div class="input-label">Я бреюсь раз в</div>
         <div class="input-control">
           <div class="spinner-button" onclick="changeValue('days-input', -1)">
-            <svg width="10" height="10">
-              <use href="#arrow-left"></use>
-            </svg>
+            <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
           </div>
           <div class="spinner">
-            <input type="text" inputmode="numeric" id="days-input" value="3">
+            <input type="text" inputmode="numeric" inputmode="numeric" id="days-input" value="3">
           </div>
           <div class="spinner-button" onclick="changeValue('days-input', 1)">
-                    <svg width="10" height="10">
-          <use href="#arrow-right"></use>
-        </svg>
+            <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
           </div>
           <span class="unit-label" id="days-label">дней</span>
         </div>
       </div>
       
       <div class="input-group">
-        <div class="input-label">И использую лезвие</div>
+        <div class="input-label">Использую 1 лезвие</div>
         <div class="input-control">
           <div class="spinner-button" onclick="changeValue('uses-input', -1)">
-                    <svg width="10" height="10">
-          <use href="#arrow-left"></use>
-        </svg>
+            <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
           </div>
           <div class="spinner">
-            <input type="text" id="uses-input" value="5">
+            <input type="text" inputmode="numeric" inputmode="numeric" id="uses-input" value="5">
           </div>
           <div class="spinner-button" onclick="changeValue('uses-input', 1)">
-                    <svg width="10" height="10">
-          <use href="#arrow-right"></use>
-        </svg>
+            <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
           </div>
           <span class="unit-label" id="uses-label">раз</span>
         </div>
       </div>
       
       <div class="razor-stock">
-        <div class="razor-stock-title">Мои запасы лезвий</div>
+        <div class="razor-stock-title">Всего лезвий:</div>
         
         <div class="input-group stock-item">
           <div class="stock-label">Блоки</div>
           <div class="stock-size">100 шт. ×</div>
           <div class="input-control-stock">
             <div class="spinner-button" onclick="changeValue('pack100-input', -1)">
-                      <svg width="10" height="10">
-          <use href="#arrow-left"></use>
-        </svg>
+              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
             </div>
             <div class="spinner">
-              <input type="text" id="pack100-input" value="0">
+              <input type="text" inputmode="numeric" id="pack100-input" value="0">
             </div>
             <div class="spinner-button" onclick="changeValue('pack100-input', 1)">
-                      <svg width="10" height="10">
-          <use href="#arrow-right"></use>
-        </svg>
+              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
             </div>
           </div>
         </div>
@@ -309,17 +81,13 @@
           <div class="stock-size">10 шт. ×</div>
           <div class="input-control-stock">
             <div class="spinner-button" onclick="changeValue('pack10-input', -1)">
-                      <svg width="10" height="10">
-          <use href="#arrow-left"></use>
-        </svg>
+              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
             </div>
             <div class="spinner">
-              <input type="text" id="pack10-input" value="1">
+              <input type="text" inputmode="numeric" id="pack10-input" value="1">
             </div>
             <div class="spinner-button" onclick="changeValue('pack10-input', 1)">
-                      <svg width="10" height="10">
-          <use href="#arrow-right"></use>
-        </svg>
+              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
             </div>
           </div>
         </div>
@@ -329,17 +97,13 @@
           <div class="stock-size">5 шт. ×</div>
           <div class="input-control-stock">
             <div class="spinner-button" onclick="changeValue('pack5-input', -1)">
-                      <svg width="10" height="10">
-          <use href="#arrow-left"></use>
-        </svg>
+              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
             </div>
             <div class="spinner">
-              <input type="text" id="pack5-input" value="0">
+              <input type="text" inputmode="numeric" id="pack5-input" value="0">
             </div>
             <div class="spinner-button" onclick="changeValue('pack5-input', 1)">
-                      <svg width="10" height="10">
-          <use href="#arrow-right"></use>
-        </svg>
+              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
             </div>
           </div>
         </div>
@@ -349,111 +113,143 @@
           <div class="stock-size">1 шт. ×</div>
           <div class="input-control-stock">
             <div class="spinner-button" onclick="changeValue('single-input', -1)">
-                      <svg width="10" height="10">
-          <use href="#arrow-left"></use>
-        </svg>
+              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
             </div>
             <div class="spinner">
-              <input type="text" id="single-input" value="0">
+              <input type="text" inputmode="numeric" id="single-input" value="0">
             </div>
             <div class="spinner-button" onclick="changeValue('single-input', 1)">
-                      <svg width="10" height="10">
-          <use href="#arrow-right"></use>
-        </svg>
+              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
             </div>
           </div>
         </div>
       </div>
       
       <div class="results">
-        <div class="result-title">Мне хватит лезвий на:</div>
+        <div class="result-title">%Number% лезвий хватит на:</div>
         <div class="result-text" id="result">3 месяца</div>
       </div>
     </div>
   </div>
-
-  <!-- SVG с классом для скрытия -->
-  <svg xmlns="http://www.w3.org/2000/svg" class="hidden-svg">
-    <symbol id="arrow-left" viewBox="0 0 5 9" fill="none">
-      <path fill="#000" d="M4 9h1V0H4v1H3v1H2v1H1v1H0v1h1v1h1v1h1v1h1v1Z"/>
-    </symbol>
-    <symbol id="arrow-right" viewBox="0 0 5 9" fill="none">
-      <path fill="#000" d="M1 0H0v9h1V8h1V7h1V6h1V5h1V4H4V3H3V2H2V1H1V0Z"/>
-    </symbol>
-  </svg>
-
-  <script>
-    const inputs = ['days-input', 'uses-input', 'pack100-input', 'pack10-input', 'pack5-input', 'single-input'];
-
-    inputs.forEach(inputId => {
-      const input = document.getElementById(inputId);
-      input.addEventListener('input', function() {
-        this.value = this.value.replace(/[^0-9]/g, '');
-        if ((inputId === 'days-input' || inputId === 'uses-input') && (this.value === '' || parseInt(this.value) < 1)) {
-          this.value = '1';
-        }
-        updateLabels();
-        calculateDuration();
-      });
-    });
-
-    function changeValue(inputId, delta) {
-      const input = document.getElementById(inputId);
-      let value = parseInt(input.value) || 0;
-      value = Math.max((inputId === 'days-input' || inputId === 'uses-input') ? 1 : 0, value + delta);
-      input.value = value;
-      updateLabels();
-      calculateDuration();
+<script>
+const inputIds = ['days-input', 'uses-input', 'pack100-input', 'pack10-input', 'pack5-input', 'single-input'];
+inputIds.forEach(inputId => {
+  const input = document.getElementById(inputId);
+  input.addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if ((inputId === 'days-input' || inputId === 'uses-input') && (this.value === '' || parseInt(this.value) < 1)) {
+      this.value = '1';
     }
-
-    function updateLabels() {
-      const daysValue = parseInt(document.getElementById('days-input').value) || 0;
-      const usesValue = parseInt(document.getElementById('uses-input').value) || 0;
-      document.getElementById('days-label').textContent = pluralize(daysValue, 'день', 'дня', 'дней');
-      document.getElementById('uses-label').textContent = pluralize(usesValue, 'раз', 'раза', 'раз');
-    }
-
-    function calculateDuration() {
-      const daysPerShave = parseInt(document.getElementById('days-input').value) || 1;
-      const usesPerBlade = parseInt(document.getElementById('uses-input').value) || 1;
-      const totalBlades = (parseInt(document.getElementById('pack100-input').value) || 0) * 100 +
-                         (parseInt(document.getElementById('pack10-input').value) || 0) * 10 +
-                         (parseInt(document.getElementById('pack5-input').value) || 0) * 5 +
-                         (parseInt(document.getElementById('single-input').value) || 0);
-
-      if (totalBlades === 0) {
-        document.getElementById('result').innerHTML = '0&nbsp;дней';
-        return;
-      }
-
-      const totalDays = totalBlades * usesPerBlade * daysPerShave;
-      document.getElementById('result').innerHTML = formatDuration(totalDays);
-    }
-
-    function formatDuration(days) {
-      if (days <= 0) return '0&nbsp;дней';
-      const years = Math.floor(days / 365);
-      days -= years * 365;
-      const months = Math.floor(days / 30);
-      days -= months * 30;
-      let result = '';
-      if (years > 0) result += `${years}&nbsp;${pluralize(years, 'год', 'года', 'лет')} `;
-      if (months > 0) result += `${months}&nbsp;${pluralize(months, 'месяц', 'месяца', 'месяцев')} `;
-      if (days > 0 || (years === 0 && months === 0)) result += `${days}&nbsp;${pluralize(days, 'день', 'дня', 'дней')}`;
-      return result.trim();
-    }
-
-    function pluralize(number, one, few, many) {
-      const mod10 = number % 10;
-      const mod100 = number % 100;
-      if (mod100 >= 11 && mod100 <= 19) return many;
-      if (mod10 === 1) return one;
-      if (mod10 >= 2 && mod10 <= 4) return few;
-      return many;
-    }
-
     updateLabels();
     calculateDuration();
-  </script>
+  });
+});
+
+function changeValue(inputId, delta) {
+  const input = document.getElementById(inputId);
+  let value = parseInt(input.value) || 0;
+  value = Math.max((inputId === 'days-input' || inputId === 'uses-input') ? 1 : 0, value + delta);
+  input.value = value;
+  updateLabels();
+  calculateDuration();
+}
+
+function updateLabels() {
+  const daysValue = parseInt(document.getElementById('days-input').value) || 0;
+  const usesValue = parseInt(document.getElementById('uses-input').value) || 0;
+  document.getElementById('days-label').textContent = pluralize(daysValue, 'день', 'дня', 'дней');
+  document.getElementById('uses-label').textContent = pluralize(usesValue, 'раз', 'раза', 'раз');
+}
+
+function formatNumberWithNarrowSpace(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '&#8239;');
+}
+
+function calculateDuration() {
+  const daysPerShave = parseInt(document.getElementById('days-input').value) || 1;
+  const usesPerBlade = parseInt(document.getElementById('uses-input').value) || 1;
+  const totalBlades = (parseInt(document.getElementById('pack100-input').value) || 0) * 100 +
+                     (parseInt(document.getElementById('pack10-input').value) || 0) * 10 +
+                     (parseInt(document.getElementById('pack5-input').value) || 0) * 5 +
+                     (parseInt(document.getElementById('single-input').value) || 0);
+
+  const resultTitle = document.querySelector('.result-title');
+  resultTitle.innerHTML = `${formatNumberWithNarrowSpace(totalBlades)} ${pluralizeBlade(totalBlades)} хватит на:`; // Используем innerHTML
+  
+  if (totalBlades === 0) {
+    document.getElementById('result').innerHTML = '0&nbsp;дней';
+    return;
+  }
+  const totalDays = totalBlades * usesPerBlade * daysPerShave;
+  document.getElementById('result').innerHTML = formatDuration(totalDays);
+}
+
+function formatDuration(days) {
+  if (days <= 0) return '0&nbsp;дней';
+  const years = Math.floor(days / 365);
+  days -= years * 365;
+  const months = Math.floor(days / 30);
+  days -= months * 30;
+  let result = '';
+  if (years > 0) result += `${formatNumberWithNarrowSpace(years)}&nbsp;${pluralize(years, 'год', 'года', 'лет')} `;
+  if (months > 0) result += `${formatNumberWithNarrowSpace(months)}&nbsp;${pluralize(months, 'месяц', 'месяца', 'месяцев')} `;
+  if (days > 0 || (years === 0 && months === 0)) result += `${formatNumberWithNarrowSpace(days)}&nbsp;${pluralize(days, 'день', 'дня', 'дней')}`;
+  return result.trim();
+}
+
+function pluralizeBlade(number) {
+  const mod10 = number % 10;
+  const mod100 = number % 100;
+  if (mod100 >= 11 && mod100 <= 19) return 'лезвий';
+  if (mod10 === 1) return 'лезвие';
+  if (mod10 >= 2 && mod10 <= 4) return 'лезвия';
+  return 'лезвий';
+}
+
+function pluralize(number, one, few, many) {
+  const mod10 = number % 10;
+  const mod100 = number % 100;
+  if (mod100 >= 11 && mod100 <= 19) return many;
+  if (mod10 === 1) return one;
+  if (mod10 >= 2 && mod10 <= 4) return few;
+  return many;
+}
+
+updateLabels();
+calculateDuration();
+
+document.addEventListener('DOMContentLoaded', function() {
+  const textInputs = document.querySelectorAll('input[type="text"]');
+  
+  textInputs.forEach(input => {
+    input.addEventListener('focus', function() {
+      setTimeout(() => this.select(), 10);
+    });
+    
+    input.addEventListener('click', function() {
+      setTimeout(() => this.select(), 10);
+    });
+    
+    input.addEventListener('touchstart', function() {
+      setTimeout(() => this.select(), 10);
+    });
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const bladeIcon = document.querySelector('.blade-icon use');
+    let isColorMode = false;
+
+    document.querySelector('.blade-icon').addEventListener('click', function() {
+      if (isColorMode) {
+        bladeIcon.setAttribute('href', './images/blade-sprite.svg#blade');
+      } else {
+        bladeIcon.setAttribute('href', './images/blade-sprite.svg#blade-color');
+      }
+      isColorMode = !isColorMode;
+    });
+  });
+</script>
+
 </body>
 </html>
