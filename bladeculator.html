@@ -18,9 +18,10 @@
     <div class="content">
       <div class="header-container">
         <div class="razor-image">
-          <svg width="86" height="44" class="blade-icon">
-            <use href="./images/blade-sprite.svg#blade"></use>
-          </svg>
+          <img src="./images/blade.svg" alt="Blade" width="86" height="44" class="blade-icon" id="blade-icon">
+        </div>
+        <div style="display: none;">
+          <img src="./images/blade-color.svg" alt="Preload Blade Color">
         </div>
         <h1>На сколько хватит моего запаса лезвий</h1>
       </div>
@@ -237,18 +238,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    const bladeIcon = document.querySelector('.blade-icon use');
-    let isColorMode = false;
+  const bladeIcon = document.getElementById('blade-icon');
+  let isColorMode = false;
 
-    document.querySelector('.blade-icon').addEventListener('click', function() {
-      if (isColorMode) {
-        bladeIcon.setAttribute('href', './images/blade-sprite.svg#blade');
-      } else {
-        bladeIcon.setAttribute('href', './images/blade-sprite.svg#blade-color');
-      }
-      isColorMode = !isColorMode;
-    });
+  bladeIcon.addEventListener('click', function() {
+    if (isColorMode) {
+      bladeIcon.src = './images/blade.svg';
+    } else {
+      bladeIcon.src = './images/blade-color.svg';
+    }
+    isColorMode = !isColorMode;
   });
+});
 </script>
 
 </body>
