@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Кэширование всех DOM-элементов
   const elements = {
     daysInput: document.getElementById('days-input'),
     usesInput: document.getElementById('uses-input'),
@@ -15,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     textInputs: document.querySelectorAll('input[type="text"]')
   };
 
-  // Конфигурация
   const inputConfig = [
     { id: 'days-input', min: 1 },
     { id: 'uses-input', min: 1 },
@@ -25,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'single-input', min: 0 }
   ];
 
-  // Общие функции
   const pluralize = (number, one, few, many) => {
     const mod10 = number % 10;
     const mod100 = number % 100;
@@ -40,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return mod10 === 1 ? 'лезвие' : mod10 >= 2 && mod10 <= 4 ? 'лезвия' : 'лезвий';
   };
 
-  // Логика приложения
   const handleInput = function() {
     this.value = this.value.replace(/[^0-9]/g, '');
     const config = inputConfig.find(c => c.id === this.id);
@@ -97,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
       : formatDuration(totalBlades * usesPerBlade * daysPerShave);
   };
 
-  // Обработчики событий
   inputConfig.forEach(({ id }) => {
     const input = document.getElementById(id);
     input.addEventListener('input', handleInput);
@@ -113,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateDuration();
   };
 
-  // Инициализация
   elements.bladeIcon.addEventListener('click', () => {
     const isColorMode = elements.bladeIcon.src.includes('color');
     elements.bladeIcon.src = isColorMode 
