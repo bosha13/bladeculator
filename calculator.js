@@ -1,117 +1,126 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const inputIds = ['days-input', 'uses-input', 'pack100-input', 'pack10-input', 'pack5-input', 'single-input'];
-  inputIds.forEach(inputId => {
-    const input = document.getElementById(inputId);
-    input.addEventListener('input', function() {
-      this.value = this.value.replace(/[^0-9]/g, '');
-      if ((inputId === 'days-input' || inputId === 'uses-input') && (this.value === '' || parseInt(this.value) < 1)) {
-        this.value = '1';
-      }
-      updateLabels();
-      calculateDuration();
-    });
-  });
+document.addEventListener('DOMContentLoaded', () => {
+  // Кэширование всех DOM-элементов
+  const elements = {
+    daysInput: document.getElementById('days-input'),
+    usesInput: document.getElementById('uses-input'),
+    pack100Input: document.getElementById('pack100-input'),
+    pack10Input: document.getElementById('pack10-input'),
+    pack5Input: document.getElementById('pack5-input'),
+    singleInput: document.getElementById('single-input'),
+    daysLabel: document.getElementById('days-label'),
+    usesLabel: document.getElementById('uses-label'),
+    resultTitle: document.querySelector('.result-title'),
+    result: document.getElementById('result'),
+    bladeIcon: document.getElementById('blade-icon'),
+    textInputs: document.querySelectorAll('input[type="text"]')
+  };
 
-  function changeValue(inputId, delta) {
-    const input = document.getElementById(inputId);
-    let value = parseInt(input.value) || 0;
-    value = Math.max((inputId === 'days-input' || inputId === 'uses-input') ? 1 : 0, value + delta);
-    input.value = value;
-    updateLabels();
-    calculateDuration();
-  }
+  // Конфигурация
+  const inputConfig = [
+    { id: 'days-input', min: 1 },
+    { id: 'uses-input', min: 1 },
+    { id: 'pack100-input', min: 0 },
+    { id: 'pack10-input', min: 0 },
+    { id: 'pack5-input', min: 0 },
+    { id: 'single-input', min: 0 }
+  ];
 
-  function updateLabels() {
-    const daysValue = parseInt(document.getElementById('days-input').value) || 0;
-    const usesValue = parseInt(document.getElementById('uses-input').value) || 0;
-    document.getElementById('days-label').textContent = pluralize(daysValue, 'день', 'дня', 'дней');
-    document.getElementById('uses-label').textContent = pluralize(usesValue, 'раз', 'раза', 'раз');
-  }
-
-  function formatNumberWithNarrowSpace(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '&#8239;');
-  }
-
-  function calculateDuration() {
-    const daysPerShave = parseInt(document.getElementById('days-input').value) || 1;
-    const usesPerBlade = parseInt(document.getElementById('uses-input').value) || 1;
-    const totalBlades = (parseInt(document.getElementById('pack100-input').value) || 0) * 100 +
-                       (parseInt(document.getElementById('pack10-input').value) || 0) * 10 +
-                       (parseInt(document.getElementById('pack5-input').value) || 0) * 5 +
-                       (parseInt(document.getElementById('single-input').value) || 0);
-
-    const resultTitle = document.querySelector('.result-title');
-    resultTitle.innerHTML = `${formatNumberWithNarrowSpace(totalBlades)} ${pluralizeBlade(totalBlades)} хватит на:`;
-    
-    if (totalBlades === 0) {
-      document.getElementById('result').innerHTML = '0&nbsp;дней';
-      return;
-    }
-    const totalDays = totalBlades * usesPerBlade * daysPerShave;
-    document.getElementById('result').innerHTML = formatDuration(totalDays);
-  }
-
-  function formatDuration(days) {
-    if (days <= 0) return '0&nbsp;дней';
-    const years = Math.floor(days / 365);
-    days -= years * 365;
-    const months = Math.floor(days / 30);
-    days -= months * 30;
-    let result = '';
-    if (years > 0) result += `${formatNumberWithNarrowSpace(years)}&nbsp;${pluralize(years, 'год', 'года', 'лет')} `;
-    if (months > 0) result += `${formatNumberWithNarrowSpace(months)}&nbsp;${pluralize(months, 'месяц', 'месяца', 'месяцев')} `;
-    if (days > 0 || (years === 0 && months === 0)) result += `${formatNumberWithNarrowSpace(days)}&nbsp;${pluralize(days, 'день', 'дня', 'дней')}`;
-    return result.trim();
-  }
-
-  function pluralizeBlade(number) {
-    const mod10 = number % 10;
-    const mod100 = number % 100;
-    if (mod100 >= 11 && mod100 <= 19) return 'лезвий';
-    if (mod10 === 1) return 'лезвие';
-    if (mod10 >= 2 && mod10 <= 4) return 'лезвия';
-    return 'лезвий';
-  }
-
-  function pluralize(number, one, few, many) {
+  // Общие функции
+  const pluralize = (number, one, few, many) => {
     const mod10 = number % 10;
     const mod100 = number % 100;
     if (mod100 >= 11 && mod100 <= 19) return many;
-    if (mod10 === 1) return one;
-    if (mod10 >= 2 && mod10 <= 4) return few;
-    return many;
-  }
+    return mod10 === 1 ? one : mod10 >= 2 && mod10 <= 4 ? few : many;
+  };
 
-  window.changeValue = changeValue;
+  const pluralizeBlade = number => {
+    const mod10 = number % 10;
+    const mod100 = number % 100;
+    if (mod100 >= 11 && mod100 <= 19) return 'лезвий';
+    return mod10 === 1 ? 'лезвие' : mod10 >= 2 && mod10 <= 4 ? 'лезвия' : 'лезвий';
+  };
+
+  // Логика приложения
+  const handleInput = function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    const config = inputConfig.find(c => c.id === this.id);
+    if (config && (this.value === '' || parseInt(this.value) < config.min)) {
+      this.value = config.min;
+    }
+    updateLabels();
+    calculateDuration();
+  };
+
+  const updateLabels = () => {
+    const days = parseInt(elements.daysInput.value) || 0;
+    const uses = parseInt(elements.usesInput.value) || 0;
+    elements.daysLabel.textContent = pluralize(days, 'день', 'дня', 'дней');
+    elements.usesLabel.textContent = pluralize(uses, 'раз', 'раза', 'раз');
+  };
+
+  const formatNumber = number => 
+    number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '&#8239;');
+
+  const formatDuration = days => {
+    if (days <= 0) return '0&nbsp;дней';
+    
+    const years = Math.floor(days / 365);
+    const months = Math.floor((days % 365) / 30);
+    const remainingDays = days % 30;
+
+    const parts = [];
+    if (years > 0) parts.push(`${formatNumber(years)} ${pluralize(years, 'год', 'года', 'лет')}`);
+    if (months > 0) parts.push(`${formatNumber(months)} ${pluralize(months, 'месяц', 'месяца', 'месяцев')}`);
+    if (remainingDays > 0 || parts.length === 0) parts.push(`${formatNumber(remainingDays)} ${pluralize(remainingDays, 'день', 'дня', 'дней')}`);
+
+    return parts.join(' ');
+  };
+
+  const calculateDuration = () => {
+    const daysPerShave = parseInt(elements.daysInput.value) || 1;
+    const usesPerBlade = parseInt(elements.usesInput.value) || 1;
+    
+    const totalBlades = [
+      elements.pack100Input,
+      elements.pack10Input,
+      elements.pack5Input,
+      elements.singleInput
+    ].reduce((acc, el, i) => 
+      acc + (parseInt(el.value) || 0) * [100, 10, 5, 1][i], 0);
+
+    elements.resultTitle.innerHTML = totalBlades === 0 
+      ? '0 лезвий хватит на:' 
+      : `${formatNumber(totalBlades)} ${pluralizeBlade(totalBlades)} хватит на:`;
+
+    elements.result.innerHTML = totalBlades === 0 
+      ? '0&nbsp;дней' 
+      : formatDuration(totalBlades * usesPerBlade * daysPerShave);
+  };
+
+  // Обработчики событий
+  inputConfig.forEach(({ id }) => {
+    const input = document.getElementById(id);
+    input.addEventListener('input', handleInput);
+    input.addEventListener('focus', () => setTimeout(() => input.select(), 10));
+  });
+
+  window.changeValue = (inputId, delta) => {
+    const input = document.getElementById(inputId);
+    const currentValue = parseInt(input.value) || 0;
+    const config = inputConfig.find(c => c.id === inputId);
+    input.value = Math.max(config?.min || 0, currentValue + delta);
+    updateLabels();
+    calculateDuration();
+  };
+
+  // Инициализация
+  elements.bladeIcon.addEventListener('click', () => {
+    const isColorMode = elements.bladeIcon.src.includes('color');
+    elements.bladeIcon.src = isColorMode 
+      ? './images/blade.svg' 
+      : './images/blade-color.svg';
+  });
 
   updateLabels();
   calculateDuration();
-
-  const textInputs = document.querySelectorAll('input[type="text"]');
-  
-  textInputs.forEach(input => {
-    input.addEventListener('focus', function() {
-      setTimeout(() => this.select(), 10);
-    });
-    
-    input.addEventListener('click', function() {
-      setTimeout(() => this.select(), 10);
-    });
-    
-    input.addEventListener('touchstart', function() {
-      setTimeout(() => this.select(), 10);
-    });
-  });
-
-  const bladeIcon = document.getElementById('blade-icon');
-  let isColorMode = false;
-
-  bladeIcon.addEventListener('click', function() {
-    if (isColorMode) {
-      bladeIcon.src = './images/blade.svg';
-    } else {
-      bladeIcon.src = './images/blade-color.svg';
-    }
-    isColorMode = !isColorMode;
-  });
 });
