@@ -8,15 +8,15 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="window">
-    <div class="title-bar">
+  <main class="window">
+    <header class="title-bar">
       <span>Калькулятор запаса лезвий v. 1.0</span>
       <div class="close-button">
         <img src="./images/close.svg" alt="close" width="11" height="11">
       </div>
-    </div>
-    <div class="content">
-      <div class="header-container">
+    </header>
+    <form class="content">
+      <section class="header-container">
         <div class="razor-image">
           <img src="./images/blade.svg" alt="Blade" width="86" height="44" class="blade-icon" id="blade-icon">
         </div>
@@ -24,114 +24,115 @@
           <img src="./images/blade-color.svg" alt="Preload Blade Color">
         </div>
         <h1>На сколько хватит моего запаса лезвий</h1>
-      </div>
-      
-      <div class="input-group">
-        <div class="input-label">Я бреюсь раз в</div>
-        <div class="input-control">
-          <div class="spinner-button" onclick="changeValue('days-input', -1)">
-            <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
-          </div>
-          <div class="spinner">
-            <input type="number" min="1" id="days-input" value="1">
-          </div>
-          <div class="spinner-button" onclick="changeValue('days-input', 1)">
-            <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
-          </div>
-          <span class="unit-label" id="days-label">дней</span>
-        </div>
-      </div>
-      
-      <div class="input-group">
-        <div class="input-label">Использую 1 лезвие</div>
-        <div class="input-control">
-          <div class="spinner-button" onclick="changeValue('uses-input', -1)">
-            <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
-          </div>
-          <div class="spinner">
-            <input type="number" min="1" id="uses-input" value="1">
-          </div>
-          <div class="spinner-button" onclick="changeValue('uses-input', 1)">
-            <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
-          </div>
-          <span class="unit-label" id="uses-label">раз</span>
-        </div>
-      </div>
-      
-      <div class="razor-stock">
-        <div class="razor-stock-title">Всего лезвий:</div>
-        
-        <div class="input-group stock-item">
-          <div class="stock-label">Блоки</div>
-          <div class="stock-size">100 шт. ×</div>
-          <div class="input-control-stock">
-            <div class="spinner-button" onclick="changeValue('pack100-input', -1)">
+      </section>
+      <section>
+        <div class="input-group">
+          <div class="input-label">Я бреюсь раз в</div>
+          <div class="input-control">
+            <div class="spinner-button" onclick="changeValue('days-input', -1)">
               <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
             </div>
             <div class="spinner">
-              <input type="number" min="0" id="pack100-input" value="0">
+              <input type="number" inputmode="numeric" inputmode="numeric" min="1" id="days-input" value="1">
             </div>
-            <div class="spinner-button" onclick="changeValue('pack100-input', 1)">
+            <div class="spinner-button" onclick="changeValue('days-input', 1)">
               <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
             </div>
+            <span class="unit-label" id="days-label">дней</span>
           </div>
         </div>
         
-        <div class="input-group stock-item">
-          <div class="stock-label">Пачки</div>
-          <div class="stock-size">10 шт. ×</div>
-          <div class="input-control-stock">
-            <div class="spinner-button" onclick="changeValue('pack10-input', -1)">
+        <div class="input-group">
+          <div class="input-label">Использую 1 лезвие</div>
+          <div class="input-control">
+            <div class="spinner-button" onclick="changeValue('uses-input', -1)">
               <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
             </div>
             <div class="spinner">
-              <input type="number" min="0" id="pack10-input" value="0">
+              <input type="number" inputmode="numeric" inputmode="numeric" min="1" id="uses-input" value="1">
             </div>
-            <div class="spinner-button" onclick="changeValue('pack10-input', 1)">
+            <div class="spinner-button" onclick="changeValue('uses-input', 1)">
               <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+            </div>
+            <span class="unit-label" id="uses-label">раз</span>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="razor-stock">
+          <div class="razor-stock-title">Всего лезвий:</div>
+          
+          <div class="input-group stock-item">
+            <div class="stock-label">Блоки</div>
+            <div class="stock-size">100 шт. ×</div>
+            <div class="input-control-stock">
+              <div class="spinner-button" onclick="changeValue('pack100-input', -1)">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+              </div>
+              <div class="spinner">
+                <input type="number" inputmode="numeric" inputmode="numeric" min="0" id="pack100-input" value="0">
+              </div>
+              <div class="spinner-button" onclick="changeValue('pack100-input', 1)">
+                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+              </div>
+            </div>
+          </div>
+          
+          <div class="input-group stock-item">
+            <div class="stock-label">Пачки</div>
+            <div class="stock-size">10 шт. ×</div>
+            <div class="input-control-stock">
+              <div class="spinner-button" onclick="changeValue('pack10-input', -1)">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+              </div>
+              <div class="spinner">
+                <input type="number" inputmode="numeric" min="0" id="pack10-input" value="0">
+              </div>
+              <div class="spinner-button" onclick="changeValue('pack10-input', 1)">
+                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+              </div>
+            </div>
+          </div>
+          
+          <div class="input-group stock-item">
+            <div class="stock-label">Пачки</div>
+            <div class="stock-size">5 шт. ×</div>
+            <div class="input-control-stock">
+              <div class="spinner-button" onclick="changeValue('pack5-input', -1)">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+              </div>
+              <div class="spinner">
+                <input type="number" inputmode="numeric" min="0" id="pack5-input" value="0">
+              </div>
+              <div class="spinner-button" onclick="changeValue('pack5-input', 1)">
+                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+              </div>
+            </div>
+          </div>
+          
+          <div class="input-group stock-item">
+            <div class="stock-label">Поштучно</div>
+            <div class="stock-size">1 шт. ×</div>
+            <div class="input-control-stock">
+              <div class="spinner-button" onclick="changeValue('single-input', -1)">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+              </div>
+              <div class="spinner">
+                <input type="number" inputmode="numeric" min="0" id="single-input" value="0">
+              </div>
+              <div class="spinner-button" onclick="changeValue('single-input', 1)">
+                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+              </div>
             </div>
           </div>
         </div>
-        
-        <div class="input-group stock-item">
-          <div class="stock-label">Пачки</div>
-          <div class="stock-size">5 шт. ×</div>
-          <div class="input-control-stock">
-            <div class="spinner-button" onclick="changeValue('pack5-input', -1)">
-              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
-            </div>
-            <div class="spinner">
-              <input type="number" min="0" id="pack5-input" value="0">
-            </div>
-            <div class="spinner-button" onclick="changeValue('pack5-input', 1)">
-              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
-            </div>
-          </div>
-        </div>
-        
-        <div class="input-group stock-item">
-          <div class="stock-label">Поштучно</div>
-          <div class="stock-size">1 шт. ×</div>
-          <div class="input-control-stock">
-            <div class="spinner-button" onclick="changeValue('single-input', -1)">
-              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
-            </div>
-            <div class="spinner">
-              <input type="number" min="0" id="single-input" value="0">
-            </div>
-            <div class="spinner-button" onclick="changeValue('single-input', 1)">
-              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="results">
+      </section>
+      <section class="results">
         <div class="result-title">%Number% лезвий хватит на:</div>
         <div class="result-text" id="result">3 месяца</div>
-      </div>
-    </div>
-  </div>
+      </section>
+    </form>
+  </main>
   <script src="calculator.js"></script>
 </body>
 </html>
