@@ -93,20 +93,29 @@ document.addEventListener('DOMContentLoaded', () => {
       : formatDuration(totalBlades * usesPerBlade * daysPerShave);
   };
 
+  document.querySelector('form').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    const targetId = btn.dataset.target;
+    const input = document.getElementById(targetId);
+    const config = inputConfig.find(c => c.id === targetId);
+
+    if (action === 'increase') {
+      input.value = Math.max(config?.min || 0, parseInt(input.value || 0) + 1);
+    } else if (action === 'decrease') {
+      input.value = Math.max(config?.min || 0, parseInt(input.value || 0) - 1);
+    }
+
+    input.dispatchEvent(new Event('input'));
+  });
+
   inputConfig.forEach(({ id }) => {
     const input = document.getElementById(id);
     input.addEventListener('input', handleInput);
     input.addEventListener('focus', () => setTimeout(() => input.select(), 10));
   });
-
-  window.changeValue = (inputId, delta) => {
-    const input = document.getElementById(inputId);
-    const currentValue = parseInt(input.value) || 0;
-    const config = inputConfig.find(c => c.id === inputId);
-    input.value = Math.max(config?.min || 0, currentValue + delta);
-    updateLabels();
-    calculateDuration();
-  };
 
   elements.bladeIcon.addEventListener('click', () => {
     const isColorMode = elements.bladeIcon.src.includes('color');
