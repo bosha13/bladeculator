@@ -28,7 +28,8 @@
   --padding-standard: 10px;
   --padding-small: 5px;
   --padding-title: 2px 2px 2px 8px;
-  --padding-content: 15px 10px 10px;
+  --padding-content-desktop: 15px 10px 10px;
+  --padding-content-mobile: 10px 8px 8px;
   --padding-results-desktop: 10px 40px;
   --padding-results-mobile: 10px 20px;
   
@@ -137,7 +138,7 @@ body {
 }
 
 .content {
-  padding: var(--padding-content);
+  padding: var(--padding-content-desktop);
   font-size: var(--font-size-content-desktop);
   line-height: var(--line-height-loose);
   font-weight: 600;
@@ -308,7 +309,7 @@ input, button, textarea, select {
 /* =============  Mobile  ============= */
 @media (max-width: 530px) {
   body {
-    padding: 4px 8px 0px;
+    padding: 0px 6px;
     min-height: 90vh;
   }
   
@@ -322,6 +323,7 @@ input, button, textarea, select {
   }
 
   .content {
+    padding: var(--padding-content-mobile);
     font-size: var(--font-size-content-mobile);
     line-height: var(--line-height-normal);
   }
