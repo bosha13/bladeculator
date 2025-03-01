@@ -23,6 +23,19 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'single-input', min: 0 }
   ];
 
+  const cache = {
+    previousValues: {
+      days: null,
+      uses: null,
+      pack100: null,
+      pack10: null,
+      pack5: null,
+      single: null
+    },
+    result: null,
+    needsUpdate: true
+  };
+
   const pluralize = (number, one, few, many) => {
     const mod10 = number % 10;
     const mod100 = number % 100;
@@ -43,6 +56,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (config && (this.value === '' || parseInt(this.value) < config.min)) {
       this.value = config.min;
     }
+    
+    const newValue = parseInt(this.value) || 0;
+    const fieldMap = {
+      'days-input': 'days',
+      'uses-input': 'uses',
+      'pack100-input': 'pack100',
+      'pack10-input': 'pack10',
+      'pack5-input': 'pack5',
+      'single-input': 'single'
+    };
+    
+    const field = fieldMap[this.id];
+    if (field && cache.previousValues[field] !== newValue) {
+      cache.previousValues[field] = newValue;
+      cache.needsUpdate = true;
+    }
+    
     updateLabels();
     calculateDuration();
   };
@@ -73,6 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const calculateDuration = () => {
+    if (!cache.needsUpdate && cache.result !== null) {
+      return;
+    }
+    
     const daysPerShave = parseInt(elements.daysInput.value) || 1;
     const usesPerBlade = parseInt(elements.usesInput.value) || 1;
     
@@ -88,9 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
       ? '0 лезвий хватит на:' 
       : `${formatNumber(totalBlades)} ${pluralizeBlade(totalBlades)} хватит на:`;
 
-    elements.result.innerHTML = totalBlades === 0 
+    const resultHTML = totalBlades === 0 
       ? '0&nbsp;дней' 
       : formatDuration(totalBlades * usesPerBlade * daysPerShave);
+      
+    elements.result.innerHTML = resultHTML;
+    cache.result = resultHTML;
+    cache.needsUpdate = false;
   };
 
   document.querySelector('form').addEventListener('click', (e) => {
@@ -109,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     input.dispatchEvent(new Event('input'));
+    cache.needsUpdate = true;
   });
 
   inputConfig.forEach(({ id }) => {
