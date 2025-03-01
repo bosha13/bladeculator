@@ -1,7 +1,52 @@
-.hidden-svg {
-    display: none;
+:root {
+ /* =============  Colors  ============= */
+  --color-teal: #008080;
+  --color-navy: #000080;
+  --color-white: #ffffff;
+  --color-gray: #c0c0c0;
+  --color-dark-gray: #808080;
+  --color-darker-gray: #565656;
+  --color-light-gray: #ededed;
+  --color-inset-gray: #a0a0a0;
+  --color-active-gray: #acacac;
+  --color-text-black: #000000;
+  --color-result-text: #000080;
+  --color-button-active-top: #4C4C4C;
+  --color-button-active-bottom: #F4F4F4;
+  --color-input-bottom: #eaeaea;
+  
+  /* =============  Sizes  ============= */
+  --border-width: 2px;
+  --window-border: 4px;
+  --button-size-desktop: 26px;
+  --button-size-mobile: 32px;
+  --input-width-desktop: 44px;
+  --input-width-mobile: 40px;
+  --icon-size: 10px;
+  
+  /* =============  Paddings  ============= */
+  --padding-standard: 10px;
+  --padding-small: 5px;
+  --padding-title: 2px 2px 2px 8px;
+  --padding-content: 15px 10px 10px;
+  --padding-results-desktop: 10px 40px;
+  --padding-results-mobile: 10px 20px;
+  
+  /* =============  Typography  ============= */
+  --font-family: "IBM Plex Mono", monospace;
+  --font-size-small: 15px;
+  --font-size-medium: 16px;
+  --font-size-standard: 18px;
+  --font-size-large: 20px;
+  --font-size-xlarge: 21px;
+  --font-size-xxlarge: 24px;
+  --font-size-xxxlarge: 30px;
+  --line-height-tight: 100%;
+  --line-height-normal: 105%;
+  --line-height-loose: 120%;
 }
  
+/* =============  Reset for inputs  ============= */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -22,12 +67,12 @@ html, body {
 }
 
 body {
-  background-color: #008080;
-  font-family: "IBM Plex Mono", monospace;
+  background-color: var(--color-teal);
+  font-family: var(--font-family);
   font-style: normal;
-  color: #000000;
+  color: var(--color-text-black);
   margin: 0;
-  padding: 20px;
+  padding: var(--padding-standard);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,9 +80,9 @@ body {
 }
 
 .window {
-  background-color: #c0c0c0;
-  border: 4px solid;
-  border-color: #ffffff #808080 #808080 #ffffff;
+  background-color: var(--color-gray);
+  border: var(--window-border) solid;
+  border-color: var(--color-white) var(--color-dark-gray) var(--color-dark-gray) var(--color-white);
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
   width: 100%;
   max-width: 500px;
@@ -46,22 +91,49 @@ body {
 }
 
 .title-bar {
-  background-color: #000080;
-  color: #ffffff;
-  padding: 2px 2px 2px 8px;
-  font-size: 15px;
+  background-color: var(--color-navy);
+  color: var(--color-white);
+  padding: var(--padding-title);
+  font-size: var(--font-size-small);
   font-weight: 600;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.button-raised {
+  background-color: var(--color-gray);
+  border-top: var(--border-width) solid var(--color-white);
+  border-left: var(--border-width) solid var(--color-white); 
+  border-bottom: var(--border-width) solid var(--color-darker-gray); 
+  border-right: var(--border-width) solid var(--color-darker-gray);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.button-active {
+  background-color: var(--color-active-gray);
+  border-top: var(--border-width) solid var(--color-button-active-top); 
+  border-left: var(--border-width) solid var(--color-button-active-top);
+  border-bottom: var(--border-width) solid var(--color-button-active-bottom);
+  border-right: var(--border-width) solid var(--color-button-active-bottom);
+}
+
+.inset-element {
+  border-top: var(--border-width) solid var(--color-darker-gray);
+  border-left: var(--border-width) solid var(--color-darker-gray); 
+  border-bottom: var(--border-width) solid var(--color-input-bottom); 
+  border-right: var(--border-width) solid var(--color-input-bottom);
+}
+
 .close-button {
-  background-color: #c0c0c0;
-  border-top: 2px solid #ffffff;
-  border-left: 2px solid #ffffff; 
-  border-bottom: 2px solid #565656; 
-  border-right: 2px solid #565656; 
+  background-color: var(--color-gray);
+  border-top: var(--border-width) solid var(--color-white);
+  border-left: var(--border-width) solid var(--color-white); 
+  border-bottom: var(--border-width) solid var(--color-darker-gray); 
+  border-right: var(--border-width) solid var(--color-darker-gray);
   width: 14px;
   height: 14px;
   image-rendering: pixelated;
@@ -71,20 +143,21 @@ body {
 }
 
 .content {
-  padding: 15px 10px 10px;
-  font-size: 18px;
-  line-height: 120%;
+  padding: var(--padding-content);
+  font-size: var(--font-size-standard);
+  line-height: var(--line-height-loose);
   font-weight: 600;
 }
 
 h1 {
-  font-size: 21px;
+  font-size: var(--font-size-xlarge);
   font-weight: 600;
-  line-height: 100%;
-  margin: 5px 0 22px;
+  line-height: var(--line-height-tight);
+  margin: var(--padding-small) 0 22px;
   text-align: center;
 }
 
+/* =============  Reset  ============= */
 input, button, textarea, select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -94,7 +167,7 @@ input, button, textarea, select {
 }
 
 .input-group {
-  margin-bottom: 10px;
+  margin-bottom: var(--padding-standard);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -114,13 +187,13 @@ input, button, textarea, select {
 
 .spinner-button {
   box-sizing: border-box;
-  width: 26px;
-  height: 26px;
-  background-color: #c0c0c0;
-  border-top: 2px solid #ffffff;
-  border-left: 2px solid #ffffff; 
-  border-bottom: 2px solid #565656; 
-  border-right: 2px solid #565656; 
+  width: var(--button-size-desktop);
+  height: var(--button-size-desktop);
+  background-color: var(--color-gray);
+  border-top: var(--border-width) solid var(--color-white);
+  border-left: var(--border-width) solid var(--color-white); 
+  border-bottom: var(--border-width) solid var(--color-darker-gray); 
+  border-right: var(--border-width) solid var(--color-darker-gray);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -139,57 +212,57 @@ input, button, textarea, select {
 }
 
 .spinner-button:active {
-  background-color: #acacac;
-  border-top: 2px solid #4C4C4C; 
-  border-left: 2px solid #4C4C4C; 
-  border-bottom: 2px solid #F4F4F4;
-  border-right: 2px solid #F4F4F4;
-}    
+  background-color: var(--color-active-gray);
+  border-top: var(--border-width) solid var(--color-button-active-top);
+  border-left: var(--border-width) solid var(--color-button-active-top);
+  border-bottom: var(--border-width) solid var(--color-button-active-bottom);
+  border-right: var(--border-width) solid var(--color-button-active-bottom);
+}
 
 .spinner-button img {
-  width: 10px;
-  height: 10px;
+  width: var(--icon-size);
+  height: var(--icon-size);
 }
 
 .spinner input {
   box-sizing: border-box;
-  width: 44px;
-  height: 26px;
+  width: var(--input-width-desktop);
+  height: var(--button-size-desktop);
   text-align: center;
-  border-top: 2px solid #565656;
-  border-left: 2px solid #565656; 
-  border-bottom: 2px solid #eaeaea; 
-  border-right: 2px solid #eaeaea; 
-  background-color: #ffffff;
+  border-top: var(--border-width) solid var(--color-darker-gray);
+  border-left: var(--border-width) solid var(--color-darker-gray); 
+  border-bottom: var(--border-width) solid var(--color-input-bottom); 
+  border-right: var(--border-width) solid var(--color-input-bottom);
+  background-color: var(--color-white);
   font-family: inherit;
-  font-size: 16px;
+  font-size: var(--font-size-medium);
   font-weight: 700;
 }
 
 .results {
   margin-top: 20px;
-  background-color: #ededed;
-  border: 2px inset #a0a0a0;
-  padding: 10px 40px;
+  background-color: var(--color-light-gray);
+  border: var(--border-width) inset var(--color-inset-gray);
+  padding: var(--padding-results-desktop);
   text-align: center;
   min-height: 95px;
 }
 
 .result-title {
-  font-size: 20px;
+  font-size: var(--font-size-large);
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: var(--padding-small);
 }
 
 .result-text {
   height: 60px;
-  font-size: 30px;
+  font-size: var(--font-size-xxxlarge);
   font-weight: 700;
-  line-height: 105%;
+  line-height: var(--line-height-normal);
   display: flex;
   justify-content: center;
   flex-direction: column;
-  color: #000080;
+  color: var(--color-result-text);
 }
 
 .razor-stock {
@@ -197,7 +270,7 @@ input, button, textarea, select {
 }
 
 .razor-stock-title {
-  margin: 15px 0 5px;
+  margin: 15px 0 var(--padding-small);
   height: 30px;
   display: flex;
   align-items: center;
@@ -209,12 +282,12 @@ input, button, textarea, select {
 }
 
 .razor-image {
-  margin-bottom: 5px;
+  margin-bottom: var(--padding-small);
   image-rendering: pixelated;
 }
 
 .unit-label {
-  margin-left: 5px;
+  margin-left: var(--padding-small);
 }
 
 .stock-item {
@@ -233,57 +306,64 @@ input, button, textarea, select {
   padding-right: 4px;
 }
 
+/* =============  Mobile  ============= */
 @media (max-width: 530px) {
   body {
     padding: 4px 8px 0px;
     min-height: 90vh;
   }
+  
   .window {
     width: 100%;
     margin: 0 auto;
   }
+  
   h1 {
-    font-size: 21px;
-    margin: 5px 0 5px;
-    text-align: center;
+    font-size: var(--font-size-xlarge);
+    margin: var(--padding-small) 0 var(--padding-small);
   }
 
   .content {
-    line-height: 100%;
+    line-height: var(--line-height-tight);
   }
-  .header-container {
-    text-align: center;
+  
+  .spinner-button,
+  .spinner input {
+    height: var(--button-size-mobile);
   }
+  
   .spinner-button {
-  width: 32px;
-  height: 32px;
+    width: var(--button-size-mobile);
   }
-.spinner input  {
-  width: 40px;
-  height: 32px;
+  
+  .spinner input {
+    width: var(--input-width-mobile);
   }
  
   .input-control {
     min-width: 155px;
     margin-left: 0;
   }
+  
   .stock-item {
     justify-content: space-between;
     padding-left: 15px;
   }
+  
   .stock-label {
     width: 120px;
-    text-align: left;
   }
+  
   .stock-size {
-    text-align: right;
     padding-right: 15px;
   }
+  
   .results {
-    padding: 10px 20px;
+    padding: var(--padding-results-mobile);
     min-height: 85px;
   }
+  
   .result-text {
-    font-size: 24px;
+    font-size: var(--font-size-xxlarge);
   }
 }
