@@ -36,7 +36,8 @@
   --font-family: "IBM Plex Mono", monospace;
   --font-size-title-bar: 15px;
   --font-size-h1: 21px;
-  --font-size-content: 18px;
+  --font-size-content-desktop: 18px;
+  --font-size-content-mobile: 17px;
   --font-size-spinner: 16px;
   --font-size-results-title: 20px;
   --font-size-results-mobile: 24px;
@@ -121,13 +122,6 @@ body {
   border-right: var(--border-width) solid var(--color-button-active-bottom);
 }
 
-/* .inset-element {
-  border-top: var(--border-width) solid var(--color-darker-gray);
-  border-left: var(--border-width) solid var(--color-darker-gray); 
-  border-bottom: var(--border-width) solid var(--color-input-bottom); 
-  border-right: var(--border-width) solid var(--color-input-bottom);
-} */
-
 .close-button {
   background-color: var(--color-gray);
   border-top: var(--border-width) solid var(--color-white);
@@ -144,7 +138,7 @@ body {
 
 .content {
   padding: var(--padding-content);
-  font-size: var(--font-size-content);
+  font-size: var(--font-size-content-desktop);
   line-height: var(--line-height-loose);
   font-weight: 600;
 }
@@ -237,6 +231,11 @@ input, button, textarea, select {
   font-family: inherit;
   font-size: var(--font-size-spinner);
   font-weight: 700;
+  padding: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  min-width: 44px;
 }
 
 .results {
@@ -323,20 +322,21 @@ input, button, textarea, select {
   }
 
   .content {
+    font-size: var(--font-size-content-mobile);
     line-height: var(--line-height-normal);
   }
-  
-  .spinner-button,
-  .spinner input {
-    height: var(--button-size-mobile);
-  }
-  
+   
   .spinner-button {
     width: var(--button-size-mobile);
+    height: var(--button-size-mobile);
   }
   
   .spinner input {
     width: var(--input-width-mobile);
+    height: var(--button-size-mobile);
+    font-size: var(--font-size-content-mobile);
+    padding: 0;
+    width: 40px;
   }
  
   .input-control {
