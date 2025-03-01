@@ -34,14 +34,14 @@
   
   /* =============  Typography  ============= */
   --font-family: "IBM Plex Mono", monospace;
-  --font-size-small: 15px;
-  --font-size-medium: 16px;
-  --font-size-standard: 18px;
-  --font-size-large: 20px;
-  --font-size-xlarge: 21px;
-  --font-size-xxlarge: 24px;
-  --font-size-xxxlarge: 30px;
-  --line-height-tight: 100%;
+  --font-size-title-bar: 15px;
+  --font-size-h1: 21px;
+  --font-size-content: 18px;
+  --font-size-spinner: 16px;
+  --font-size-results-title: 20px;
+  --font-size-results-mobile: 24px;
+  --font-size-results-desktop: 30px;
+
   --line-height-normal: 105%;
   --line-height-loose: 120%;
 }
@@ -94,7 +94,7 @@ body {
   background-color: var(--color-navy);
   color: var(--color-white);
   padding: var(--padding-title);
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-title-bar);
   font-weight: 600;
   display: flex;
   justify-content: space-between;
@@ -121,12 +121,12 @@ body {
   border-right: var(--border-width) solid var(--color-button-active-bottom);
 }
 
-.inset-element {
+/* .inset-element {
   border-top: var(--border-width) solid var(--color-darker-gray);
   border-left: var(--border-width) solid var(--color-darker-gray); 
   border-bottom: var(--border-width) solid var(--color-input-bottom); 
   border-right: var(--border-width) solid var(--color-input-bottom);
-}
+} */
 
 .close-button {
   background-color: var(--color-gray);
@@ -144,15 +144,15 @@ body {
 
 .content {
   padding: var(--padding-content);
-  font-size: var(--font-size-standard);
+  font-size: var(--font-size-content);
   line-height: var(--line-height-loose);
   font-weight: 600;
 }
 
 h1 {
-  font-size: var(--font-size-xlarge);
+  font-size: var(--font-size-h1);
   font-weight: 600;
-  line-height: var(--line-height-tight);
+  line-height: var(--line-height-normal);
   margin: var(--padding-small) 0 22px;
   text-align: center;
 }
@@ -235,7 +235,7 @@ input, button, textarea, select {
   border-right: var(--border-width) solid var(--color-input-bottom);
   background-color: var(--color-white);
   font-family: inherit;
-  font-size: var(--font-size-medium);
+  font-size: var(--font-size-spinner);
   font-weight: 700;
 }
 
@@ -249,14 +249,14 @@ input, button, textarea, select {
 }
 
 .result-title {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-results-title);
   font-weight: 600;
   margin-bottom: var(--padding-small);
 }
 
 .result-text {
   height: 60px;
-  font-size: var(--font-size-xxxlarge);
+  font-size: var(--font-size-results-desktop);
   font-weight: 700;
   line-height: var(--line-height-normal);
   display: flex;
@@ -319,12 +319,11 @@ input, button, textarea, select {
   }
   
   h1 {
-    font-size: var(--font-size-xlarge);
     margin: var(--padding-small) 0 var(--padding-small);
   }
 
   .content {
-    line-height: var(--line-height-tight);
+    line-height: var(--line-height-normal);
   }
   
   .spinner-button,
@@ -364,6 +363,6 @@ input, button, textarea, select {
   }
   
   .result-text {
-    font-size: var(--font-size-xxlarge);
+    font-size: var(--font-size-results-mobile);
   }
 }
