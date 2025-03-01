@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     needsUpdate: true
   };
 
+  const NARROW_SPACE = '\u202F';
+
   const pluralize = (number, one, few, many) => {
     const mod10 = number % 10;
     const mod100 = number % 100;
@@ -84,8 +86,23 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.usesLabel.textContent = pluralize(uses, 'раз', 'раза', 'раз');
   };
 
-  const formatNumber = number => 
-    number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '&#8239;');
+  const formatNumber = number => {
+    const str = String(number);
+    if (str.length <= 3) return str;
+    
+    const result = [];
+    const len = str.length;
+    
+    for (let i = 0; i < len; i++) {
+      result.push(str[i]);
+      const remaining = len - i - 1;
+      if (remaining > 0 && remaining % 3 === 0) {
+        result.push(NARROW_SPACE);
+      }
+    }
+    
+    return result.join('');
+  };
 
   const formatDuration = days => {
     if (days <= 0) return '0&nbsp;дней';
@@ -93,12 +110,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const years = Math.floor(days / 365);
     const months = Math.floor((days % 365) / 30);
     const remainingDays = days % 30;
-
+    
     const parts = [];
-    if (years > 0) parts.push(`${formatNumber(years)} ${pluralize(years, 'год', 'года', 'лет')}`);
-    if (months > 0) parts.push(`${formatNumber(months)} ${pluralize(months, 'месяц', 'месяца', 'месяцев')}`);
-    if (remainingDays > 0 || parts.length === 0) parts.push(`${formatNumber(remainingDays)} ${pluralize(remainingDays, 'день', 'дня', 'дней')}`);
-
+    
+    if (years > 0) {
+      const yearText = pluralize(years, 'год', 'года', 'лет');
+      parts.push(`${formatNumber(years)} ${yearText}`);
+    }
+    
+    if (months > 0) {
+      const monthText = pluralize(months, 'месяц', 'месяца', 'месяцев');
+      parts.push(`${formatNumber(months)} ${monthText}`);
+    }
+    
+    if (remainingDays > 0 || parts.length === 0) {
+      const dayText = pluralize(remainingDays, 'день', 'дня', 'дней');
+      parts.push(`${formatNumber(remainingDays)} ${dayText}`);
+    }
+    
     return parts.join(' ');
   };
 
