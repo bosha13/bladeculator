@@ -277,14 +277,40 @@ input, button, textarea, select {
 }
 
 .header-container {
-  text-align: center;
+  display: flex;
+  align-items: center;
   margin-bottom: 15px;
 }
 
-.razor-image {
-  margin-bottom: var(--padding-small);
+.header-left {
+  flex: 1;
+}
+
+.header-icon {
+  flex: 0 0 auto;
   image-rendering: pixelated;
 }
+
+.header-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-localize {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #000;
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 
 .unit-label {
   margin-left: var(--padding-small);
