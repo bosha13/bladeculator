@@ -28,11 +28,23 @@
           <label for="choices">
             <img src="./images/language.svg" alt="close" width="16" height="16">
           </label>
-          <select id="choices">
-            <option value="1">Русский</option>
-            <option value="2">English</option>
-            <option value="3">Spanish</option>
-          </select>
+            <div class="select-container">
+              <div class="custom-select" id="language-select">Русский</div>
+              <div class="select-dropdown" id="language-dropdown">
+                <div class="select-option selected" data-value="1">
+                  Русский
+                  <img src="./images/check.svg" alt="Выбрано" class="select-option-icon" width="16" height="16">
+                </div>
+                <div class="select-option" data-value="2">
+                  English
+                  <img src="./images/check.svg" alt="Выбрано" class="select-option-icon" width="16" height="16">
+                </div>
+                <div class="select-option" data-value="3">
+                  Spanish
+                  <img src="./images/check.svg" alt="Выбрано" class="select-option-icon" width="16" height="16">
+                </div>
+              </div>
+            </div>
         </div>
         <!-- <h1>На сколько хватит моего запаса лезвий</h1> -->
       </section>
@@ -43,7 +55,7 @@
             <div class="spinner-button" 
               data-action="decrease" 
               data-target="days-input">
-              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+              <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
             </div>
             <div class="spinner">
               <input type="number" inputmode="numeric" inputmode="numeric" min="1" id="days-input" value="1">
@@ -51,7 +63,7 @@
             <div class="spinner-button" 
               data-action="increase" 
               data-target="days-input">
-              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+              <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
             </div>
             <span class="unit-label" id="days-label">дней</span>
           </div>
@@ -63,7 +75,7 @@
             <div class="spinner-button" 
               data-action="decrease" 
               data-target="uses-input">
-              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+              <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
             </div>
             <div class="spinner">
               <input type="number" inputmode="numeric" inputmode="numeric" min="1" id="uses-input" value="1">
@@ -71,7 +83,7 @@
             <div class="spinner-button" 
               data-action="increase" 
               data-target="uses-input">
-              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+              <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
             </div>
             <span class="unit-label" id="uses-label">раз</span>
           </div>
@@ -88,7 +100,7 @@
               <div class="spinner-button" 
                 data-action="decrease" 
                 data-target="pack100-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
                 <input type="number" inputmode="numeric" inputmode="numeric" min="0" id="pack100-input" value="0">
@@ -96,7 +108,7 @@
               <div class="spinner-button" 
                 data-action="increase" 
                 data-target="pack100-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
               </div>
             </div>
           </div>
@@ -108,7 +120,7 @@
               <div class="spinner-button" 
                 data-action="decrease" 
                 data-target="pack10-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="pack10-input" value="0">
@@ -116,7 +128,7 @@
               <div class="spinner-button" 
                 data-action="increase" 
                 data-target="pack10-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
               </div>
             </div>
           </div>
@@ -128,7 +140,7 @@
               <div class="spinner-button" 
                 data-action="decrease" 
                 data-target="pack5-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="pack5-input" value="0">
@@ -136,7 +148,7 @@
               <div class="spinner-button" 
                 data-action="increase" 
                 data-target="pack5-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
               </div>
             </div>
           </div>
@@ -148,7 +160,7 @@
               <div class="spinner-button" 
                 data-action="decrease" 
                 data-target="single-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="single-input" value="0">
@@ -156,7 +168,7 @@
               <div class="spinner-button" 
                 data-action="increase" 
                 data-target="single-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
               </div>
             </div>
           </div>
@@ -169,5 +181,6 @@
     </form>
   </main>
   <script src="calculator.js"></script>
+  <script src="select-localize.js"></script>
 </body>
 </html>
