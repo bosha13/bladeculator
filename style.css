@@ -99,6 +99,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  word-spacing: -2px;
 }
 
 .button-raised {
@@ -140,6 +141,7 @@ body {
   font-size: var(--font-size-content-desktop);
   line-height: var(--line-height-loose);
   font-weight: 600;
+  word-spacing: -4px;
 }
 
 h1 {
@@ -164,6 +166,10 @@ input, button, textarea, select {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .input-control {
