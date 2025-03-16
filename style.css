@@ -170,7 +170,6 @@ input, button, textarea, select {
 .input-control {
   display: flex;
   align-items: center;
-  min-width: 150px;
 }
 
 .input-control-stock {
@@ -298,21 +297,17 @@ input, button, textarea, select {
   gap: 8px;
 }
 
-/* Стилизация контейнера выпадающего списка */
 .select-container {
   position: relative;
   display: inline-block;
 }
 
-/* Стилизация главного элемента select */
 .custom-select {
   background-color: var(--color-gray);
   font-family: var(--font-family);
   font-size: var(--font-size-content-desktop);
   font-weight: 600;
-  /* padding: 0px 4px; */
   margin-bottom: 2px;
-  /* width: 100px; */
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -323,7 +318,6 @@ input, button, textarea, select {
   -ms-user-select: none;
 }
 
-/* Стилизация опций при открытии */
 .select-dropdown {
   display: none;
   position: absolute;
@@ -354,10 +348,6 @@ input, button, textarea, select {
   background-color: var(--color-navy);
   color: var(--color-white);
 }
-
-/* .select-option.selected {
-  background-color: var(--color-light-gray);
-} */
 
 .select-option-icon {
   width: 16px;
@@ -437,7 +427,6 @@ input, button, textarea, select {
   }
  
   .input-control {
-    min-width: 155px;
     margin-left: 0;
   }
   

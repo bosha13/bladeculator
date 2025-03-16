@@ -38,11 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const NARROW_SPACE = '\u202F';
 
-  const pluralize = (number, one, few, many) => {
-    const mod10 = number % 10;
-    const mod100 = number % 100;
-    if (mod100 >= 11 && mod100 <= 19) return many;
-    return mod10 === 1 ? one : mod10 >= 2 && mod10 <= 4 ? few : many;
+  const pluralize = (number, one, two, five) => {
+    let n = Math.abs(number);
+    n %= 100;
+    if (n >= 5 && n <= 20) return five;
+    n %= 10;
+    return n === 1 ? one : n >= 2 && n <= 4 ? two : five;
   };
 
   const pluralizeBlade = number => {
@@ -75,15 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cache.needsUpdate = true;
     }
     
-    updateLabels();
     calculateDuration();
-  };
-
-  const updateLabels = () => {
-    const days = parseInt(elements.daysInput.value) || 0;
-    const uses = parseInt(elements.usesInput.value) || 0;
-    elements.daysLabel.textContent = pluralize(days, 'день', 'дня', 'дней');
-    elements.usesLabel.textContent = pluralize(uses, 'раз', 'раза', 'раз');
   };
 
   const formatNumber = number => {
@@ -192,6 +185,5 @@ document.addEventListener('DOMContentLoaded', () => {
       : './images/blade-color.svg';
   });
 
-  updateLabels();
   calculateDuration();
 });
