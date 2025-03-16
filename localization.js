@@ -177,20 +177,21 @@ const localization = {
     const remainingDays = days % 30;
     
     const parts = [];
+    const NARROW_NO_BREAK_SPACE = '\u202F';
     
     if (years > 0) {
       const yearText = this.pluralize(years, 'year');
-      parts.push(`${this.formatNumber(years)} ${yearText}`);
+      parts.push(`${this.formatNumber(years)}${NARROW_NO_BREAK_SPACE}${yearText}`);
     }
     
     if (months > 0) {
       const monthText = this.pluralize(months, 'month');
-      parts.push(`${this.formatNumber(months)} ${monthText}`);
+      parts.push(`${this.formatNumber(months)}${NARROW_NO_BREAK_SPACE}${monthText}`);
     }
     
     if (remainingDays > 0 || parts.length === 0) {
       const dayText = this.pluralize(remainingDays, 'day');
-      parts.push(`${this.formatNumber(remainingDays)} ${dayText}`);
+      parts.push(`${this.formatNumber(remainingDays)}${NARROW_NO_BREAK_SPACE}${dayText}`);
     }
     
     return parts.join(' ');
