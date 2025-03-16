@@ -36,22 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     needsUpdate: true
   };
 
-  const NARROW_SPACE = '\u202F';
-
-  const pluralize = (number, one, two, five) => {
-    let n = Math.abs(number);
-    n %= 100;
-    if (n >= 5 && n <= 20) return five;
-    n %= 10;
-    return n === 1 ? one : n >= 2 && n <= 4 ? two : five;
-  };
-
-  const pluralizeBlade = number => {
-    const mod10 = number % 10;
-    const mod100 = number % 100;
-    if (mod100 >= 11 && mod100 <= 19) return 'лезвий';
-    return mod10 === 1 ? 'лезвие' : mod10 >= 2 && mod10 <= 4 ? 'лезвия' : 'лезвий';
-  };
 
   const handleInput = function() {
     this.value = this.value.replace(/[^0-9]/g, '');
@@ -79,50 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateDuration();
   };
 
-  const formatNumber = number => {
-    const str = String(number);
-    if (str.length <= 3) return str;
-    
-    const result = [];
-    const len = str.length;
-    
-    for (let i = 0; i < len; i++) {
-      result.push(str[i]);
-      const remaining = len - i - 1;
-      if (remaining > 0 && remaining % 3 === 0) {
-        result.push(NARROW_SPACE);
-      }
-    }
-    
-    return result.join('');
-  };
-
-  const formatDuration = days => {
-    if (days <= 0) return '0&nbsp;дней';
-    
-    const years = Math.floor(days / 365);
-    const months = Math.floor((days % 365) / 30);
-    const remainingDays = days % 30;
-    
-    const parts = [];
-    
-    if (years > 0) {
-      const yearText = pluralize(years, 'год', 'года', 'лет');
-      parts.push(`${formatNumber(years)} ${yearText}`);
-    }
-    
-    if (months > 0) {
-      const monthText = pluralize(months, 'месяц', 'месяца', 'месяцев');
-      parts.push(`${formatNumber(months)} ${monthText}`);
-    }
-    
-    if (remainingDays > 0 || parts.length === 0) {
-      const dayText = pluralize(remainingDays, 'день', 'дня', 'дней');
-      parts.push(`${formatNumber(remainingDays)} ${dayText}`);
-    }
-    
-    return parts.join(' ');
-  };
 
   const calculateDuration = () => {
     if (!cache.needsUpdate && cache.result !== null) {
@@ -140,14 +80,22 @@ document.addEventListener('DOMContentLoaded', () => {
     ].reduce((acc, el, i) => 
       acc + (parseInt(el.value) || 0) * [100, 10, 5, 1][i], 0);
 
-    elements.resultTitle.innerHTML = totalBlades === 0 
-      ? '0 лезвий хватит на:' 
-      : `${formatNumber(totalBlades)} ${pluralizeBlade(totalBlades)} хватит на:`;
+    // Use localization for displaying the total blades text
+    if (totalBlades === 0) {
+      elements.resultTitle.innerHTML = localization.t('zero_blades');
+    } else {
+      // Get plural form for blade based on the count
+      const pluralBlade = localization.pluralize(totalBlades, 'blade');
+      elements.resultTitle.innerHTML = localization.t('blades_will_last', {
+        count: localization.formatNumber(totalBlades),
+        pluralBlade: pluralBlade
+      });
+    }
 
-    const resultHTML = totalBlades === 0 
-      ? '0&nbsp;дней' 
-      : formatDuration(totalBlades * usesPerBlade * daysPerShave);
-      
+    // Format the duration using the localization module
+    const totalDays = totalBlades * usesPerBlade * daysPerShave;
+    const resultHTML = localization.formatDuration(totalDays);
+    
     elements.result.innerHTML = resultHTML;
     cache.result = resultHTML;
     cache.needsUpdate = false;
@@ -185,5 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
       : './images/blade-color.svg';
   });
 
+  // Make calculateDuration function available globally for language switching
+  window.calculateDuration = calculateDuration;
+  
+  // Initial calculation
   calculateDuration();
 });

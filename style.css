@@ -36,13 +36,12 @@
   /* =============  Typography  ============= */
   --font-family: "IBM Plex Mono", monospace;
   --font-size-title-bar: 15px;
-  --font-size-h1: 21px;
   --font-size-content-desktop: 18px;
   --font-size-content-mobile: 17px;
   --font-size-spinner: 16px;
   --font-size-results-title: 20px;
   --font-size-results-mobile: 24px;
-  --font-size-results-desktop: 30px;
+  --font-size-results-desktop: 26px;
   --line-height-normal: 105%;
   --line-height-loose: 120%;
 }
