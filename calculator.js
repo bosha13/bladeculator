@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
     needsUpdate: true
   };
 
+  // Expose cache to window for access from other scripts
+  window.cache = cache;
+
 
   const handleInput = function() {
     this.value = this.value.replace(/[^0-9]/g, '');

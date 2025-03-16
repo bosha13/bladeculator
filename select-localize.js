@@ -50,8 +50,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Apply translations to UI
         localizeUI();
         
-        // Recalculate the result with new language
+        // Force recalculation of the result with new language
         if (typeof calculateDuration === 'function') {
+          // Force recalculation by setting needsUpdate to true
+          if (window.cache) {
+            window.cache.needsUpdate = true;
+          }
           calculateDuration();
         }
       });
