@@ -11,8 +11,8 @@ const localization = {
   translations: {
     'ru': {
       'app_title': 'Калькулятор запаса лезвий v.1.1',
-      'shave_frequency': 'Я бреюсь раз в',
-      'blade_usage': 'Использую 1 лезвие',
+      'shave_frequency': 'Частота бритья (дни)',
+      'blade_usage': '1 лезвие используется (раз)',
       'total_blades': 'Всего лезвий:',
       'blocks': 'Блоки',
       'packs': 'Пачки',
@@ -43,13 +43,13 @@ const localization = {
     
     'en': {
       'app_title': 'Blade Stock Calculator v.1.1',
-      'shave_frequency': 'I shave every',
-      'blade_usage': 'I use 1 blade for',
-      'total_blades': 'Total blades:',
+      'shave_frequency': 'Shaving frequency (days)',
+      'blade_usage': '1 blade lasts',
+      'total_blades': 'Blades total:',
       'blocks': 'Blocks',
       'packs': 'Packs',
-      'individually': 'Individual',
-      'pieces': 'pcs.',
+      'individually': 'Single',
+      'pieces': 'pcs',
       'close': 'Close',
       'selected': 'Selected',
       
@@ -71,13 +71,13 @@ const localization = {
     
     'es': {
       'app_title': 'Calculadora de stock de cuchillas v.1.1',
-      'shave_frequency': 'Me afeito cada',
-      'blade_usage': 'Uso 1 cuchilla para',
-      'total_blades': 'Cuchillas totales:',
+      'shave_frequency': 'Frecuencia de afeitado (días)',
+      'blade_usage': '1 cuchilla dura',
+      'total_blades': 'Total cuchillas:',
       'blocks': 'Bloques',
       'packs': 'Paquetes',
-      'individually': 'Individual',
-      'pieces': 'uds.',
+      'individually': 'Sueltas',
+      'pieces': 'unid',
       'close': 'Cerrar',
       'selected': 'Seleccionado',
       
