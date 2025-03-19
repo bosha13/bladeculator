@@ -3,10 +3,11 @@ const localization = {
   languages: {
     'ru': 'Русский',
     'en': 'English',
-    'es': 'Español'
+    'es': 'Español',
+    'zh': '中文'
   },
   
-  languageOrder: ['ru', 'en', 'es'],
+  languageOrder: ['ru', 'en', 'es', 'zh'],
   
   translations: {
     'ru': {
@@ -18,8 +19,6 @@ const localization = {
       'packs': 'Пачки',
       'individually': 'Поштучно',
       'pieces': 'шт.',
-      'close': 'Закрыть',
-      'selected': 'Выбрано',
       
       'blades_will_last': '{count} {pluralBlade} хватит на:',
       'zero_blades': '0 лезвий хватит на:',
@@ -50,8 +49,6 @@ const localization = {
       'packs': 'Packs',
       'individually': 'Single',
       'pieces': 'pcs',
-      'close': 'Close',
-      'selected': 'Selected',
       
       'blades_will_last': '{count} {pluralBlade} will last for:',
       'zero_blades': '0 blades will last for:',
@@ -78,8 +75,6 @@ const localization = {
       'packs': 'Paquetes',
       'individually': 'Sueltas',
       'pieces': 'unid',
-      'close': 'Cerrar',
-      'selected': 'Seleccionado',
       
       'blades_will_last': '{count} {pluralBlade} durarán:',
       'zero_blades': '0 cuchillas durarán:',
@@ -94,6 +89,33 @@ const localization = {
       
       'getPluralForm': function(number, forms) {
         return number === 1 ? forms[0] : forms[1];
+      }
+    },
+    
+    'zh': {
+      'app_title': '刀片库存计算器 v.1.1',
+      'shave_frequency': '刮胡频率（天）',
+      'blade_usage': '1个刀片使用次数',
+      'total_blades': '刀片总数：',
+      'blocks': '整盒',
+      'packs': '包装',
+      'individually': '单个',
+      'pieces': '片',
+      
+      'blades_will_last': '{count}个{pluralBlade}可使用：',
+      'zero_blades': '0个刀片可使用：',
+      'zero_days': '0天',
+      
+      'plurals': {
+        'day': ['天'],
+        'month': ['个月'],
+        'year': ['年'],
+        'blade': ['刀片']
+      },
+      
+      'getPluralForm': function(number, forms) {
+        // Chinese doesn't have plural forms, always use the first form
+        return forms[0];
       }
     }
   },

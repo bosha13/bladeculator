@@ -292,6 +292,7 @@ input, button, textarea, select {
 .header-icon {
   flex: 0 0 auto;
   image-rendering: pixelated;
+  cursor: pointer;
 }
 
 .header-right {
@@ -307,12 +308,23 @@ input, button, textarea, select {
   display: inline-block;
 }
 
+.language-label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.language-label:hover + .select-container .custom-select,
+.custom-select:hover {
+  opacity: 0.65;
+}
+
 .custom-select {
   background-color: var(--color-gray);
   font-family: var(--font-family);
   font-size: var(--font-size-content-desktop);
   font-weight: 600;
-  margin-bottom: 2px;
+  /* margin-bottom: 2px; */
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -321,6 +333,11 @@ input, button, textarea, select {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+.custom-select:focus {
+  outline: 1px dotted var(--color-darker-gray);
+  outline-offset: 2px;
 }
 
 .select-dropdown {
@@ -335,9 +352,17 @@ input, button, textarea, select {
   border-right: var(--border-width) solid var(--color-darker-gray);
   z-index: 10;
   width: 120px;
+  padding: 0 0 2px;
 }
 
 .select-dropdown.active {
+  display: block;
+}
+
+/* Show dropdown when label is clicked or selector is focused */
+.language-label:active + .select-container .select-dropdown,
+.custom-select:focus + .select-dropdown,
+.select-container:focus-within .select-dropdown {
   display: block;
 }
 
