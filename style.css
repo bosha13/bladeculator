@@ -275,6 +275,7 @@ input, button, textarea, select {
 .razor-stock-title {
   margin: 15px 0 var(--padding-small);
   height: 30px;
+  user-select: none;
   display: flex;
   align-items: center;
 }
@@ -359,7 +360,6 @@ input, button, textarea, select {
   display: block;
 }
 
-/* Show dropdown when label is clicked or selector is focused */
 .language-label:active + .select-container .select-dropdown,
 .custom-select:focus + .select-dropdown,
 .select-container:focus-within .select-dropdown {
@@ -470,7 +470,7 @@ input, button, textarea, select {
   }
   
   .stock-size {
-    padding-right: 15px;
+    padding-right: 8px;
   }
   
   .results {

@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     needsUpdate: true
   };
 
-  // Expose cache to window for access from other scripts
   window.cache = cache;
 
 
@@ -83,11 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ].reduce((acc, el, i) => 
       acc + (parseInt(el.value) || 0) * [100, 10, 5, 1][i], 0);
 
-    // Use localization for displaying the total blades text
     if (totalBlades === 0) {
       elements.resultTitle.innerHTML = localization.t('zero_blades');
     } else {
-      // Get plural form for blade based on the count
       const pluralBlade = localization.pluralize(totalBlades, 'blade');
       elements.resultTitle.innerHTML = localization.t('blades_will_last', {
         count: localization.formatNumber(totalBlades),
@@ -95,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Format the duration using the localization module
     const totalDays = totalBlades * usesPerBlade * daysPerShave;
     const resultHTML = localization.formatDuration(totalDays);
     
@@ -135,10 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ? './images/blade.svg' 
       : './images/blade-color.svg';
   });
-
-  // Make calculateDuration function available globally for language switching
-  window.calculateDuration = calculateDuration;
   
-  // Initial calculation
+  window.calculateDuration = calculateDuration;
   calculateDuration();
 });

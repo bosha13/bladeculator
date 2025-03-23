@@ -114,13 +114,12 @@ const localization = {
       },
       
       'getPluralForm': function(number, forms) {
-        // Chinese doesn't have plural forms, always use the first form
         return forms[0];
       }
     }
   },
   
-  // Language detection and management methods
+  // Language detection
   detectBrowserLanguage: function() {
     const browserLang = navigator.language.split('-')[0];
     return this.translations[browserLang] ? browserLang : this.defaultLanguage;
@@ -170,7 +169,7 @@ const localization = {
     return translations.getPluralForm(number, pluralForms);
   },
   
-  // Format a number with spaces as thousands separators
+  // Thousands separators
   formatNumber: function(number) {
     const str = String(number);
     if (str.length <= 3) return str;
@@ -190,7 +189,7 @@ const localization = {
     return result.join('');
   },
   
-  // Format duration in days to a human-readable string
+  // Duration in days to a human-readable string
   formatDuration: function(days) {
     if (days <= 0) return this.t('zero_days');
     
