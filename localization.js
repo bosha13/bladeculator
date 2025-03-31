@@ -11,7 +11,7 @@ const localization = {
   
   translations: {
     'ru': {
-      'app_title': 'Калькулятор запаса лезвий v.1.1',
+      'app_title': 'Калькулятор запаса лезвий',
       'shave_frequency': 'Частота бритья (дни)',
       'blade_usage': '1 лезвие используется (раз)',
       'total_blades': 'Всего лезвий:',
@@ -41,7 +41,7 @@ const localization = {
     },
     
     'en': {
-      'app_title': 'Blade Stock Calculator v.1.1',
+      'app_title': 'Blade Stock Calculator',
       'shave_frequency': 'Shaving frequency (days)',
       'blade_usage': '1 blade lasts',
       'total_blades': 'Blades total:',
@@ -67,7 +67,7 @@ const localization = {
     },
     
     'es': {
-      'app_title': 'Calculadora de stock de cuchillas v.1.1',
+      'app_title': 'Calculadora de stock de cuchillas',
       'shave_frequency': 'Frecuencia de afeitado (días)',
       'blade_usage': '1 cuchilla dura',
       'total_blades': 'Total cuchillas:',
@@ -93,7 +93,7 @@ const localization = {
     },
     
     'zh': {
-      'app_title': '刀片库存计算器 v.1.1',
+      'app_title': '刀片库存计算器',
       'shave_frequency': '刮胡频率（天）',
       'blade_usage': '1个刀片使用次数',
       'total_blades': '刀片总数：',
