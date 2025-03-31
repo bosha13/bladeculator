@@ -36,21 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     needsUpdate: true
   };
 
-  const NARROW_SPACE = '\u202F';
+  window.cache = cache;
 
-  const pluralize = (number, one, few, many) => {
-    const mod10 = number % 10;
-    const mod100 = number % 100;
-    if (mod100 >= 11 && mod100 <= 19) return many;
-    return mod10 === 1 ? one : mod10 >= 2 && mod10 <= 4 ? few : many;
-  };
-
-  const pluralizeBlade = number => {
-    const mod10 = number % 10;
-    const mod100 = number % 100;
-    if (mod100 >= 11 && mod100 <= 19) return 'лезвий';
-    return mod10 === 1 ? 'лезвие' : mod10 >= 2 && mod10 <= 4 ? 'лезвия' : 'лезвий';
-  };
 
   const handleInput = function() {
     this.value = this.value.replace(/[^0-9]/g, '');
@@ -75,61 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
       cache.needsUpdate = true;
     }
     
-    updateLabels();
     calculateDuration();
   };
 
-  const updateLabels = () => {
-    const days = parseInt(elements.daysInput.value) || 0;
-    const uses = parseInt(elements.usesInput.value) || 0;
-    elements.daysLabel.textContent = pluralize(days, 'день', 'дня', 'дней');
-    elements.usesLabel.textContent = pluralize(uses, 'раз', 'раза', 'раз');
-  };
-
-  const formatNumber = number => {
-    const str = String(number);
-    if (str.length <= 3) return str;
-    
-    const result = [];
-    const len = str.length;
-    
-    for (let i = 0; i < len; i++) {
-      result.push(str[i]);
-      const remaining = len - i - 1;
-      if (remaining > 0 && remaining % 3 === 0) {
-        result.push(NARROW_SPACE);
-      }
-    }
-    
-    return result.join('');
-  };
-
-  const formatDuration = days => {
-    if (days <= 0) return '0&nbsp;дней';
-    
-    const years = Math.floor(days / 365);
-    const months = Math.floor((days % 365) / 30);
-    const remainingDays = days % 30;
-    
-    const parts = [];
-    
-    if (years > 0) {
-      const yearText = pluralize(years, 'год', 'года', 'лет');
-      parts.push(`${formatNumber(years)} ${yearText}`);
-    }
-    
-    if (months > 0) {
-      const monthText = pluralize(months, 'месяц', 'месяца', 'месяцев');
-      parts.push(`${formatNumber(months)} ${monthText}`);
-    }
-    
-    if (remainingDays > 0 || parts.length === 0) {
-      const dayText = pluralize(remainingDays, 'день', 'дня', 'дней');
-      parts.push(`${formatNumber(remainingDays)} ${dayText}`);
-    }
-    
-    return parts.join(' ');
-  };
 
   const calculateDuration = () => {
     if (!cache.needsUpdate && cache.result !== null) {
@@ -147,14 +82,19 @@ document.addEventListener('DOMContentLoaded', () => {
     ].reduce((acc, el, i) => 
       acc + (parseInt(el.value) || 0) * [100, 10, 5, 1][i], 0);
 
-    elements.resultTitle.innerHTML = totalBlades === 0 
-      ? '0 лезвий хватит на:' 
-      : `${formatNumber(totalBlades)} ${pluralizeBlade(totalBlades)} хватит на:`;
+    if (totalBlades === 0) {
+      elements.resultTitle.innerHTML = localization.t('zero_blades');
+    } else {
+      const pluralBlade = localization.pluralize(totalBlades, 'blade');
+      elements.resultTitle.innerHTML = localization.t('blades_will_last', {
+        count: localization.formatNumber(totalBlades),
+        pluralBlade: pluralBlade
+      });
+    }
 
-    const resultHTML = totalBlades === 0 
-      ? '0&nbsp;дней' 
-      : formatDuration(totalBlades * usesPerBlade * daysPerShave);
-      
+    const totalDays = totalBlades * usesPerBlade * daysPerShave;
+    const resultHTML = localization.formatDuration(totalDays);
+    
     elements.result.innerHTML = resultHTML;
     cache.result = resultHTML;
     cache.needsUpdate = false;
@@ -191,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ? './images/blade.svg' 
       : './images/blade-color.svg';
   });
-
-  updateLabels();
+  
+  window.calculateDuration = calculateDuration;
   calculateDuration();
 });

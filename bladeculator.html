@@ -10,20 +10,42 @@
 <body>
   <main class="window">
     <header class="title-bar">
-      <span>Калькулятор запаса лезвий v.1.0.2</span>
+      <span>Калькулятор запаса лезвий</span>
       <div class="close-button">
-        <img src="./images/close.svg" alt="close" width="11" height="11">
+        <img src="./images/close.svg" width="11" height="11">
       </div>
     </header>
     <form class="content">
       <section class="header-container">
-        <div class="razor-image">
+        <div class="header-left"></div>
+        <div class="header-icon">
           <img src="./images/blade.svg" alt="Blade" width="86" height="44" class="blade-icon" id="blade-icon">
         </div>
         <div style="display: none;">
           <img src="./images/blade-color.svg" alt="Preload Blade Color">
         </div>
-        <h1>На сколько хватит моего запаса лезвий</h1>
+        <div class="header-right">
+          <label for="language-select" class="language-label">
+            <img src="./images/language.svg" width="16" height="16">
+          </label>
+          <div class="select-container">
+            <div class="custom-select" id="language-select">Русский</div>
+            <div class="select-dropdown" id="language-dropdown">
+              <div class="select-option selected" data-value="1">
+                Русский
+                <img src="./images/check.svg" class="select-option-icon" width="16" height="16">
+              </div>
+              <div class="select-option" data-value="2">
+                English
+                <img src="./images/check.svg" class="select-option-icon" width="16" height="16">
+              </div>
+              <div class="select-option" data-value="3">
+                Spanish
+                <img src="./images/check.svg" class="select-option-icon" width="16" height="16">
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       <section>
         <div class="input-group">
@@ -32,7 +54,7 @@
             <div class="spinner-button" 
               data-action="decrease" 
               data-target="days-input">
-              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+              <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
             </div>
             <div class="spinner">
               <input type="number" inputmode="numeric" inputmode="numeric" min="1" id="days-input" value="1">
@@ -40,9 +62,8 @@
             <div class="spinner-button" 
               data-action="increase" 
               data-target="days-input">
-              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+              <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
             </div>
-            <span class="unit-label" id="days-label">дней</span>
           </div>
         </div>
         
@@ -52,7 +73,7 @@
             <div class="spinner-button" 
               data-action="decrease" 
               data-target="uses-input">
-              <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+              <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
             </div>
             <div class="spinner">
               <input type="number" inputmode="numeric" inputmode="numeric" min="1" id="uses-input" value="1">
@@ -60,16 +81,14 @@
             <div class="spinner-button" 
               data-action="increase" 
               data-target="uses-input">
-              <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+              <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
             </div>
-            <span class="unit-label" id="uses-label">раз</span>
           </div>
         </div>
       </section>
       <section>
         <div class="razor-stock">
           <div class="razor-stock-title">Всего лезвий:</div>
-          
           <div class="input-group stock-item">
             <div class="stock-label">Блоки</div>
             <div class="stock-size">100 шт. ×</div>
@@ -77,7 +96,7 @@
               <div class="spinner-button" 
                 data-action="decrease" 
                 data-target="pack100-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
                 <input type="number" inputmode="numeric" inputmode="numeric" min="0" id="pack100-input" value="0">
@@ -85,7 +104,7 @@
               <div class="spinner-button" 
                 data-action="increase" 
                 data-target="pack100-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
               </div>
             </div>
           </div>
@@ -97,7 +116,7 @@
               <div class="spinner-button" 
                 data-action="decrease" 
                 data-target="pack10-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="pack10-input" value="0">
@@ -105,7 +124,7 @@
               <div class="spinner-button" 
                 data-action="increase" 
                 data-target="pack10-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
               </div>
             </div>
           </div>
@@ -117,7 +136,7 @@
               <div class="spinner-button" 
                 data-action="decrease" 
                 data-target="pack5-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="pack5-input" value="0">
@@ -125,7 +144,7 @@
               <div class="spinner-button" 
                 data-action="increase" 
                 data-target="pack5-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
               </div>
             </div>
           </div>
@@ -137,7 +156,7 @@
               <div class="spinner-button" 
                 data-action="decrease" 
                 data-target="single-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="10" height="10">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="single-input" value="0">
@@ -145,7 +164,7 @@
               <div class="spinner-button" 
                 data-action="increase" 
                 data-target="single-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="10" height="10">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
               </div>
             </div>
           </div>
@@ -153,10 +172,12 @@
       </section>
       <section class="results">
         <div class="result-title">%Number% лезвий хватит на:</div>
-        <div class="result-text" id="result">3 месяца</div>
+        <div class="result-text" id="result">%Time%</div>
       </section>
     </form>
   </main>
+  <script src="localization.js"></script>
   <script src="calculator.js"></script>
+  <script src="select-localize.js"></script>
 </body>
 </html>

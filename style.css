@@ -22,7 +22,7 @@
   --button-size-mobile: 32px;
   --input-width-desktop: 44px;
   --input-width-mobile: 40px;
-  --icon-size: 10px;
+  --icon-size: 16px;
   
   /* =============  Paddings  ============= */
   --padding-standard: 10px;
@@ -36,14 +36,12 @@
   /* =============  Typography  ============= */
   --font-family: "IBM Plex Mono", monospace;
   --font-size-title-bar: 15px;
-  --font-size-h1: 21px;
   --font-size-content-desktop: 18px;
   --font-size-content-mobile: 17px;
   --font-size-spinner: 16px;
   --font-size-results-title: 20px;
   --font-size-results-mobile: 24px;
-  --font-size-results-desktop: 30px;
-
+  --font-size-results-desktop: 26px;
   --line-height-normal: 105%;
   --line-height-loose: 120%;
 }
@@ -101,6 +99,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  word-spacing: -2px;
 }
 
 .button-raised {
@@ -142,6 +141,7 @@ body {
   font-size: var(--font-size-content-desktop);
   line-height: var(--line-height-loose);
   font-weight: 600;
+  word-spacing: -4px;
 }
 
 h1 {
@@ -166,12 +166,15 @@ input, button, textarea, select {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .input-control {
   display: flex;
   align-items: center;
-  min-width: 150px;
 }
 
 .input-control-stock {
@@ -272,18 +275,114 @@ input, button, textarea, select {
 .razor-stock-title {
   margin: 15px 0 var(--padding-small);
   height: 30px;
+  user-select: none;
   display: flex;
   align-items: center;
 }
 
 .header-container {
-  text-align: center;
+  display: flex;
+  align-items: center;
   margin-bottom: 15px;
 }
 
-.razor-image {
-  margin-bottom: var(--padding-small);
+.header-left {
+  flex: 1;
+}
+
+.header-icon {
+  flex: 0 0 auto;
   image-rendering: pixelated;
+  cursor: pointer;
+}
+
+.header-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.select-container {
+  position: relative;
+  display: inline-block;
+}
+
+.language-label {
+  display: flex;
+  align-items: center;
+}
+
+.custom-select {
+  background-color: var(--color-gray);
+  font-family: var(--font-family);
+  font-size: var(--font-size-content-desktop);
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.custom-select:focus {
+  outline: 1px dotted var(--color-darker-gray);
+  outline-offset: 2px;
+}
+
+.select-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--color-gray);
+  border-top: var(--border-width) solid var(--color-white);
+  border-left: var(--border-width) solid var(--color-white);
+  border-bottom: var(--border-width) solid var(--color-darker-gray);
+  border-right: var(--border-width) solid var(--color-darker-gray);
+  z-index: 10;
+  width: 120px;
+  padding: 0 0 2px;
+}
+
+.select-dropdown.active {
+  display: block;
+}
+
+
+.select-option {
+  padding: 6px 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.select-option:hover {
+  background-color: var(--color-navy);
+  color: var(--color-white);
+}
+
+.select-option-icon {
+  width: 16px;
+  height: 16px;
+  visibility: hidden;
+}
+
+.select-option.selected .select-option-icon {
+  visibility: visible;
+}
+
+.select-option:hover .select-option-icon {
+  filter: brightness(0) invert(1);
+}
+
+.select-option.selected:hover .select-option-icon {
+  filter: brightness(0) invert(1);
 }
 
 .unit-label {
@@ -303,7 +402,7 @@ input, button, textarea, select {
 .stock-size {
   width: 120px;
   text-align: right;
-  padding-right: 4px;
+  /* padding-right: 4px; */
 }
 
 /* =============  Mobile  ============= */
@@ -327,7 +426,11 @@ input, button, textarea, select {
     font-size: var(--font-size-content-mobile);
     line-height: var(--line-height-normal);
   }
-   
+  
+  .custom-select {
+    font-size: var(--font-size-content-mobile);
+  }
+
   .spinner-button {
     width: var(--button-size-mobile);
     height: var(--button-size-mobile);
@@ -342,7 +445,6 @@ input, button, textarea, select {
   }
  
   .input-control {
-    min-width: 155px;
     margin-left: 0;
   }
   
@@ -356,7 +458,7 @@ input, button, textarea, select {
   }
   
   .stock-size {
-    padding-right: 15px;
+    padding-right: 12px;
   }
   
   .results {
