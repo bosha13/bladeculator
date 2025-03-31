@@ -41,7 +41,7 @@ const localization = {
     },
     
     'en': {
-      'app_title': 'Blade Stock Calculator',
+      'app_title': 'Razor Blade Stock Calculator',
       'shave_frequency': 'Shaving frequency (days)',
       'blade_usage': '1 blade lasts',
       'total_blades': 'Blades total:',
