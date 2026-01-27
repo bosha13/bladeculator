@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const stockInputs = elements.inputs.filter(input => input.dataset.multiplier);
+  const maxFromMap = elements.inputs.reduce((acc, input) => {
+    const key = input.dataset.maxFrom;
+    if (!key) return acc;
+    if (!acc.has(key)) acc.set(key, []);
+    acc.get(key).push(input);
+    return acc;
+  }, new Map());
 
   const parseNumber = (value, fallback = 0) => {
     const parsed = parseInt(value, 10);
@@ -26,6 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const getMax = (input) => {
+    const maxFromKey = input.dataset.maxFrom;
+    if (maxFromKey) {
+      const refInput = elements.inputs.find(item => item.dataset.key === maxFromKey);
+      if (refInput) {
+        return parseNumber(refInput.value, Infinity);
+      }
+    }
     const maxAttr = input.dataset.max ?? input.getAttribute('max');
     if (maxAttr === null || maxAttr === undefined || maxAttr === '') {
       return Infinity;
@@ -74,19 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.inputs.forEach(input => {
       state[input.dataset.key] = parseNumber(input.value, 0);
     });
-    return state;
-  };
-
-  const constrainSoapUsage = (state) => {
-    const jarWeight = Math.max(1, state.soapJarWeight || 0);
-    const gramsPerShave = Math.max(1, state.soapGramsPerShave || 1);
-    if (gramsPerShave > jarWeight) {
-      const soapInput = elements.inputs.find(input => input.dataset.key === 'soapGramsPerShave');
-      if (soapInput) {
-        soapInput.value = String(jarWeight);
-      }
-      return { ...state, soapGramsPerShave: jarWeight };
-    }
     return state;
   };
 
@@ -139,20 +140,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderBladeResults = ({ totalBlades, totalDays }) => {
     if (totalBlades === 0) {
-      elements.bladeResultTitle.innerHTML = localization.t('zero_blades');
+      elements.bladeResultTitle.textContent = localization.t('zero_blades');
     } else {
       const pluralBlade = localization.pluralize(totalBlades, 'blade');
-      elements.bladeResultTitle.innerHTML = localization.t('blades_will_last', {
+      elements.bladeResultTitle.textContent = localization.t('blades_will_last', {
         count: localization.formatNumber(totalBlades),
         pluralBlade
       });
     }
 
-    elements.bladeResult.innerHTML = localization.formatDuration(totalDays);
+    elements.bladeResult.textContent = localization.formatDuration(totalDays);
   };
 
   const renderSoapResults = ({ totalDays, totalContainers }) => {
-    elements.soapResult.innerHTML = localization.formatDuration(totalDays);
+    elements.soapResult.textContent = localization.formatDuration(totalDays);
 
     if (elements.soapResultTitle) {
       const isSingular = totalContainers === 1;
@@ -160,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ? 'soap_will_last_with_count_singular'
         : 'soap_will_last_with_count_plural';
       const pluralJar = localization.pluralize(totalContainers, 'jar');
-      elements.soapResultTitle.innerHTML = localization.t(key, {
+      elements.soapResultTitle.textContent = localization.t(key, {
         count: localization.formatNumber(totalContainers),
         pluralJar
       });
@@ -178,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let lastSignature = null;
   const updateResults = ({ force = false } = {}) => {
-    const state = constrainSoapUsage(getStateFromInputs());
+    const state = getStateFromInputs();
     const signature = JSON.stringify(state);
 
     if (!force && signature === lastSignature) {
@@ -186,13 +187,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     lastSignature = signature;
-    updateStockSizes();
     renderBladeResults(calculateBladeTotals(state));
     renderSoapResults(calculateSoapTotals(state));
   };
 
   const handleInput = (event) => {
     normalizeInput(event.target);
+    const key = event.target.dataset.key;
+    if (key && maxFromMap.has(key)) {
+      maxFromMap.get(key).forEach(normalizeInput);
+    }
     updateResults();
   };
 
@@ -240,11 +244,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('languagechange', () => {
+    updateStockSizes();
     updateResults({ force: true });
     updateModeTitles(currentMode);
   });
 
   elements.inputs.forEach(normalizeInput);
   setMode('blades');
+  updateStockSizes();
   updateResults({ force: true });
 });
