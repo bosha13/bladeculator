@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const elements = {
     form: document.querySelector('form'),
+    content: document.querySelector('.content'),
+    window: document.querySelector('.window'),
     inputs: Array.from(document.querySelectorAll('input[data-key]')),
     titleText: document.querySelector('.title-bar > span'),
     bladeResultTitle: document.querySelector('.results[data-mode-section="blades"] .result-title'),
@@ -223,18 +225,37 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   let currentMode = 'blades';
-  const setMode = (mode) => {
-    currentMode = mode;
-    document.body.dataset.mode = mode;
+  const applyModeVisibility = (mode) => {
     elements.modeSections.forEach(section => {
       section.hidden = section.dataset.modeSection !== mode;
     });
+  };
+
+  const updateWindowAnchor = () => {
+    if (!elements.window) return;
+    const bodyStyles = getComputedStyle(document.body);
+    const paddingTop = parseFloat(bodyStyles.paddingTop) || 0;
+    const paddingBottom = parseFloat(bodyStyles.paddingBottom) || 0;
+    const availableHeight = window.innerHeight - paddingTop - paddingBottom;
+    const windowHeight = elements.window.offsetHeight;
+    const offset = Math.max((availableHeight - windowHeight) / 2, 0);
+    elements.window.style.marginTop = `${offset}px`;
+  };
+
+  const setMode = (mode) => {
+    currentMode = mode;
+    document.body.dataset.mode = mode;
+    applyModeVisibility(mode);
     elements.modeIcons.forEach(icon => {
       icon.classList.toggle('active', icon.dataset.mode === mode);
     });
     const bladeIcon = document.getElementById('blade-icon');
     if (bladeIcon) {
       bladeIcon.src = mode === 'blades' ? './images/blade-color.svg' : './images/blade.svg';
+    }
+    const soapIcon = document.getElementById('soap-icon');
+    if (soapIcon) {
+      soapIcon.src = mode === 'soap' ? './images/soap-color.svg' : './images/soap.svg';
     }
     updateModeTitles(mode);
   };
@@ -247,10 +268,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStockSizes();
     updateResults({ force: true });
     updateModeTitles(currentMode);
+    updateWindowAnchor();
   });
 
   elements.inputs.forEach(normalizeInput);
   setMode('blades');
   updateStockSizes();
   updateResults({ force: true });
+
+  updateWindowAnchor();
+  window.addEventListener('resize', updateWindowAnchor);
 });

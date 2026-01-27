@@ -28,8 +28,8 @@
   --padding-standard: 10px;
   --padding-small: 5px;
   --padding-title: 2px 2px 2px 8px;
-  --padding-content-desktop: 15px 10px 10px;
-  --padding-content-mobile: 10px 8px 8px;
+  --padding-content-desktop: 15px 10px 6px;
+  --padding-content-mobile: 10px 8px 6px;
   --padding-results-desktop: 10px 40px;
   --padding-results-mobile: 10px 20px;
   
@@ -75,7 +75,7 @@ body {
   padding: var(--padding-standard);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
 }
 
@@ -143,6 +143,8 @@ body {
   line-height: var(--line-height-loose);
   font-weight: 600;
   word-spacing: -4px;
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
@@ -231,12 +233,13 @@ input, button, textarea, select {
 }
 
 .results {
-  margin-top: 20px;
+  margin-top: 5px;
   background-color: var(--color-light-gray);
   border: var(--border-width) inset var(--color-inset-gray);
   padding: var(--padding-results-desktop);
   text-align: center;
-  min-height: 95px;
+  min-height: 85px;
+  flex-grow: 1;
 }
 
 .result-title {
@@ -282,16 +285,24 @@ input, button, textarea, select {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
 }
 
 .mode-icon {
   image-rendering: pixelated;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 1;
+}
+
+.mode-icon:hover {
+  opacity: 0.4;
 }
 
 .mode-icon.active {
+  opacity: 1;
+}
+
+.mode-icon.active:hover {
   opacity: 1;
 }
 
