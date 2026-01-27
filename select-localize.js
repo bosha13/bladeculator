@@ -3,8 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const languageDropdown = document.getElementById('language-dropdown');
 
   function localizeUI() {
-    document.title = localization.t('app_title');
-
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.dataset.i18n;
       const attr = el.dataset.i18nAttr;
@@ -15,11 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
         el.textContent = translated;
       }
-    });
-
-    document.querySelectorAll('.stock-size').forEach(el => {
-      const size = el.dataset.size || el.textContent.split(' ')[0];
-      el.textContent = `${size} ${localization.t('pieces')} ×`;
     });
 
     document.querySelectorAll('.select-option-icon').forEach(icon => {

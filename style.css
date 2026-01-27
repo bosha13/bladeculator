@@ -279,8 +279,19 @@ input, button, textarea, select {
 
 .header-icon {
   flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mode-icon {
   image-rendering: pixelated;
   cursor: pointer;
+  opacity: 0.6;
+}
+
+.mode-icon.active {
+  opacity: 1;
 }
 
 .header-right {
@@ -378,6 +389,10 @@ input, button, textarea, select {
   align-items: center;
   column-gap: 8px;
   padding-left: 20px;
+}
+
+[data-mode-section="soap"] .stock-item {
+  grid-template-columns: minmax(0, 1fr) auto;
 }
 
 .stock-label {

@@ -2,9 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const elements = {
     form: document.querySelector('form'),
     inputs: Array.from(document.querySelectorAll('input[data-key]')),
-    resultTitle: document.querySelector('.result-title'),
-    result: document.getElementById('result'),
-    bladeIcon: document.getElementById('blade-icon')
+    titleText: document.querySelector('.title-bar > span'),
+    bladeResultTitle: document.querySelector('.results[data-mode-section="blades"] .result-title'),
+    bladeResult: document.getElementById('result'),
+    soapResult: document.getElementById('soap-result'),
+    modeIcons: Array.from(document.querySelectorAll('[data-mode]')),
+    modeSections: Array.from(document.querySelectorAll('[data-mode-section]')),
+    stockSizeElements: Array.from(document.querySelectorAll('.stock-size'))
   };
 
   const stockInputs = elements.inputs.filter(input => input.dataset.multiplier);
@@ -20,6 +24,29 @@ document.addEventListener('DOMContentLoaded', () => {
     return Number.isFinite(min) ? min : 0;
   };
 
+  const getMax = (input) => {
+    const maxAttr = input.dataset.max ?? input.getAttribute('max');
+    if (maxAttr === null || maxAttr === undefined || maxAttr === '') {
+      return Infinity;
+    }
+    const max = parseNumber(maxAttr, Infinity);
+    return Number.isFinite(max) ? max : Infinity;
+  };
+
+  const getStep = (input) => {
+    const stepAttr = input.dataset.step ?? input.getAttribute('step');
+    const step = parseNumber(stepAttr, 1);
+    return step > 0 ? step : 1;
+  };
+
+  const clampToStep = (value, min, step) => {
+    if (!Number.isFinite(step) || step <= 0) return value;
+    const offset = value - min;
+    return Math.round(offset / step) * step + min;
+  };
+
+  const clampValue = (value, min, max) => Math.min(max, Math.max(min, value));
+
   const normalizeInput = (input) => {
     const digitsOnly = input.value.replace(/[^0-9]/g, '');
     if (digitsOnly !== input.value) {
@@ -27,10 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const min = getMin(input);
-    const value = parseNumber(input.value, min);
-    if (input.value === '' || value < min) {
-      input.value = String(min);
+    const max = getMax(input);
+    const step = getStep(input);
+    let value = parseNumber(input.value, min);
+
+    if (input.value === '') {
+      value = min;
     }
+
+    value = clampToStep(value, min, step);
+    value = clampValue(value, min, max);
+
+    input.value = String(value);
   };
 
   const getStateFromInputs = () => {
@@ -41,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return state;
   };
 
-  const calculateTotals = (state) => {
+  const calculateBladeTotals = (state) => {
     const daysPerShave = Math.max(1, state.days || 1);
     const usesPerBlade = Math.max(1, state.uses || 1);
 
@@ -55,18 +90,64 @@ document.addEventListener('DOMContentLoaded', () => {
     return { totalBlades, totalDays };
   };
 
-  const renderResults = ({ totalBlades, totalDays }) => {
+  const calculateSoapTotals = (state) => {
+    const daysPerShave = Math.max(1, state.days || 1);
+    const gramsPerShave = Math.max(1, state.soapGramsPerShave || 1);
+    const jarWeight = Math.max(1, state.soapJarWeight || 0);
+
+    const full = parseNumber(state.soapFull, 0);
+    const rest75 = parseNumber(state.soap75, 0);
+    const rest50 = parseNumber(state.soap50, 0);
+    const rest25 = parseNumber(state.soap25, 0);
+
+    const totalJars = full + rest75 * 0.75 + rest50 * 0.5 + rest25 * 0.25;
+    const totalGrams = jarWeight * totalJars;
+    const shaves = gramsPerShave > 0 ? Math.floor(totalGrams / gramsPerShave) : 0;
+    const totalDays = shaves * daysPerShave;
+
+    return { totalDays, totalGrams };
+  };
+
+  const formatAmount = (value) => {
+    const rounded = Math.round(value);
+    return localization.formatNumber(rounded);
+  };
+
+  const updateStockSizes = () => {
+    elements.stockSizeElements.forEach(el => {
+      const size = parseFloat(el.dataset.size);
+      if (!Number.isFinite(size)) return;
+      const unitKey = el.dataset.unit || 'pieces';
+      el.textContent = `${formatAmount(size)} ${localization.t(unitKey)} ×`;
+    });
+  };
+
+  const renderBladeResults = ({ totalBlades, totalDays }) => {
     if (totalBlades === 0) {
-      elements.resultTitle.innerHTML = localization.t('zero_blades');
+      elements.bladeResultTitle.innerHTML = localization.t('zero_blades');
     } else {
       const pluralBlade = localization.pluralize(totalBlades, 'blade');
-      elements.resultTitle.innerHTML = localization.t('blades_will_last', {
+      elements.bladeResultTitle.innerHTML = localization.t('blades_will_last', {
         count: localization.formatNumber(totalBlades),
         pluralBlade
       });
     }
 
-    elements.result.innerHTML = localization.formatDuration(totalDays);
+    elements.bladeResult.innerHTML = localization.formatDuration(totalDays);
+  };
+
+  const renderSoapResults = ({ totalDays }) => {
+    elements.soapResult.innerHTML = localization.formatDuration(totalDays);
+  };
+
+  const updateModeTitles = (mode) => {
+    const title = mode === 'soap'
+      ? 'Калькулятор запаса мыл'
+      : localization.t('app_title_blades');
+    if (elements.titleText) {
+      elements.titleText.textContent = title;
+    }
+    document.title = title;
   };
 
   let lastSignature = null;
@@ -79,7 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     lastSignature = signature;
-    renderResults(calculateTotals(state));
+    updateStockSizes();
+    renderBladeResults(calculateBladeTotals(state));
+    renderSoapResults(calculateSoapTotals(state));
   };
 
   const handleInput = (event) => {
@@ -95,10 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!input) return;
 
     const min = getMin(input);
+    const max = getMax(input);
+    const step = getStep(input);
     const current = parseNumber(input.value, min);
-    const delta = btn.dataset.action === 'increase' ? 1 : -1;
+    const delta = btn.dataset.action === 'increase' ? step : -step;
 
-    input.value = String(Math.max(min, current + delta));
+    input.value = String(clampValue(current + delta, min, max));
     input.dispatchEvent(new Event('input'));
   });
 
@@ -107,14 +192,32 @@ document.addEventListener('DOMContentLoaded', () => {
     input.addEventListener('focus', () => setTimeout(() => input.select(), 10));
   });
 
-  document.addEventListener('languagechange', () => updateResults({ force: true }));
+  let currentMode = 'blades';
+  const setMode = (mode) => {
+    currentMode = mode;
+    elements.modeSections.forEach(section => {
+      section.hidden = section.dataset.modeSection !== mode;
+    });
+    elements.modeIcons.forEach(icon => {
+      icon.classList.toggle('active', icon.dataset.mode === mode);
+    });
+    const bladeIcon = document.getElementById('blade-icon');
+    if (bladeIcon) {
+      bladeIcon.src = mode === 'blades' ? './images/blade-color.svg' : './images/blade.svg';
+    }
+    updateModeTitles(mode);
+  };
 
-  elements.bladeIcon.addEventListener('click', () => {
-    const isColorMode = elements.bladeIcon.src.includes('color');
-    elements.bladeIcon.src = isColorMode
-      ? './images/blade.svg'
-      : './images/blade-color.svg';
+  elements.modeIcons.forEach(icon => {
+    icon.addEventListener('click', () => setMode(icon.dataset.mode));
   });
 
+  document.addEventListener('languagechange', () => {
+    updateResults({ force: true });
+    updateModeTitles(currentMode);
+  });
+
+  elements.inputs.forEach(normalizeInput);
+  setMode('blades');
   updateResults({ force: true });
 });

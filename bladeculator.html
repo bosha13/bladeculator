@@ -10,7 +10,7 @@
 <body>
   <main class="window">
     <header class="title-bar">
-      <span data-i18n="app_title">Калькулятор запаса лезвий</span>
+      <span data-i18n="app_title_blades">Калькулятор запаса лезвий</span>
       <div class="close-button">
         <img src="./images/close.svg" width="11" height="11" alt="" data-i18n="close" data-i18n-attr="alt">
       </div>
@@ -19,10 +19,8 @@
       <section class="header-container">
         <div class="header-left"></div>
         <div class="header-icon">
-          <img src="./images/blade.svg" alt="Blade" width="86" height="44" class="blade-icon" id="blade-icon">
-        </div>
-        <div style="display: none;">
-          <img src="./images/blade-color.svg" alt="Preload Blade Color">
+          <img src="./images/blade.svg" alt="Blade" width="86" height="44" class="mode-icon active" id="blade-icon" data-mode="blades" data-i18n="blade_icon" data-i18n-attr="alt">
+          <img src="./images/soap.svg" alt="Мыло" width="86" height="44" class="mode-icon" id="soap-icon" data-mode="soap">
         </div>
         <div class="header-right">
           <label for="language-select" class="language-label">
@@ -53,7 +51,8 @@
             </div>
           </div>
         </div>
-        
+      </section>
+      <section data-mode-section="blades">
         <div class="input-group">
           <div class="input-label" data-i18n="blade_usage">Использую 1 лезвие</div>
           <div class="input-control">
@@ -73,12 +72,50 @@
           </div>
         </div>
       </section>
+      <section data-mode-section="soap">
+        <div class="input-group">
+          <div class="input-label">Расход мыла на бритье, г</div>
+          <div class="input-control">
+            <div class="spinner-button"
+              data-action="decrease"
+              data-target="soap-grams-input">
+              <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+            </div>
+            <div class="spinner">
+              <input type="number" inputmode="numeric" min="1" max="3" id="soap-grams-input" value="2" data-key="soapGramsPerShave" data-min="1" data-max="3" data-step="1">
+            </div>
+            <div class="spinner-button"
+              data-action="increase"
+              data-target="soap-grams-input">
+              <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+            </div>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">Средний вес мыла в банке, г</div>
+          <div class="input-control">
+            <div class="spinner-button"
+              data-action="decrease"
+              data-target="soap-jar-weight-input">
+              <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+            </div>
+            <div class="spinner">
+              <input type="number" inputmode="numeric" min="5" id="soap-jar-weight-input" value="120" data-key="soapJarWeight" data-min="5" data-step="5">
+            </div>
+            <div class="spinner-button"
+              data-action="increase"
+              data-target="soap-jar-weight-input">
+              <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+            </div>
+          </div>
+        </div>
+      </section>
       <section>
-        <div class="razor-stock">
+        <div class="razor-stock" data-mode-section="blades">
           <div class="razor-stock-title" data-i18n="total_blades">Всего лезвий:</div>
           <div class="input-group stock-item">
             <div class="stock-label" data-i18n="blocks">Блоки</div>
-            <div class="stock-size" data-size="100">100 шт. ×</div>
+            <div class="stock-size" data-size="100" data-unit="pieces">100 шт. ×</div>
             <div class="input-control-stock">
               <div class="spinner-button" 
                 data-action="decrease" 
@@ -98,7 +135,7 @@
           
           <div class="input-group stock-item">
             <div class="stock-label" data-i18n="packs">Пачки</div>
-            <div class="stock-size" data-size="10">10 шт. ×</div>
+            <div class="stock-size" data-size="10" data-unit="pieces">10 шт. ×</div>
             <div class="input-control-stock">
               <div class="spinner-button" 
                 data-action="decrease" 
@@ -118,7 +155,7 @@
           
           <div class="input-group stock-item">
             <div class="stock-label" data-i18n="packs">Пачки</div>
-            <div class="stock-size" data-size="5">5 шт. ×</div>
+            <div class="stock-size" data-size="5" data-unit="pieces">5 шт. ×</div>
             <div class="input-control-stock">
               <div class="spinner-button" 
                 data-action="decrease" 
@@ -138,7 +175,7 @@
           
           <div class="input-group stock-item">
             <div class="stock-label" data-i18n="individually">Поштучно</div>
-            <div class="stock-size" data-size="1">1 шт. ×</div>
+            <div class="stock-size" data-size="1" data-unit="pieces">1 шт. ×</div>
             <div class="input-control-stock">
               <div class="spinner-button" 
                 data-action="decrease" 
@@ -157,9 +194,90 @@
           </div>
         </div>
       </section>
-      <section class="results">
+      <section data-mode-section="soap">
+        <div class="razor-stock">
+          <div class="razor-stock-title">Количество банок:</div>
+          <div class="input-group stock-item">
+            <div class="stock-label">Полных</div>
+            <div class="input-control-stock">
+              <div class="spinner-button"
+                data-action="decrease"
+                data-target="soap-full-input">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+              </div>
+              <div class="spinner">
+                <input type="number" inputmode="numeric" min="0" id="soap-full-input" value="0" data-key="soapFull" data-min="0">
+              </div>
+              <div class="spinner-button"
+                data-action="increase"
+                data-target="soap-full-input">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+              </div>
+            </div>
+          </div>
+          <div class="input-group stock-item">
+            <div class="stock-label">Остаток &lt;75%</div>
+            <div class="input-control-stock">
+              <div class="spinner-button"
+                data-action="decrease"
+                data-target="soap-75-input">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+              </div>
+              <div class="spinner">
+                <input type="number" inputmode="numeric" min="0" id="soap-75-input" value="0" data-key="soap75" data-min="0">
+              </div>
+              <div class="spinner-button"
+                data-action="increase"
+                data-target="soap-75-input">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+              </div>
+            </div>
+          </div>
+          <div class="input-group stock-item">
+            <div class="stock-label">Остаток &lt;50%</div>
+            <div class="input-control-stock">
+              <div class="spinner-button"
+                data-action="decrease"
+                data-target="soap-50-input">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+              </div>
+              <div class="spinner">
+                <input type="number" inputmode="numeric" min="0" id="soap-50-input" value="0" data-key="soap50" data-min="0">
+              </div>
+              <div class="spinner-button"
+                data-action="increase"
+                data-target="soap-50-input">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+              </div>
+            </div>
+          </div>
+          <div class="input-group stock-item">
+            <div class="stock-label">Остаток &lt;25%</div>
+            <div class="input-control-stock">
+              <div class="spinner-button"
+                data-action="decrease"
+                data-target="soap-25-input">
+                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+              </div>
+              <div class="spinner">
+                <input type="number" inputmode="numeric" min="0" id="soap-25-input" value="0" data-key="soap25" data-min="0">
+              </div>
+              <div class="spinner-button"
+                data-action="increase"
+                data-target="soap-25-input">
+                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="results" data-mode-section="blades">
         <div class="result-title">%Number% лезвий хватит на:</div>
         <div class="result-text" id="result">%Time%</div>
+      </section>
+      <section class="results" data-mode-section="soap">
+        <div class="result-title">Моего мыла хватит на:</div>
+        <div class="result-text" id="soap-result">%Time%</div>
       </section>
     </form>
   </main>
