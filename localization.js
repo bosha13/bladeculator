@@ -1,5 +1,5 @@
 const localization = {
-  defaultLanguage: 'en',
+  defaultLanguage: 'ru',
   languages: {
     'ru': 'Русский',
     'en': 'English',
