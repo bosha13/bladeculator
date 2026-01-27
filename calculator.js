@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     bladeResult: document.getElementById('result'),
     soapResultTitle: document.querySelector('.results[data-mode-section="soap"] .result-title'),
     soapResult: document.getElementById('soap-result'),
-    soapTotal: document.getElementById('soap-total'),
     modeIcons: Array.from(document.querySelectorAll('[data-mode]')),
     modeSections: Array.from(document.querySelectorAll('[data-mode-section]')),
     stockSizeElements: Array.from(document.querySelectorAll('.stock-size'))
@@ -78,6 +77,19 @@ document.addEventListener('DOMContentLoaded', () => {
     return state;
   };
 
+  const constrainSoapUsage = (state) => {
+    const jarWeight = Math.max(1, state.soapJarWeight || 0);
+    const gramsPerShave = Math.max(1, state.soapGramsPerShave || 1);
+    if (gramsPerShave > jarWeight) {
+      const soapInput = elements.inputs.find(input => input.dataset.key === 'soapGramsPerShave');
+      if (soapInput) {
+        soapInput.value = String(jarWeight);
+      }
+      return { ...state, soapGramsPerShave: jarWeight };
+    }
+    return state;
+  };
+
   const calculateBladeTotals = (state) => {
     const daysPerShave = Math.max(1, state.days || 1);
     const usesPerBlade = Math.max(1, state.uses || 1);
@@ -142,12 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const renderSoapResults = ({ totalDays, totalContainers }) => {
     elements.soapResult.innerHTML = localization.formatDuration(totalDays);
 
-    if (elements.soapTotal) {
-      const showTotal = totalContainers >= 1;
-      elements.soapTotal.textContent = showTotal ? localization.formatNumber(totalContainers) : '';
-      elements.soapTotal.classList.toggle('visible', showTotal);
-    }
-
     if (elements.soapResultTitle) {
       const isSingular = totalContainers === 1;
       const key = isSingular
@@ -172,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let lastSignature = null;
   const updateResults = ({ force = false } = {}) => {
-    const state = getStateFromInputs();
+    const state = constrainSoapUsage(getStateFromInputs());
     const signature = JSON.stringify(state);
 
     if (!force && signature === lastSignature) {
@@ -215,6 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentMode = 'blades';
   const setMode = (mode) => {
     currentMode = mode;
+    document.body.dataset.mode = mode;
     elements.modeSections.forEach(section => {
       section.hidden = section.dataset.modeSection !== mode;
     });

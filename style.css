@@ -96,7 +96,8 @@ body {
   padding: var(--padding-title);
   font-size: var(--font-size-title-bar);
   font-weight: 600;
-  line-height: var(--line-height-normal);
+  line-height: calc(var(--font-size-title-bar) + 2px);
+  min-height: calc(var(--font-size-title-bar) + 4px);
   display: flex;
   justify-content: space-between;
   align-items: center;
