@@ -14,7 +14,7 @@ const localization = {
   translations: {
     'ru': {
       'app_title_blades': 'Калькулятор запаса лезвий',
-      'app_title_soap': 'Калькулятор запаса мыл',
+      'app_title_soap': 'Калькулятор запаса мыла для бритья',
       'shave_frequency': 'Частота бритья (дни)',
       'blade_usage': '1 лезвие используется (раз)',
       'total_blades': 'Всего лезвий:',
@@ -30,7 +30,9 @@ const localization = {
       'soap_75': 'Остаток <75%',
       'soap_50': 'Остаток <50%',
       'soap_25': 'Остаток <25%',
-      'soap_will_last': 'Моего мыла хватит на:',
+      'soap_will_last': '{count} {pluralJar} мыла для бритья хватит на:',
+      'soap_will_last_with_count_singular': '{count} {pluralJar} мыла для бритья хватит на:',
+      'soap_will_last_with_count_plural': '{count} {pluralJar} мыла для бритья хватит на:',
       'blade_icon': 'Лезвия',
       'soap_icon': 'Мыло',
       'close': 'Закрыть',
@@ -44,7 +46,8 @@ const localization = {
         'day': ['день', 'дня', 'дней'],
         'month': ['месяц', 'месяца', 'месяцев'],
         'year': ['год', 'года', 'лет'],
-        'blade': ['лезвие', 'лезвия', 'лезвий']
+        'blade': ['лезвие', 'лезвия', 'лезвий'],
+        'jar': ['банка', 'банки', 'банок']
       },
       
       'getPluralForm': function(number, forms) {
@@ -58,7 +61,7 @@ const localization = {
     
     'en': {
       'app_title_blades': 'Razor Blade Stock Calculator',
-      'app_title_soap': 'Soap Stock Calculator',
+      'app_title_soap': 'Shaving Soap Stock Calculator',
       'shave_frequency': 'Shaving frequency (days)',
       'blade_usage': '1 blade lasts',
       'total_blades': 'Blades total:',
@@ -74,7 +77,9 @@ const localization = {
       'soap_75': '<75% left',
       'soap_50': '<50% left',
       'soap_25': '<25% left',
-      'soap_will_last': 'My soap will last for:',
+      'soap_will_last': '{count} {pluralJar} of shaving soap will last for:',
+      'soap_will_last_with_count_singular': '{count} {pluralJar} of shaving soap will last for:',
+      'soap_will_last_with_count_plural': '{count} {pluralJar} of shaving soap will last for:',
       'blade_icon': 'Blades',
       'soap_icon': 'Soap',
       'close': 'Close',
@@ -88,7 +93,8 @@ const localization = {
         'day': ['day', 'days'],
         'month': ['month', 'months'],
         'year': ['year', 'years'],
-        'blade': ['blade', 'blades']
+        'blade': ['blade', 'blades'],
+        'jar': ['jar', 'jars']
       },
       
       'getPluralForm': function(number, forms) {
@@ -98,7 +104,7 @@ const localization = {
     
     'es': {
       'app_title_blades': 'Calculadora de stock de cuchillas',
-      'app_title_soap': 'Calculadora de stock de jabón',
+      'app_title_soap': 'Calculadora de stock de jabón de afeitar',
       'shave_frequency': 'Frecuencia de afeitado (días)',
       'blade_usage': '1 cuchilla dura',
       'total_blades': 'Total cuchillas:',
@@ -114,7 +120,9 @@ const localization = {
       'soap_75': '<75% restante',
       'soap_50': '<50% restante',
       'soap_25': '<25% restante',
-      'soap_will_last': 'Mi jabón durará:',
+      'soap_will_last': '{count} {pluralJar} de jabón de afeitar durará:',
+      'soap_will_last_with_count_singular': '{count} {pluralJar} de jabón de afeitar durará:',
+      'soap_will_last_with_count_plural': '{count} {pluralJar} de jabón de afeitar durarán:',
       'blade_icon': 'Cuchillas',
       'soap_icon': 'Jabón',
       'close': 'Cerrar',
@@ -128,7 +136,8 @@ const localization = {
         'day': ['día', 'días'],
         'month': ['mes', 'meses'],
         'year': ['año', 'años'],
-        'blade': ['cuchilla', 'cuchillas']
+        'blade': ['cuchilla', 'cuchillas'],
+        'jar': ['tarro', 'tarros']
       },
       
       'getPluralForm': function(number, forms) {
@@ -138,7 +147,7 @@ const localization = {
     
     'de': {
       'app_title_blades': 'Rasierklingen-Vorratsrechner',
-      'app_title_soap': 'Seifenvorratsrechner',
+      'app_title_soap': 'Rasierseifenvorratsrechner',
       'shave_frequency': 'Rasierhäufigkeit (Tage)',
       'blade_usage': '1 Klinge hält',
       'total_blades': 'Klingen gesamt:',
@@ -154,7 +163,9 @@ const localization = {
       'soap_75': '<75% Rest',
       'soap_50': '<50% Rest',
       'soap_25': '<25% Rest',
-      'soap_will_last': 'Meine Seife reicht für:',
+      'soap_will_last': '{count} {pluralJar} Rasierseife reicht für:',
+      'soap_will_last_with_count_singular': '{count} {pluralJar} Rasierseife reicht für:',
+      'soap_will_last_with_count_plural': '{count} {pluralJar} Rasierseife reichen für:',
       'blade_icon': 'Klingen',
       'soap_icon': 'Seife',
       
@@ -166,7 +177,8 @@ const localization = {
         'day': ['Tag', 'Tage'],
         'month': ['Monat', 'Monate'],
         'year': ['Jahr', 'Jahre'],
-        'blade': ['Klinge', 'Klingen']
+        'blade': ['Klinge', 'Klingen'],
+        'jar': ['Dose', 'Dosen']
       },
       
       'close': 'Schließen',
@@ -179,7 +191,7 @@ const localization = {
     
     'fr': {
       'app_title_blades': 'Calculateur de stock de lames',
-      'app_title_soap': 'Calculateur de stock de savon',
+      'app_title_soap': 'Calculateur de stock de savon à raser',
       'shave_frequency': 'Fréquence de rasage (jours)',
       'blade_usage': '1 lame dure',
       'total_blades': 'Total des lames :',
@@ -195,7 +207,9 @@ const localization = {
       'soap_75': '<75% restants',
       'soap_50': '<50% restants',
       'soap_25': '<25% restants',
-      'soap_will_last': 'Mon savon durera :',
+      'soap_will_last': '{count} {pluralJar} de savon à raser durera :',
+      'soap_will_last_with_count_singular': '{count} {pluralJar} de savon à raser durera :',
+      'soap_will_last_with_count_plural': '{count} {pluralJar} de savon à raser dureront :',
       'blade_icon': 'Lames',
       'soap_icon': 'Savon',
       
@@ -207,7 +221,8 @@ const localization = {
         'day': ['jour', 'jours'],
         'month': ['mois', 'mois'],
         'year': ['an', 'ans'],
-        'blade': ['lame', 'lames']
+        'blade': ['lame', 'lames'],
+        'jar': ['pot', 'pots']
       },
       
       'close': 'Fermer',
@@ -236,7 +251,9 @@ const localization = {
       'soap_75': '剩余<75%',
       'soap_50': '剩余<50%',
       'soap_25': '剩余<25%',
-      'soap_will_last': '我的剃须皂可用：',
+      'soap_will_last': '{count}{pluralJar}剃须皂可用：',
+      'soap_will_last_with_count_singular': '{count}{pluralJar}剃须皂可用：',
+      'soap_will_last_with_count_plural': '{count}{pluralJar}剃须皂可用：',
       'blade_icon': '刀片',
       'soap_icon': '剃须皂',
       'close': '关闭',
@@ -250,7 +267,8 @@ const localization = {
         'day': ['天'],
         'month': ['个月'],
         'year': ['年'],
-        'blade': ['刀片']
+        'blade': ['刀片'],
+        'jar': ['罐']
       },
       
       'getPluralForm': function(number, forms) {

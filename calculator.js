@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     titleText: document.querySelector('.title-bar > span'),
     bladeResultTitle: document.querySelector('.results[data-mode-section="blades"] .result-title'),
     bladeResult: document.getElementById('result'),
+    soapResultTitle: document.querySelector('.results[data-mode-section="soap"] .result-title'),
     soapResult: document.getElementById('soap-result'),
+    soapTotal: document.getElementById('soap-total'),
     modeIcons: Array.from(document.querySelectorAll('[data-mode]')),
     modeSections: Array.from(document.querySelectorAll('[data-mode-section]')),
     stockSizeElements: Array.from(document.querySelectorAll('.stock-size'))
@@ -101,11 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const rest25 = parseNumber(state.soap25, 0);
 
     const totalJars = full + rest75 * 0.75 + rest50 * 0.5 + rest25 * 0.25;
+    const totalContainers = full + rest75 + rest50 + rest25;
     const totalGrams = jarWeight * totalJars;
     const shaves = gramsPerShave > 0 ? Math.floor(totalGrams / gramsPerShave) : 0;
     const totalDays = shaves * daysPerShave;
 
-    return { totalDays, totalGrams };
+    return { totalDays, totalGrams, totalContainers };
   };
 
   const formatAmount = (value) => {
@@ -136,14 +139,31 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.bladeResult.innerHTML = localization.formatDuration(totalDays);
   };
 
-  const renderSoapResults = ({ totalDays }) => {
+  const renderSoapResults = ({ totalDays, totalContainers }) => {
     elements.soapResult.innerHTML = localization.formatDuration(totalDays);
+
+    if (elements.soapTotal) {
+      const showTotal = totalContainers >= 1;
+      elements.soapTotal.textContent = showTotal ? localization.formatNumber(totalContainers) : '';
+      elements.soapTotal.classList.toggle('visible', showTotal);
+    }
+
+    if (elements.soapResultTitle) {
+      const isSingular = totalContainers === 1;
+      const key = isSingular
+        ? 'soap_will_last_with_count_singular'
+        : 'soap_will_last_with_count_plural';
+      const pluralJar = localization.pluralize(totalContainers, 'jar');
+      elements.soapResultTitle.innerHTML = localization.t(key, {
+        count: localization.formatNumber(totalContainers),
+        pluralJar
+      });
+    }
   };
 
   const updateModeTitles = (mode) => {
-    const title = mode === 'soap'
-      ? 'Калькулятор запаса мыл'
-      : localization.t('app_title_blades');
+    const titleKey = mode === 'soap' ? 'app_title_soap' : 'app_title_blades';
+    const title = localization.t(titleKey);
     if (elements.titleText) {
       elements.titleText.textContent = title;
     }
