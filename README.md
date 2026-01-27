@@ -6,4 +6,4 @@ A quick way to count how many razor blades you have in stock and how long they w
 
 
 ### [Demo ▶](https://htmlpreview.github.io/?https://github.com/bosha13/bladeculator/blob/main/bladeculator.html)
-<img width="600" alt="Bladeculator" src="https://github.com/user-attachments/assets/a01a3f41-9dbb-43f4-bdae-133e83eb3c3e" />
+<img width="800" alt="Bladeculator" src="https://github.com/user-attachments/assets/edf94b2b-b336-4987-a173-ddebbaf2c63b" />
