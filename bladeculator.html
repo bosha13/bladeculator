@@ -10,9 +10,9 @@
 <body>
   <main class="window">
     <header class="title-bar">
-      <span>Калькулятор запаса лезвий</span>
+      <span data-i18n="app_title">Калькулятор запаса лезвий</span>
       <div class="close-button">
-        <img src="./images/close.svg" width="11" height="11">
+        <img src="./images/close.svg" width="11" height="11" alt="" data-i18n="close" data-i18n-attr="alt">
       </div>
     </header>
     <form class="content">
@@ -30,26 +30,13 @@
           </label>
           <div class="select-container">
             <div class="custom-select" id="language-select">Русский</div>
-            <div class="select-dropdown" id="language-dropdown">
-              <div class="select-option selected" data-value="1">
-                Русский
-                <img src="./images/check.svg" class="select-option-icon" width="16" height="16">
-              </div>
-              <div class="select-option" data-value="2">
-                English
-                <img src="./images/check.svg" class="select-option-icon" width="16" height="16">
-              </div>
-              <div class="select-option" data-value="3">
-                Spanish
-                <img src="./images/check.svg" class="select-option-icon" width="16" height="16">
-              </div>
-            </div>
+            <div class="select-dropdown" id="language-dropdown"></div>
           </div>
         </div>
       </section>
       <section>
         <div class="input-group">
-          <div class="input-label">Я бреюсь раз в</div>
+          <div class="input-label" data-i18n="shave_frequency">Я бреюсь раз в</div>
           <div class="input-control">
             <div class="spinner-button" 
               data-action="decrease" 
@@ -57,7 +44,7 @@
               <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
             </div>
             <div class="spinner">
-              <input type="number" inputmode="numeric" inputmode="numeric" min="1" id="days-input" value="1">
+              <input type="number" inputmode="numeric" min="1" id="days-input" value="1" data-key="days" data-min="1">
             </div>
             <div class="spinner-button" 
               data-action="increase" 
@@ -68,7 +55,7 @@
         </div>
         
         <div class="input-group">
-          <div class="input-label">Использую 1 лезвие</div>
+          <div class="input-label" data-i18n="blade_usage">Использую 1 лезвие</div>
           <div class="input-control">
             <div class="spinner-button" 
               data-action="decrease" 
@@ -76,7 +63,7 @@
               <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
             </div>
             <div class="spinner">
-              <input type="number" inputmode="numeric" inputmode="numeric" min="1" id="uses-input" value="1">
+              <input type="number" inputmode="numeric" min="1" id="uses-input" value="1" data-key="uses" data-min="1">
             </div>
             <div class="spinner-button" 
               data-action="increase" 
@@ -88,10 +75,10 @@
       </section>
       <section>
         <div class="razor-stock">
-          <div class="razor-stock-title">Всего лезвий:</div>
+          <div class="razor-stock-title" data-i18n="total_blades">Всего лезвий:</div>
           <div class="input-group stock-item">
-            <div class="stock-label">Блоки</div>
-            <div class="stock-size">100 шт. ×</div>
+            <div class="stock-label" data-i18n="blocks">Блоки</div>
+            <div class="stock-size" data-size="100">100 шт. ×</div>
             <div class="input-control-stock">
               <div class="spinner-button" 
                 data-action="decrease" 
@@ -99,7 +86,7 @@
                 <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
-                <input type="number" inputmode="numeric" inputmode="numeric" min="0" id="pack100-input" value="0">
+                <input type="number" inputmode="numeric" min="0" id="pack100-input" value="0" data-key="pack100" data-min="0" data-multiplier="100">
               </div>
               <div class="spinner-button" 
                 data-action="increase" 
@@ -110,8 +97,8 @@
           </div>
           
           <div class="input-group stock-item">
-            <div class="stock-label">Пачки</div>
-            <div class="stock-size">10 шт. ×</div>
+            <div class="stock-label" data-i18n="packs">Пачки</div>
+            <div class="stock-size" data-size="10">10 шт. ×</div>
             <div class="input-control-stock">
               <div class="spinner-button" 
                 data-action="decrease" 
@@ -119,7 +106,7 @@
                 <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
-                <input type="number" inputmode="numeric" min="0" id="pack10-input" value="0">
+                <input type="number" inputmode="numeric" min="0" id="pack10-input" value="0" data-key="pack10" data-min="0" data-multiplier="10">
               </div>
               <div class="spinner-button" 
                 data-action="increase" 
@@ -130,8 +117,8 @@
           </div>
           
           <div class="input-group stock-item">
-            <div class="stock-label">Пачки</div>
-            <div class="stock-size">5 шт. ×</div>
+            <div class="stock-label" data-i18n="packs">Пачки</div>
+            <div class="stock-size" data-size="5">5 шт. ×</div>
             <div class="input-control-stock">
               <div class="spinner-button" 
                 data-action="decrease" 
@@ -139,7 +126,7 @@
                 <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
-                <input type="number" inputmode="numeric" min="0" id="pack5-input" value="0">
+                <input type="number" inputmode="numeric" min="0" id="pack5-input" value="0" data-key="pack5" data-min="0" data-multiplier="5">
               </div>
               <div class="spinner-button" 
                 data-action="increase" 
@@ -150,8 +137,8 @@
           </div>
           
           <div class="input-group stock-item">
-            <div class="stock-label">Поштучно</div>
-            <div class="stock-size">1 шт. ×</div>
+            <div class="stock-label" data-i18n="individually">Поштучно</div>
+            <div class="stock-size" data-size="1">1 шт. ×</div>
             <div class="input-control-stock">
               <div class="spinner-button" 
                 data-action="decrease" 
@@ -159,7 +146,7 @@
                 <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
               </div>
               <div class="spinner">
-                <input type="number" inputmode="numeric" min="0" id="single-input" value="0">
+                <input type="number" inputmode="numeric" min="0" id="single-input" value="0" data-key="single" data-min="0" data-multiplier="1">
               </div>
               <div class="spinner-button" 
                 data-action="increase" 

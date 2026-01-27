@@ -1,137 +1,120 @@
 document.addEventListener('DOMContentLoaded', () => {
   const elements = {
-    daysInput: document.getElementById('days-input'),
-    usesInput: document.getElementById('uses-input'),
-    pack100Input: document.getElementById('pack100-input'),
-    pack10Input: document.getElementById('pack10-input'),
-    pack5Input: document.getElementById('pack5-input'),
-    singleInput: document.getElementById('single-input'),
-    daysLabel: document.getElementById('days-label'),
-    usesLabel: document.getElementById('uses-label'),
+    form: document.querySelector('form'),
+    inputs: Array.from(document.querySelectorAll('input[data-key]')),
     resultTitle: document.querySelector('.result-title'),
     result: document.getElementById('result'),
-    bladeIcon: document.getElementById('blade-icon'),
-    textInputs: document.querySelectorAll('input[type="text"]')
+    bladeIcon: document.getElementById('blade-icon')
   };
 
-  const inputConfig = [
-    { id: 'days-input', min: 1 },
-    { id: 'uses-input', min: 1 },
-    { id: 'pack100-input', min: 0 },
-    { id: 'pack10-input', min: 0 },
-    { id: 'pack5-input', min: 0 },
-    { id: 'single-input', min: 0 }
-  ];
+  const stockInputs = elements.inputs.filter(input => input.dataset.multiplier);
 
-  const cache = {
-    previousValues: {
-      days: null,
-      uses: null,
-      pack100: null,
-      pack10: null,
-      pack5: null,
-      single: null
-    },
-    result: null,
-    needsUpdate: true
+  const parseNumber = (value, fallback = 0) => {
+    const parsed = parseInt(value, 10);
+    return Number.isFinite(parsed) ? parsed : fallback;
   };
 
-  window.cache = cache;
-
-
-  const handleInput = function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-    const config = inputConfig.find(c => c.id === this.id);
-    if (config && (this.value === '' || parseInt(this.value) < config.min)) {
-      this.value = config.min;
-    }
-    
-    const newValue = parseInt(this.value) || 0;
-    const fieldMap = {
-      'days-input': 'days',
-      'uses-input': 'uses',
-      'pack100-input': 'pack100',
-      'pack10-input': 'pack10',
-      'pack5-input': 'pack5',
-      'single-input': 'single'
-    };
-    
-    const field = fieldMap[this.id];
-    if (field && cache.previousValues[field] !== newValue) {
-      cache.previousValues[field] = newValue;
-      cache.needsUpdate = true;
-    }
-    
-    calculateDuration();
+  const getMin = (input) => {
+    const minAttr = input.dataset.min ?? input.getAttribute('min');
+    const min = parseNumber(minAttr, 0);
+    return Number.isFinite(min) ? min : 0;
   };
 
-
-  const calculateDuration = () => {
-    if (!cache.needsUpdate && cache.result !== null) {
-      return;
+  const normalizeInput = (input) => {
+    const digitsOnly = input.value.replace(/[^0-9]/g, '');
+    if (digitsOnly !== input.value) {
+      input.value = digitsOnly;
     }
-    
-    const daysPerShave = parseInt(elements.daysInput.value) || 1;
-    const usesPerBlade = parseInt(elements.usesInput.value) || 1;
-    
-    const totalBlades = [
-      elements.pack100Input,
-      elements.pack10Input,
-      elements.pack5Input,
-      elements.singleInput
-    ].reduce((acc, el, i) => 
-      acc + (parseInt(el.value) || 0) * [100, 10, 5, 1][i], 0);
 
+    const min = getMin(input);
+    const value = parseNumber(input.value, min);
+    if (input.value === '' || value < min) {
+      input.value = String(min);
+    }
+  };
+
+  const getStateFromInputs = () => {
+    const state = {};
+    elements.inputs.forEach(input => {
+      state[input.dataset.key] = parseNumber(input.value, 0);
+    });
+    return state;
+  };
+
+  const calculateTotals = (state) => {
+    const daysPerShave = Math.max(1, state.days || 1);
+    const usesPerBlade = Math.max(1, state.uses || 1);
+
+    const totalBlades = stockInputs.reduce((acc, input) => {
+      const multiplier = parseNumber(input.dataset.multiplier, 0);
+      const value = parseNumber(state[input.dataset.key], 0);
+      return acc + value * multiplier;
+    }, 0);
+
+    const totalDays = totalBlades * usesPerBlade * daysPerShave;
+    return { totalBlades, totalDays };
+  };
+
+  const renderResults = ({ totalBlades, totalDays }) => {
     if (totalBlades === 0) {
       elements.resultTitle.innerHTML = localization.t('zero_blades');
     } else {
       const pluralBlade = localization.pluralize(totalBlades, 'blade');
       elements.resultTitle.innerHTML = localization.t('blades_will_last', {
         count: localization.formatNumber(totalBlades),
-        pluralBlade: pluralBlade
+        pluralBlade
       });
     }
 
-    const totalDays = totalBlades * usesPerBlade * daysPerShave;
-    const resultHTML = localization.formatDuration(totalDays);
-    
-    elements.result.innerHTML = resultHTML;
-    cache.result = resultHTML;
-    cache.needsUpdate = false;
+    elements.result.innerHTML = localization.formatDuration(totalDays);
   };
 
-  document.querySelector('form').addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-action]');
-    if (!btn) return;
+  let lastSignature = null;
+  const updateResults = ({ force = false } = {}) => {
+    const state = getStateFromInputs();
+    const signature = JSON.stringify(state);
 
-    const action = btn.dataset.action;
-    const targetId = btn.dataset.target;
-    const input = document.getElementById(targetId);
-    const config = inputConfig.find(c => c.id === targetId);
-
-    if (action === 'increase') {
-      input.value = Math.max(config?.min || 0, parseInt(input.value || 0) + 1);
-    } else if (action === 'decrease') {
-      input.value = Math.max(config?.min || 0, parseInt(input.value || 0) - 1);
+    if (!force && signature === lastSignature) {
+      return;
     }
 
+    lastSignature = signature;
+    renderResults(calculateTotals(state));
+  };
+
+  const handleInput = (event) => {
+    normalizeInput(event.target);
+    updateResults();
+  };
+
+  elements.form.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-action]');
+    if (!btn) return;
+
+    const input = document.getElementById(btn.dataset.target);
+    if (!input) return;
+
+    const min = getMin(input);
+    const current = parseNumber(input.value, min);
+    const delta = btn.dataset.action === 'increase' ? 1 : -1;
+
+    input.value = String(Math.max(min, current + delta));
     input.dispatchEvent(new Event('input'));
-    cache.needsUpdate = true;
   });
 
-  inputConfig.forEach(({ id }) => {
-    const input = document.getElementById(id);
+  elements.inputs.forEach(input => {
     input.addEventListener('input', handleInput);
     input.addEventListener('focus', () => setTimeout(() => input.select(), 10));
   });
 
+  document.addEventListener('languagechange', () => updateResults({ force: true }));
+
   elements.bladeIcon.addEventListener('click', () => {
     const isColorMode = elements.bladeIcon.src.includes('color');
-    elements.bladeIcon.src = isColorMode 
-      ? './images/blade.svg' 
+    elements.bladeIcon.src = isColorMode
+      ? './images/blade.svg'
       : './images/blade-color.svg';
   });
-  
-  window.calculateDuration = calculateDuration;
-  calculateDuration();
+
+  updateResults({ force: true });
 });

@@ -19,6 +19,8 @@ const localization = {
       'packs': 'Пачки',
       'individually': 'Поштучно',
       'pieces': 'шт.',
+      'close': 'Закрыть',
+      'selected': 'Выбрано',
       
       'blades_will_last': '{count} {pluralBlade} хватит на:',
       'zero_blades': '0 лезвий хватит на:',
@@ -49,6 +51,8 @@ const localization = {
       'packs': 'Packs',
       'individually': 'Single',
       'pieces': 'pcs',
+      'close': 'Close',
+      'selected': 'Selected',
       
       'blades_will_last': '{count} {pluralBlade} will last for:',
       'zero_blades': '0 blades will last for:',
@@ -75,6 +79,8 @@ const localization = {
       'packs': 'Paquetes',
       'individually': 'Sueltas',
       'pieces': 'unid',
+      'close': 'Cerrar',
+      'selected': 'Seleccionado',
       
       'blades_will_last': '{count} {pluralBlade} durarán:',
       'zero_blades': '0 cuchillas durarán:',
@@ -101,6 +107,8 @@ const localization = {
       'packs': '包装',
       'individually': '单个',
       'pieces': '片',
+      'close': '关闭',
+      'selected': '已选择',
       
       'blades_will_last': '{count}个{pluralBlade}可使用：',
       'zero_blades': '0个刀片可使用：',
