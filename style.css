@@ -96,10 +96,26 @@ body {
   padding: var(--padding-title);
   font-size: var(--font-size-title-bar);
   font-weight: 600;
+  line-height: var(--line-height-normal);
   display: flex;
   justify-content: space-between;
   align-items: center;
   word-spacing: -2px;
+}
+
+.title-bar > span,
+.input-label,
+.razor-stock-title,
+.result-title,
+.custom-select {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title-bar > span,
+.input-label {
+  min-width: 0;
 }
 
 .spinner-button,
@@ -357,29 +373,33 @@ input, button, textarea, select {
 }
 
 .stock-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: 8px;
   padding-left: 20px;
 }
 
 .stock-label {
-  width: 210px;
   text-align: left;
+  min-width: 0;
 }
 
 .stock-size {
-  width: 120px;
   text-align: right;
+  white-space: nowrap;
 }
 
 /* =============  Mobile  ============= */
 @media (max-width: 530px) {
   body {
-    padding: 0px 6px;
+    padding: 0;
     min-height: 90vh;
   }
   
   .window {
     width: 100%;
+    max-width: 440px;
     margin: 0 auto;
   }
   
@@ -395,6 +415,17 @@ input, button, textarea, select {
   
   .custom-select {
     font-size: var(--font-size-content-mobile);
+  }
+
+  .input-label {
+    display: flex;
+    align-items: center;
+    white-space: normal;
+    text-overflow: clip;
+    overflow: hidden;
+    line-height: 1.15;
+    min-height: calc(2 * 1.15em);
+    max-height: calc(2 * 1.15em);
   }
 
   .spinner-button {
@@ -414,12 +445,12 @@ input, button, textarea, select {
   }
   
   .stock-item {
-    justify-content: space-between;
+    column-gap: 6px;
     padding-left: 15px;
   }
   
   .stock-label {
-    width: 120px;
+    min-width: 0;
   }
   
   .stock-size {
