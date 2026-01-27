@@ -4,10 +4,12 @@ const localization = {
     'ru': 'Русский',
     'en': 'English',
     'es': 'Español',
+    'de': 'Deutsch',
+    'fr': 'Français',
     'zh': '中文'
   },
   
-  languageOrder: ['ru', 'en', 'es', 'zh'],
+  languageOrder: ['ru', 'en', 'es', 'de', 'fr', 'zh'],
   
   translations: {
     'ru': {
@@ -92,6 +94,64 @@ const localization = {
         'year': ['año', 'años'],
         'blade': ['cuchilla', 'cuchillas']
       },
+      
+      'getPluralForm': function(number, forms) {
+        return number === 1 ? forms[0] : forms[1];
+      }
+    },
+    
+    'de': {
+      'app_title': 'Rasierklingen-Vorratsrechner',
+      'shave_frequency': 'Rasierhäufigkeit (Tage)',
+      'blade_usage': '1 Klinge hält',
+      'total_blades': 'Klingen gesamt:',
+      'blocks': 'Blöcke',
+      'packs': 'Packungen',
+      'individually': 'Einzeln',
+      'pieces': 'Stk.',
+      
+      'blades_will_last': '{count} {pluralBlade} reichen für:',
+      'zero_blades': '0 Klingen reichen für:',
+      'zero_days': '0 Tage',
+      
+      'plurals': {
+        'day': ['Tag', 'Tage'],
+        'month': ['Monat', 'Monate'],
+        'year': ['Jahr', 'Jahre'],
+        'blade': ['Klinge', 'Klingen']
+      },
+      
+      'close': 'Schließen',
+      'selected': 'Ausgewählt',
+      
+      'getPluralForm': function(number, forms) {
+        return number === 1 ? forms[0] : forms[1];
+      }
+    },
+    
+    'fr': {
+      'app_title': 'Calculateur de stock de lames',
+      'shave_frequency': 'Fréquence de rasage (jours)',
+      'blade_usage': '1 lame dure',
+      'total_blades': 'Total des lames :',
+      'blocks': 'Boîtes',
+      'packs': 'Paquets',
+      'individually': 'À l’unité',
+      'pieces': 'pièces',
+      
+      'blades_will_last': '{count} {pluralBlade} dureront :',
+      'zero_blades': '0 lames dureront :',
+      'zero_days': '0 jours',
+      
+      'plurals': {
+        'day': ['jour', 'jours'],
+        'month': ['mois', 'mois'],
+        'year': ['an', 'ans'],
+        'blade': ['lame', 'lames']
+      },
+      
+      'close': 'Fermer',
+      'selected': 'Sélectionné',
       
       'getPluralForm': function(number, forms) {
         return number === 1 ? forms[0] : forms[1];
