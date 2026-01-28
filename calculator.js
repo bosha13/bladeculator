@@ -201,11 +201,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (input.dataset.allowEmptyOnInput === 'true') {
-      const digitsOnly = input.value.replace(/[^0-9]/g, '');
-      if (digitsOnly !== input.value) {
-        input.value = digitsOnly;
+      if (event.isTrusted) {
+        const digitsOnly = input.value.replace(/[^0-9]/g, '');
+        if (digitsOnly !== input.value) {
+          input.value = digitsOnly;
+        }
+        return;
       }
-      return;
+      normalizeInput(input);
     } else {
       normalizeInput(input);
     }
