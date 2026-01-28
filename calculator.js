@@ -79,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
       value = min;
     }
 
-    value = clampToStep(value, min, step);
+    if (input.dataset.stepClamp !== 'false') {
+      value = clampToStep(value, min, step);
+    }
     value = clampValue(value, min, max);
 
     input.value = String(value);
@@ -194,8 +196,20 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const handleInput = (event) => {
-    normalizeInput(event.target);
-    const key = event.target.dataset.key;
+    const input = event.target;
+    if (input.dataset.allowEmptyOnInput === 'true' && input.value === '') {
+      return;
+    }
+    if (input.dataset.allowEmptyOnInput === 'true') {
+      const digitsOnly = input.value.replace(/[^0-9]/g, '');
+      if (digitsOnly !== input.value) {
+        input.value = digitsOnly;
+      }
+      return;
+    } else {
+      normalizeInput(input);
+    }
+    const key = input.dataset.key;
     if (key && maxFromMap.has(key)) {
       maxFromMap.get(key).forEach(normalizeInput);
     }
@@ -222,6 +236,21 @@ document.addEventListener('DOMContentLoaded', () => {
   elements.inputs.forEach(input => {
     input.addEventListener('input', handleInput);
     input.addEventListener('focus', () => setTimeout(() => input.select(), 10));
+    if (input.dataset.allowEmptyOnInput === 'true') {
+      input.addEventListener('blur', () => {
+        if (input.value === '') return;
+        normalizeInput(input);
+        updateResults();
+      });
+      input.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        if (input.value === '') return;
+        normalizeInput(input);
+        updateResults();
+        input.blur();
+      });
+    }
   });
 
   let currentMode = 'blades';
@@ -231,15 +260,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const getViewportMetrics = () => {
+    if (window.visualViewport) {
+      return {
+        height: window.visualViewport.height,
+        offsetTop: window.visualViewport.offsetTop
+      };
+    }
+    return { height: window.innerHeight, offsetTop: 0 };
+  };
+
   const updateWindowAnchor = () => {
     if (!elements.window) return;
     const bodyStyles = getComputedStyle(document.body);
     const paddingTop = parseFloat(bodyStyles.paddingTop) || 0;
     const paddingBottom = parseFloat(bodyStyles.paddingBottom) || 0;
-    const availableHeight = window.innerHeight - paddingTop - paddingBottom;
+    const viewport = getViewportMetrics();
+    const availableHeight = viewport.height - paddingTop - paddingBottom;
     const windowHeight = elements.window.offsetHeight;
     const offset = Math.max((availableHeight - windowHeight) / 2, 0);
-    elements.window.style.marginTop = `${offset}px`;
+    elements.window.style.marginTop = `${offset + viewport.offsetTop}px`;
   };
 
   const setMode = (mode) => {
@@ -277,5 +317,9 @@ document.addEventListener('DOMContentLoaded', () => {
   updateResults({ force: true });
 
   updateWindowAnchor();
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateWindowAnchor);
+    window.visualViewport.addEventListener('scroll', updateWindowAnchor);
+  }
   window.addEventListener('resize', updateWindowAnchor);
 });

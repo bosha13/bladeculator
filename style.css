@@ -165,7 +165,7 @@ input, button, textarea, select {
 }
 
 .input-group {
-  margin-bottom: var(--padding-standard);
+  margin-bottom: var(--padding-small);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -330,6 +330,7 @@ input, button, textarea, select {
   font-family: var(--font-family);
   font-size: var(--font-size-content-desktop);
   font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -443,6 +444,7 @@ input, button, textarea, select {
   
   .custom-select {
     font-size: var(--font-size-content-mobile);
+    line-height: 1.2;
   }
 
   .input-label {
@@ -457,7 +459,9 @@ input, button, textarea, select {
   }
 
   .result-title {
-    line-height: 115%;
+    line-height: 120%;
+    white-space: normal;
+    text-overflow: clip;
   }
 
   .spinner-button {
@@ -496,5 +500,17 @@ input, button, textarea, select {
   
   .result-text {
     font-size: var(--font-size-results-mobile);
+  }
+
+  .header-container {
+    justify-content: flex-start;
+  }
+
+  .header-left {
+    display: none;
+  }
+
+  .header-icon {
+    margin-right: auto;
   }
 }
