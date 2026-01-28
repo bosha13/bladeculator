@@ -186,6 +186,7 @@ input, button, textarea, select {
   width: var(--button-size-desktop);
   height: var(--button-size-desktop);
   cursor: pointer;
+  position: relative;
   outline: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -197,6 +198,13 @@ input, button, textarea, select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+.spinner-button::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  background: transparent;
 }
 
 .spinner-button:active {
