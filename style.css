@@ -275,7 +275,7 @@ input, button, textarea, select {
 .header-container {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 11px;
 }
 
 .header-left {
@@ -296,7 +296,7 @@ input, button, textarea, select {
 }
 
 .mode-icon:hover {
-  opacity: 0.4;
+  opacity: 0.65;
 }
 
 .mode-icon.active {
@@ -490,7 +490,7 @@ input, button, textarea, select {
   }
   
   .stock-size {
-    padding-right: 12px;
+    padding-right: 4px;
   }
   
   .results {
