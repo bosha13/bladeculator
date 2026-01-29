@@ -184,15 +184,9 @@ input, button, textarea, select {
   gap: 8px;
 }
 
-.blade-section .input-group:last-of-type {
-  margin-bottom: 0;
-}
-
+.section-shave-frequency .input-group,
+.blade-section .input-group:last-of-type,
 [data-mode-section="soap"] .input-group:last-of-type {
-  margin-bottom: 0;
-}
-
-.section-shave-frequency .input-group {
   margin-bottom: 0;
 }
 
@@ -262,7 +256,6 @@ input, button, textarea, select {
 }
 
 .results {
-  margin-top: 0;
   background-color: var(--color-light-gray);
   border: var(--border-width) inset var(--color-inset-gray);
   padding: var(--padding-results-desktop);
@@ -289,16 +282,8 @@ input, button, textarea, select {
   color: var(--color-result-text);
 }
 
-.razor-stock {
-  margin-bottom: 0;
-}
-
 .stock-group + .stock-group {
   margin-top: 10px;
-}
-
-.blade-section {
-  margin-top: 0;
 }
 
 .razor-stock-title {
@@ -312,7 +297,6 @@ input, button, textarea, select {
 .header-container {
   display: flex;
   align-items: center;
-  margin-bottom: 0;
 }
 
 .header-left {
