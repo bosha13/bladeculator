@@ -32,7 +32,7 @@
           </div>
         </div>
       </section>
-      <section>
+      <section class="section-shave-frequency">
         <div class="input-group">
           <div class="input-label" data-i18n="shave_frequency">Я бреюсь раз в</div>
           <div class="input-control">
@@ -47,26 +47,6 @@
             <div class="spinner-button" 
               data-action="increase" 
               data-target="days-input">
-              <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-            </div>
-          </div>
-        </div>
-      </section>
-      <section data-mode-section="blades">
-        <div class="input-group">
-          <div class="input-label" data-i18n="blade_usage">Использую 1 лезвие</div>
-          <div class="input-control">
-            <div class="spinner-button" 
-              data-action="decrease" 
-              data-target="uses-input">
-              <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-            </div>
-            <div class="spinner">
-              <input type="number" inputmode="numeric" min="1" id="uses-input" value="1" data-key="uses" data-min="1">
-            </div>
-            <div class="spinner-button" 
-              data-action="increase" 
-              data-target="uses-input">
               <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
             </div>
           </div>
@@ -110,85 +90,188 @@
           </div>
         </div>
       </section>
-      <section>
-        <div class="razor-stock" data-mode-section="blades">
-          <div class="razor-stock-title" data-i18n="total_blades">Всего лезвий:</div>
-          <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="blocks">Блоки</div>
-            <div class="stock-size" data-size="100" data-unit="pieces">100 шт. ×</div>
-            <div class="input-control-stock">
-              <div class="spinner-button" 
-                data-action="decrease" 
-                data-target="pack100-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+      <section data-mode-section="blades" class="blade-section">
+        <div class="razor-stock">
+          <div class="stock-group">
+            <div class="input-group">
+              <div class="input-label" data-i18n="de_blade_usage">DE лезвие используется раз</div>
+              <div class="input-control">
+                <div class="spinner-button" 
+                  data-action="decrease" 
+                  data-target="de-uses-input">
+                  <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+                </div>
+                <div class="spinner">
+                  <input type="number" inputmode="numeric" min="1" id="de-uses-input" value="1" data-key="deUses" data-min="1">
+                </div>
+                <div class="spinner-button" 
+                  data-action="increase" 
+                  data-target="de-uses-input">
+                  <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+                </div>
               </div>
-              <div class="spinner">
-                <input type="number" inputmode="numeric" min="0" id="pack100-input" value="0" data-key="pack100" data-min="0" data-multiplier="100">
+            </div>
+            <div class="input-group stock-item">
+              <div class="stock-label" data-i18n="blocks">Блоки</div>
+              <div class="stock-size" data-size="100" data-unit="pieces">100 шт. ×</div>
+              <div class="input-control-stock">
+                <div class="spinner-button" 
+                  data-action="decrease" 
+                  data-target="pack100-input">
+                  <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+                </div>
+                <div class="spinner">
+                  <input type="number" inputmode="numeric" min="0" id="pack100-input" value="0" data-key="pack100" data-min="0" data-multiplier="100" data-blade-type="de">
+                </div>
+                <div class="spinner-button" 
+                  data-action="increase" 
+                  data-target="pack100-input">
+                  <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+                </div>
               </div>
-              <div class="spinner-button" 
-                data-action="increase" 
-                data-target="pack100-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+            </div>
+            
+            <div class="input-group stock-item">
+              <div class="stock-label" data-i18n="packs">Пачки</div>
+              <div class="stock-size" data-size="10" data-unit="pieces">10 шт. ×</div>
+              <div class="input-control-stock">
+                <div class="spinner-button" 
+                  data-action="decrease" 
+                  data-target="pack10-input">
+                  <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+                </div>
+                <div class="spinner">
+                  <input type="number" inputmode="numeric" min="0" id="pack10-input" value="0" data-key="pack10" data-min="0" data-multiplier="10" data-blade-type="de">
+                </div>
+                <div class="spinner-button" 
+                  data-action="increase" 
+                  data-target="pack10-input">
+                  <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+                </div>
+              </div>
+            </div>
+            
+            <div class="input-group stock-item">
+              <div class="stock-label" data-i18n="packs">Пачки</div>
+              <div class="stock-size" data-size="5" data-unit="pieces">5 шт. ×</div>
+              <div class="input-control-stock">
+                <div class="spinner-button" 
+                  data-action="decrease" 
+                  data-target="pack5-input">
+                  <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+                </div>
+                <div class="spinner">
+                  <input type="number" inputmode="numeric" min="0" id="pack5-input" value="0" data-key="pack5" data-min="0" data-multiplier="5" data-blade-type="de">
+                </div>
+                <div class="spinner-button" 
+                  data-action="increase" 
+                  data-target="pack5-input">
+                  <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+                </div>
+              </div>
+            </div>
+            
+            <div class="input-group stock-item">
+              <div class="stock-label" data-i18n="individually">Поштучно</div>
+              <div class="stock-size" data-size="1" data-unit="pieces">1 шт. ×</div>
+              <div class="input-control-stock">
+                <div class="spinner-button" 
+                  data-action="decrease" 
+                  data-target="single-input">
+                  <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+                </div>
+                <div class="spinner">
+                  <input type="number" inputmode="numeric" min="0" id="single-input" value="0" data-key="single" data-min="0" data-multiplier="1" data-blade-type="de">
+                </div>
+                <div class="spinner-button" 
+                  data-action="increase" 
+                  data-target="single-input">
+                  <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+                </div>
               </div>
             </div>
           </div>
-          
-          <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="packs">Пачки</div>
-            <div class="stock-size" data-size="10" data-unit="pieces">10 шт. ×</div>
-            <div class="input-control-stock">
-              <div class="spinner-button" 
-                data-action="decrease" 
-                data-target="pack10-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-              </div>
-              <div class="spinner">
-                <input type="number" inputmode="numeric" min="0" id="pack10-input" value="0" data-key="pack10" data-min="0" data-multiplier="10">
-              </div>
-              <div class="spinner-button" 
-                data-action="increase" 
-                data-target="pack10-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-              </div>
-            </div>
-          </div>
-          
-          <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="packs">Пачки</div>
-            <div class="stock-size" data-size="5" data-unit="pieces">5 шт. ×</div>
-            <div class="input-control-stock">
-              <div class="spinner-button" 
-                data-action="decrease" 
-                data-target="pack5-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-              </div>
-              <div class="spinner">
-                <input type="number" inputmode="numeric" min="0" id="pack5-input" value="0" data-key="pack5" data-min="0" data-multiplier="5">
-              </div>
-              <div class="spinner-button" 
-                data-action="increase" 
-                data-target="pack5-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+        </div>
+      </section>
+      <section data-mode-section="blades" class="blade-section">
+        <div class="razor-stock">
+          <div class="stock-group">
+            <div class="input-group">
+              <div class="input-label" data-i18n="se_blade_usage">SE лезвия используются раз</div>
+              <div class="input-control">
+                <div class="spinner-button" 
+                  data-action="decrease" 
+                  data-target="se-uses-input">
+                  <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+                </div>
+                <div class="spinner">
+                  <input type="number" inputmode="numeric" min="1" id="se-uses-input" value="1" data-key="seUses" data-min="1">
+                </div>
+                <div class="spinner-button" 
+                  data-action="increase" 
+                  data-target="se-uses-input">
+                  <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+                </div>
               </div>
             </div>
-          </div>
-          
-          <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="individually">Поштучно</div>
-            <div class="stock-size" data-size="1" data-unit="pieces">1 шт. ×</div>
-            <div class="input-control-stock">
-              <div class="spinner-button" 
-                data-action="decrease" 
-                data-target="single-input">
-                <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+
+            <div class="input-group stock-item">
+              <div class="stock-label" data-i18n="packs">Пачки</div>
+              <div class="stock-size" data-size="30" data-unit="pieces">30 шт. ×</div>
+              <div class="input-control-stock">
+                <div class="spinner-button" 
+                  data-action="decrease" 
+                  data-target="packse30-input">
+                  <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+                </div>
+                <div class="spinner">
+                  <input type="number" inputmode="numeric" min="0" id="packse30-input" value="0" data-key="packse30" data-min="0" data-multiplier="30" data-blade-type="se">
+                </div>
+                <div class="spinner-button" 
+                  data-action="increase" 
+                  data-target="packse30-input">
+                  <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+                </div>
               </div>
-              <div class="spinner">
-                <input type="number" inputmode="numeric" min="0" id="single-input" value="0" data-key="single" data-min="0" data-multiplier="1">
+            </div>
+
+            <div class="input-group stock-item">
+              <div class="stock-label" data-i18n="packs">Пачки</div>
+              <div class="stock-size" data-size="20" data-unit="pieces">20 шт. ×</div>
+              <div class="input-control-stock">
+                <div class="spinner-button" 
+                  data-action="decrease" 
+                  data-target="packse20-input">
+                  <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+                </div>
+                <div class="spinner">
+                  <input type="number" inputmode="numeric" min="0" id="packse20-input" value="0" data-key="packse20" data-min="0" data-multiplier="20" data-blade-type="se">
+                </div>
+                <div class="spinner-button" 
+                  data-action="increase" 
+                  data-target="packse20-input">
+                  <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+                </div>
               </div>
-              <div class="spinner-button" 
-                data-action="increase" 
-                data-target="single-input">
-                <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+            </div>
+
+            <div class="input-group stock-item">
+              <div class="stock-label" data-i18n="packs">Пачки</div>
+              <div class="stock-size" data-size="10" data-unit="pieces">10 шт. ×</div>
+              <div class="input-control-stock">
+                <div class="spinner-button" 
+                  data-action="decrease" 
+                  data-target="packse10-input">
+                  <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
+                </div>
+                <div class="spinner">
+                  <input type="number" inputmode="numeric" min="0" id="packse10-input" value="0" data-key="packse10" data-min="0" data-multiplier="10" data-blade-type="se">
+                </div>
+                <div class="spinner-button" 
+                  data-action="increase" 
+                  data-target="packse10-input">
+                  <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
+                </div>
               </div>
             </div>
           </div>

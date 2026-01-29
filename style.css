@@ -147,6 +147,10 @@ body {
   flex-direction: column;
 }
 
+.content > section + section {
+  margin-top: 15px;
+}
+
 h1 {
   font-size: var(--font-size-h1);
   font-weight: 600;
@@ -173,6 +177,10 @@ input, button, textarea, select {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+.section-shave-frequency .input-group {
+  margin-bottom: 0;
 }
 
 .input-control,
@@ -241,7 +249,7 @@ input, button, textarea, select {
 }
 
 .results {
-  margin-top: 5px;
+  margin-top: 0;
   background-color: var(--color-light-gray);
   border: var(--border-width) inset var(--color-inset-gray);
   padding: var(--padding-results-desktop);
@@ -269,11 +277,19 @@ input, button, textarea, select {
 }
 
 .razor-stock {
-  margin-bottom: 15px;
+  margin-bottom: 0;
+}
+
+.stock-group + .stock-group {
+  margin-top: 10px;
+}
+
+.blade-section {
+  margin-top: 0;
 }
 
 .razor-stock-title {
-  margin: 15px 0 var(--padding-small);
+  margin: 0 0 var(--padding-small);
   height: 30px;
   user-select: none;
   display: flex;
@@ -283,7 +299,7 @@ input, button, textarea, select {
 .header-container {
   display: flex;
   align-items: center;
-  margin-bottom: 11px;
+  margin-bottom: 0;
 }
 
 .header-left {

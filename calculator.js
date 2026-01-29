@@ -97,16 +97,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const calculateBladeTotals = (state) => {
     const daysPerShave = Math.max(1, state.days || 1);
-    const usesPerBlade = Math.max(1, state.uses || 1);
+    const deUses = Math.max(1, state.deUses || 1);
+    const seUses = Math.max(1, state.seUses || 1);
 
-    const totalBlades = stockInputs.reduce((acc, input) => {
+    const totals = stockInputs.reduce((acc, input) => {
       const multiplier = parseNumber(input.dataset.multiplier, 0);
       const value = parseNumber(state[input.dataset.key], 0);
-      return acc + value * multiplier;
-    }, 0);
+      const blades = value * multiplier;
+      const bladeType = input.dataset.bladeType || 'de';
+      const usesPerBlade = bladeType === 'se' ? seUses : deUses;
 
-    const totalDays = totalBlades * usesPerBlade * daysPerShave;
-    return { totalBlades, totalDays };
+      acc.totalBlades += blades;
+      acc.totalDays += blades * usesPerBlade * daysPerShave;
+      return acc;
+    }, { totalBlades: 0, totalDays: 0 });
+
+    return totals;
   };
 
   const calculateSoapTotals = (state) => {
