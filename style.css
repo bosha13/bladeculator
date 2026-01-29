@@ -179,6 +179,19 @@ input, button, textarea, select {
   -ms-user-select: none;
 }
 
+.input-group.inline-input {
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.blade-section .input-group:last-of-type {
+  margin-bottom: 0;
+}
+
+[data-mode-section="soap"] .input-group:last-of-type {
+  margin-bottom: 0;
+}
+
 .section-shave-frequency .input-group {
   margin-bottom: 0;
 }
