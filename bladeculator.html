@@ -4,7 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
-    html, body { background-color: #008080; }
+    html, body {
+      background-color: #008080;
+    }
+    .pwa-splash {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #008080;
+      color: #ffffff;
+      font-family: "IBM Plex Mono", monospace;
+      z-index: 9999;
+      transition: opacity 160ms ease-out;
+    }
+    .pwa-splash__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .pwa-splash__title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
   </style>
   <title>Bladeculator</title>
   <meta name="theme-color" content="#008080">
@@ -21,6 +46,12 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="pwa-splash" id="pwa-splash" aria-hidden="true">
+    <div class="pwa-splash__content">
+      <img src="./images/blade-color.svg" width="86" height="48" alt="">
+      <div class="pwa-splash__title">Bladeculator</div>
+    </div>
+  </div>
   <main class="window">
     <header class="title-bar">
       <span data-i18n="app_title_blades">Калькулятор запаса лезвий</span>
@@ -380,6 +411,23 @@
   <script src="localization.js"></script>
   <script src="calculator.js"></script>
   <script src="select-localize.js"></script>
+  <script>
+    (() => {
+      const splash = document.getElementById('pwa-splash');
+      if (!splash) return;
+      const hide = () => {
+        splash.style.opacity = '0';
+        splash.style.pointerEvents = 'none';
+        setTimeout(() => splash.remove(), 200);
+      };
+      if (document.readyState === 'complete') {
+        hide();
+        return;
+      }
+      window.addEventListener('load', hide, { once: true });
+      setTimeout(hide, 1500);
+    })();
+  </script>
   <script src="pwa.js"></script>
 </body>
 </html>
