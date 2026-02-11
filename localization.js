@@ -1,15 +1,25 @@
 const localization = {
-  defaultLanguage: 'ru',
+  defaultLanguage: 'en',
   languages: {
     'ru': 'Русский',
     'en': 'English',
     'es': 'Español',
     'de': 'Deutsch',
     'fr': 'Français',
-    'zh': '中文'
+    'zh': '中文',
+    'ko': '한국어'
+  },
+
+  localeAliases: {
+    'pt-br': 'pt',
+    'pt-pt': 'pt',
+    'iw': 'he',
+    'ji': 'yi',
+    'in': 'id',
+    'no': 'nb'
   },
   
-  languageOrder: ['ru', 'en', 'es', 'de', 'fr', 'zh'],
+  languageOrder: ['ru', 'en', 'es', 'de', 'fr', 'zh', 'ko'],
   
   translations: {
     'ru': {
@@ -280,17 +290,82 @@ const localization = {
       'getPluralForm': function(number, forms) {
         return forms[0];
       }
+    },
+
+    'ko': {
+      'app_title_blades': '면도날 재고 계산기',
+      'app_title_soap': '면도 비누 재고 계산기',
+      'shave_frequency': '면도 간격(일)',
+      'de_blade_usage': '양날 면도날(DE) 사용 가능 횟수(회)',
+      'se_blade_usage': '단날 면도날(SE) 사용 가능 횟수(회)',
+      'blocks': '박스',
+      'packs': '묶음',
+      'se_containers': '디스펜서',
+      'individually': '낱개',
+      'pieces': '개',
+      'grams': 'g',
+      'soap_usage': '1회 면도 시 사용량(g)',
+      'soap_jar_weight': '비누 평균 무게(g)',
+      'soap_stock_title': '총 비누 용기 수:',
+      'soap_full': '거의 가득 참',
+      'soap_75': '<75% 남음',
+      'soap_50': '<50% 남음',
+      'soap_25': '<25% 남음',
+      'soap_will_last': '{count}{pluralJar} 비누로 사용 가능한 기간:',
+      'soap_will_last_with_count_singular': '{count}{pluralJar} 비누로 사용 가능한 기간:',
+      'soap_will_last_with_count_plural': '{count}{pluralJar} 비누로 사용 가능한 기간:',
+      'blade_icon': '면도날',
+      'soap_icon': '비누',
+      'close': '닫기',
+      'selected': '선택됨',
+      'blades_will_last': '{count}{pluralBlade} 면도날로 사용 가능한 기간:',
+      'zero_blades': '0개 면도날로 사용 가능한 기간:',
+      'zero_days': '0일',
+      'plurals': {
+        'day': ['일'],
+        'month': ['개월'],
+        'year': ['년'],
+        'blade': ['개'],
+        'jar': ['개']
+      },
+      'getPluralForm': function(number, forms) {
+        return forms[0];
+      }
     }
   },
   
   // Language detection
   detectBrowserLanguage: function() {
-    const browserLang = navigator.language.split('-')[0];
-    return this.translations[browserLang] ? browserLang : this.defaultLanguage;
+    if (typeof navigator === 'undefined') {
+      return this.defaultLanguage;
+    }
+
+    const languages = Array.isArray(navigator.languages) && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language || navigator.userLanguage || ''];
+
+    for (const lang of languages) {
+      if (!lang) continue;
+      const normalized = String(lang).toLowerCase();
+      if (this.translations[normalized]) return normalized;
+      const alias = this.localeAliases[normalized];
+      if (alias && this.translations[alias]) return alias;
+      const base = normalized.split('-')[0];
+      if (this.translations[base]) return base;
+      const baseAlias = this.localeAliases[base];
+      if (baseAlias && this.translations[baseAlias]) return baseAlias;
+    }
+
+    return this.defaultLanguage;
   },
   
   getCurrentLanguage: function() {
-    return localStorage.getItem('selectedLanguage') || this.detectBrowserLanguage();
+    const stored = localStorage.getItem('selectedLanguage');
+    if (stored) return stored;
+
+    const detected = this.detectBrowserLanguage();
+    localStorage.setItem('selectedLanguage', detected);
+    return detected;
   },
   
   setCurrentLanguage: function(langCode) {

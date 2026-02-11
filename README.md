@@ -1,9 +1,59 @@
-## Калькулятор запаса лезвий
-Быстрый способ посчитать, сколько у вас в запасе лезвий для бритья и на сколько их хватит.
+# Bladeculator
 
-## Razor Blade Stock Calculator
-A quick way to count how many razor blades you have in stock and how long they will last.
+Калькулятор запаса лезвий и мыла для бритья. Одностраничное приложение без сборки и зависимостей.
+Razor blade and shaving soap stock calculator. Single-page app with no build step or dependencies.
 
+**Demo**
+[Demo ▶](https://htmlpreview.github.io/?https://github.com/bosha13/bladeculator/blob/main/bladeculator.html)
 
-### [Demo ▶](https://htmlpreview.github.io/?https://github.com/bosha13/bladeculator/blob/main/bladeculator.html)
 <img width="800" alt="Bladeculator" src="https://github.com/user-attachments/assets/c0fbdf8a-b449-4215-89e9-6032f9df3a47" />
+
+**Features**
+- Two modes: blades and soap
+- Separate DE and SE blade usage settings
+- Packs, blocks, and individual blades with multipliers
+- Soap stock weighting by remaining percentage
+- Localization with plural rules
+- Offline cache via Service Worker (PWA)
+
+**How It Works**
+- Inputs are normalized via `data-*` rules in HTML
+- Blades: DE and SE totals are calculated separately, then summed in days
+- Soap: `totalJars = full + 0.75*rest75 + 0.5*rest50 + 0.25*rest25`
+- Durations are formatted via `localization.formatDuration()`
+
+**Run Locally**
+- Basic usage: open `bladeculator.html` in a browser
+- For PWA features: run a local server and open the page via `http://localhost`
+
+Example:
+```bash
+python3 -m http.server
+```
+Open `http://localhost:8000/bladeculator.html`.
+
+**Project Structure**
+- `bladeculator.html` HTML layout and `data-*` configs
+- `style.css` styles and responsive rules
+- `calculator.js` input normalization, calculations, and rendering
+- `localization.js` languages, pluralization, formatting, detection
+- `select-localize.js` language selector and UI localization
+- `pwa.js` Service Worker registration and update reload
+- `sw.js` cache strategy and offline support
+- `manifest.webmanifest` PWA manifest
+- `images/` icons and assets
+
+**Localization Notes**
+- Keys live in `localization.js` under `translations`
+- Language selection is stored in `localStorage`
+- Initial language is auto-detected from device preferences, fallback to English
+- Language changes dispatch a `languagechange` event for recalculation
+- Available languages: ru, en, es, de, fr, zh, ko
+- Locale aliases (e.g. `pt-br` -> `pt`) are supported via `localeAliases`. On first load, the detected language is saved to `localStorage` so it becomes the default until the user changes it.
+
+**Add a Language**
+- Add to `languages`, `languageOrder`, and `translations`
+- Provide plural rules via `getPluralForm`
+
+**Known Constraints**
+- No automated tests
