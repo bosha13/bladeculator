@@ -11,7 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     soapResult: document.getElementById('soap-result'),
     modeIcons: Array.from(document.querySelectorAll('[data-mode]')),
     modeSections: Array.from(document.querySelectorAll('[data-mode-section]')),
-    stockSizeElements: Array.from(document.querySelectorAll('.stock-size'))
+    stockSizeElements: Array.from(document.querySelectorAll('.stock-size')),
+    aboutButton: document.querySelector('.about-button'),
+    aboutOverlay: document.getElementById('about-overlay'),
+    aboutWindow: document.querySelector('.about-window'),
+    aboutClose: document.querySelector('.about-close')
   };
 
   const stockInputs = elements.inputs.filter(input => input.dataset.multiplier);
@@ -178,6 +182,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const openAbout = () => {
+    if (!elements.aboutOverlay) return;
+    elements.aboutOverlay.classList.add('is-open');
+  };
+
+  const closeAbout = () => {
+    if (!elements.aboutOverlay) return;
+    elements.aboutOverlay.classList.remove('is-open');
+  };
+
   const updateModeTitles = (mode) => {
     const titleKey = mode === 'soap' ? 'app_title_soap' : 'app_title_blades';
     const title = localization.t(titleKey);
@@ -241,6 +255,20 @@ document.addEventListener('DOMContentLoaded', () => {
     input.value = String(clampValue(current + delta, min, max));
     input.dispatchEvent(new Event('input'));
   });
+
+  if (elements.aboutButton) {
+    elements.aboutButton.addEventListener('click', openAbout);
+  }
+  if (elements.aboutClose) {
+    elements.aboutClose.addEventListener('click', closeAbout);
+  }
+  if (elements.aboutOverlay) {
+    elements.aboutOverlay.addEventListener('click', (event) => {
+      if (event.target === elements.aboutOverlay) {
+        closeAbout();
+      }
+    });
+  }
 
   elements.inputs.forEach(input => {
     input.addEventListener('input', handleInput);

@@ -120,6 +120,7 @@ body {
 }
 
 .spinner-button,
+.about-button,
 .close-button {
   background-color: var(--color-gray);
   border-top: var(--border-width) solid var(--color-white);
@@ -131,10 +132,72 @@ body {
   align-items: center;
 }
 
+.about-button {
+  width: 14px;
+  height: 14px;
+  image-rendering: pixelated;
+  cursor: pointer;
+}
+
+.about-button img {
+  width: 12px;
+  height: 12px;
+  padding-bottom: 2px;
+}
+
 .close-button {
   width: 14px;
   height: 14px;
   image-rendering: pixelated;
+  cursor: pointer;
+}
+
+.about-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.about-overlay.is-open {
+  display: flex;
+}
+
+.about-window {
+  background-color: var(--color-gray);
+  border: var(--window-border) solid;
+  border-color: var(--color-white) var(--color-dark-gray) var(--color-dark-gray) var(--color-white);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  width: 300px;
+  padding: 2px;
+}
+
+.about-content {
+  padding-top: 15px;
+  padding-right: 16px;
+  padding-bottom: 24px;
+  padding-left: 16px;
+  font-size: var(--font-size-content-desktop);
+  line-height: var(--line-height-loose);
+  font-weight: 600;
+  word-spacing: -4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.about-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.about-names,
+.about-description {
+  white-space: pre-line;
 }
 
 .content {

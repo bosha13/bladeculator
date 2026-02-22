@@ -21,8 +21,8 @@
   <main class="window">
     <header class="title-bar">
       <span data-i18n="app_title_blades">Калькулятор запаса лезвий</span>
-      <div class="close-button">
-        <img src="./images/close.svg" width="11" height="11" alt="" data-i18n="close" data-i18n-attr="alt">
+      <div class="about-button">
+        <img src="./images/question.svg" width="14" height="14" alt="about" data-i18n="about" data-i18n-attr="alt">
       </div>
     </header>
     <form class="content">
@@ -374,6 +374,23 @@
       </section>
     </form>
   </main>
+  <div class="about-overlay" id="about-overlay">
+    <div class="about-window" role="dialog" aria-modal="true" aria-labelledby="about-title">
+      <header class="title-bar">
+        <span id="about-title" data-i18n="about_title">О калькуляторе</span>
+        <div class="close-button about-close">
+          <img src="./images/close.svg" width="11" height="11" alt="Закрыть" data-i18n="close" data-i18n-attr="alt">
+        </div>
+      </header>
+      <div class="about-content">
+        <img src="./images/icon-about.png" width="64" height="64" alt="" class="about-icon" aria-hidden="true">
+        <div class="about-names" data-i18n="about_names">Калькулятор запаса лезвий
+Калькулятор запаса мыла для бритья</div>
+        <div class="about-description" data-i18n="about_description">Узнайте на сколько хватит ваших лезвий и мыла.
+Александр Бохан, 2026</div>
+      </div>
+    </div>
+  </div>
   <script src="localization.js"></script>
   <script src="calculator.js"></script>
   <script src="select-localize.js"></script>

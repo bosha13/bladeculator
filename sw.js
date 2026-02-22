@@ -13,7 +13,7 @@ const ASSETS = [
   './images/soap.svg',
   './images/soap-color.svg',
   './images/check.svg',
-  './images/close.svg',
+  './images/question.svg',
   './images/language.svg',
   './images/left-arrow.svg',
   './images/right-arrow.svg',
