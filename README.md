@@ -13,5 +13,6 @@ Razor blade and shaving soap stock calculator. Single-page app with no build ste
 - Separate DE and SE blade usage settings
 - Packs, blocks, and individual blades with multipliers
 - Soap stock weighting by remaining percentage
-- Localization with plural rules
-- Offline cache via Service Worker (PWA)
+
+**Credits**
+Haptic feedback powered by *web-haptics*: https://github.com/lochie/web-haptics
