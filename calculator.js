@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const haptics = window.appHaptics;
   const elements = {
     form: document.querySelector('form'),
     content: document.querySelector('.content'),
@@ -67,6 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const clampValue = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const triggerHaptic = (pattern) => {
+    const handler = haptics && haptics[pattern];
+    if (typeof handler === 'function') {
+      handler();
+    }
+  };
 
   const normalizeInput = (input) => {
     const digitsOnly = input.value.replace(/[^0-9]/g, '');
@@ -246,6 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById(btn.dataset.target);
     if (!input) return;
 
+    triggerHaptic('selection');
+
     const min = getMin(input);
     const max = getMax(input);
     const step = getStep(input);
@@ -257,7 +267,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (elements.aboutButton) {
-    elements.aboutButton.addEventListener('click', openAbout);
+    elements.aboutButton.addEventListener('click', () => {
+      triggerHaptic('selection');
+      openAbout();
+    });
   }
   if (elements.aboutClose) {
     elements.aboutClose.addEventListener('click', closeAbout);
@@ -290,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  let currentMode = 'blades';
+  let currentMode = null;
   const applyModeVisibility = (mode) => {
     elements.modeSections.forEach(section => {
       section.hidden = section.dataset.modeSection !== mode;
@@ -320,6 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const setMode = (mode) => {
+    if (mode === currentMode) {
+      return false;
+    }
     currentMode = mode;
     document.body.dataset.mode = mode;
     applyModeVisibility(mode);
@@ -335,10 +351,15 @@ document.addEventListener('DOMContentLoaded', () => {
       soapIcon.src = mode === 'soap' ? './images/soap-color.svg' : './images/soap.svg';
     }
     updateModeTitles(mode);
+    return true;
   };
 
   elements.modeIcons.forEach(icon => {
-    icon.addEventListener('click', () => setMode(icon.dataset.mode));
+    icon.addEventListener('click', () => {
+      if (setMode(icon.dataset.mode)) {
+        triggerHaptic('soft');
+      }
+    });
   });
 
   document.addEventListener('languagechange', () => {

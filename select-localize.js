@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+  const haptics = window.appHaptics;
   const languageSelect = document.getElementById('language-select');
   const languageDropdown = document.getElementById('language-dropdown');
 
@@ -41,6 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
       `;
 
       optionElement.addEventListener('click', function() {
+        if (haptics && typeof haptics.selection === 'function') {
+          haptics.selection();
+        }
         localization.setCurrentLanguage(langCode);
         languageSelect.textContent = langName;
 

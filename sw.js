@@ -1,8 +1,9 @@
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `bladeculator-${CACHE_VERSION}`;
 const ASSETS = [
   './bladeculator.html',
   './style.css',
+  './haptics.js',
   './calculator.js',
   './localization.js',
   './select-localize.js',
@@ -27,6 +28,7 @@ const ASSETS = [
 const CORE_ASSETS = [
   './bladeculator.html',
   './style.css',
+  './haptics.js',
   './calculator.js',
   './localization.js',
   './select-localize.js',
