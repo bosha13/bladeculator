@@ -254,15 +254,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById(btn.dataset.target);
     if (!input) return;
 
-    triggerHaptic('selection');
-
     const min = getMin(input);
     const max = getMax(input);
     const step = getStep(input);
     const current = parseNumber(input.value, min);
     const delta = btn.dataset.action === 'increase' ? step : -step;
+    const nextValue = clampValue(current + delta, min, max);
 
-    input.value = String(clampValue(current + delta, min, max));
+    if (btn.dataset.action === 'decrease' && nextValue === current) {
+      return;
+    }
+
+    triggerHaptic('selection');
+
+    input.value = String(nextValue);
     input.dispatchEvent(new Event('input'));
   });
 
