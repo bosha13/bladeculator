@@ -1,4 +1,5 @@
 const localization = {
+  memoryLanguage: null,
   defaultLanguage: 'en',
   languages: {
     'ru': 'Русский',
@@ -38,9 +39,9 @@ const localization = {
       'soap_jar_weight': 'Ср. вес мыла в банках, г',
       'soap_stock_title': 'Количество банок:',
       'soap_full': 'Практически полных',
-      'soap_75': 'Остаток <75%',
-      'soap_50': 'Остаток <50%',
-      'soap_25': 'Остаток <25%',
+      'soap_75': 'Остаток ≈75%',
+      'soap_50': 'Остаток ≈50%',
+      'soap_25': 'Остаток ≈25%',
       'soap_will_last': '{count} {pluralJar} мыла хватит на:',
       'soap_will_last_with_count_singular': '{count} {pluralJar} мыла хватит на:',
       'soap_will_last_with_count_plural': '{count} {pluralJar} мыла хватит на:',
@@ -52,6 +53,10 @@ const localization = {
       'about_description': 'Узнайте на сколько хватит ваших лезвий и мыла.\nАлександр Бохан, 2026',
       'close': 'Закрыть',
       'selected': 'Выбрано',
+      'language': 'Язык',
+      'increase': 'Увеличить',
+      'decrease': 'Уменьшить',
+      'reset': 'Сбросить значения',
       
       'blades_will_last': '{count} {pluralBlade} хватит на:',
       'zero_blades': '0 лезвий хватит на:',
@@ -90,9 +95,9 @@ const localization = {
       'soap_jar_weight': 'Average soap weight (g)',
       'soap_stock_title': 'Jars total:',
       'soap_full': 'Almost full',
-      'soap_75': '<75% left',
-      'soap_50': '<50% left',
-      'soap_25': '<25% left',
+      'soap_75': '≈75% left',
+      'soap_50': '≈50% left',
+      'soap_25': '≈25% left',
       'soap_will_last': '{count} {pluralJar} will last for:',
       'soap_will_last_with_count_singular': '{count} {pluralJar} will last for:',
       'soap_will_last_with_count_plural': '{count} {pluralJar} will last for:',
@@ -104,6 +109,10 @@ const localization = {
       'about_description': 'Find out how long your blades and soap will last.\nAlexander Bokhan, 2026',
       'close': 'Close',
       'selected': 'Selected',
+      'language': 'Language',
+      'increase': 'Increase',
+      'decrease': 'Decrease',
+      'reset': 'Reset values',
       
       'blades_will_last': '{count} {pluralBlade} will last for:',
       'zero_blades': '0 blades will last for:',
@@ -138,9 +147,9 @@ const localization = {
       'soap_jar_weight': 'Peso medio del jabón (g)',
       'soap_stock_title': 'Tarros totales:',
       'soap_full': 'Casi llenos',
-      'soap_75': '<75% restante',
-      'soap_50': '<50% restante',
-      'soap_25': '<25% restante',
+      'soap_75': '≈75% restante',
+      'soap_50': '≈50% restante',
+      'soap_25': '≈25% restante',
       'soap_will_last': '{count} {pluralJar} de jabón durará:',
       'soap_will_last_with_count_singular': '{count} {pluralJar} de jabón durará:',
       'soap_will_last_with_count_plural': '{count} {pluralJar} de jabón durarán:',
@@ -152,6 +161,10 @@ const localization = {
       'about_description': 'Descubre cuánto te durarán tus cuchillas y tu jabón.\nAlexander Bokhan, 2026',
       'close': 'Cerrar',
       'selected': 'Seleccionado',
+      'language': 'Idioma',
+      'increase': 'Aumentar',
+      'decrease': 'Disminuir',
+      'reset': 'Restablecer valores',
       
       'blades_will_last': '{count} {pluralBlade} durarán:',
       'zero_blades': '0 cuchillas durarán:',
@@ -186,9 +199,9 @@ const localization = {
       'soap_jar_weight': 'Seifengewicht (g)',
       'soap_stock_title': 'Dosen gesamt:',
       'soap_full': 'Fast voll',
-      'soap_75': '<75% Rest',
-      'soap_50': '<50% Rest',
-      'soap_25': '<25% Rest',
+      'soap_75': '≈75% Rest',
+      'soap_50': '≈50% Rest',
+      'soap_25': '≈25% Rest',
       'soap_will_last': '{count} {pluralJar} Seife reicht für:',
       'soap_will_last_with_count_singular': '{count} {pluralJar} Seife reicht für:',
       'soap_will_last_with_count_plural': '{count} {pluralJar} Seife reichen für:',
@@ -213,6 +226,10 @@ const localization = {
       
       'close': 'Schließen',
       'selected': 'Ausgewählt',
+      'language': 'Sprache',
+      'increase': 'Erhöhen',
+      'decrease': 'Verringern',
+      'reset': 'Werte zurücksetzen',
       
       'getPluralForm': function(number, forms) {
         return number === 1 ? forms[0] : forms[1];
@@ -235,9 +252,9 @@ const localization = {
       'soap_jar_weight': 'Poids moyen du savon (g)',
       'soap_stock_title': 'Pots au total :',
       'soap_full': 'Presque pleins',
-      'soap_75': '<75% restants',
-      'soap_50': '<50% restants',
-      'soap_25': '<25% restants',
+      'soap_75': '≈75% restants',
+      'soap_50': '≈50% restants',
+      'soap_25': '≈25% restants',
       'soap_will_last': '{count} {pluralJar} de savon durera :',
       'soap_will_last_with_count_singular': '{count} {pluralJar} de savon durera :',
       'soap_will_last_with_count_plural': '{count} {pluralJar} de savon dureront :',
@@ -262,6 +279,10 @@ const localization = {
       
       'close': 'Fermer',
       'selected': 'Sélectionné',
+      'language': 'Langue',
+      'increase': 'Augmenter',
+      'decrease': 'Diminuer',
+      'reset': 'Réinitialiser',
       
       'getPluralForm': function(number, forms) {
         return number === 1 ? forms[0] : forms[1];
@@ -284,9 +305,9 @@ const localization = {
       'soap_jar_weight': '每罐剃须皂平均重量（克）',
       'soap_stock_title': '罐装数量：',
       'soap_full': '几乎满',
-      'soap_75': '剩余<75%',
-      'soap_50': '剩余<50%',
-      'soap_25': '剩余<25%',
+      'soap_75': '剩余≈75%',
+      'soap_50': '剩余≈50%',
+      'soap_25': '剩余≈25%',
       'soap_will_last': '{count}{pluralJar}剃须皂可用：',
       'soap_will_last_with_count_singular': '{count}{pluralJar}剃须皂可用：',
       'soap_will_last_with_count_plural': '{count}{pluralJar}剃须皂可用：',
@@ -298,6 +319,10 @@ const localization = {
       'about_description': '了解您的刀片和剃须皂能用多久。\nAlexander Bokhan, 2026',
       'close': '关闭',
       'selected': '已选择',
+      'language': '语言',
+      'increase': '增加',
+      'decrease': '减少',
+      'reset': '重置数值',
       
       'blades_will_last': '{count}个{pluralBlade}可使用：',
       'zero_blades': '0个刀片可使用：',
@@ -332,9 +357,9 @@ const localization = {
       'soap_jar_weight': '비누 평균 무게(g)',
       'soap_stock_title': '총 비누 용기 수:',
       'soap_full': '거의 가득 참',
-      'soap_75': '<75% 남음',
-      'soap_50': '<50% 남음',
-      'soap_25': '<25% 남음',
+      'soap_75': '≈75% 남음',
+      'soap_50': '≈50% 남음',
+      'soap_25': '≈25% 남음',
       'soap_will_last': '{count}{pluralJar} 비누로 사용 가능한 기간:',
       'soap_will_last_with_count_singular': '{count}{pluralJar} 비누로 사용 가능한 기간:',
       'soap_will_last_with_count_plural': '{count}{pluralJar} 비누로 사용 가능한 기간:',
@@ -346,6 +371,10 @@ const localization = {
       'about_description': '면도날과 면도 비누가 얼마나 오래가는지 확인하세요.\nAlexander Bokhan, 2026',
       'close': '닫기',
       'selected': '선택됨',
+      'language': '언어',
+      'increase': '늘리기',
+      'decrease': '줄이기',
+      'reset': '값 초기화',
       'blades_will_last': '{count}{pluralBlade} 면도날로 사용 가능한 기간:',
       'zero_blades': '0개 면도날로 사용 가능한 기간:',
       'zero_days': '0일',
@@ -388,17 +417,38 @@ const localization = {
   },
   
   getCurrentLanguage: function() {
-    const stored = localStorage.getItem('selectedLanguage');
-    if (stored) return stored;
+    if (this.memoryLanguage && this.translations[this.memoryLanguage]) {
+      return this.memoryLanguage;
+    }
+
+    try {
+      const stored = localStorage.getItem('selectedLanguage');
+      if (stored && this.translations[stored]) {
+        this.memoryLanguage = stored;
+        return stored;
+      }
+    } catch (error) {
+      // Fall back to an in-memory value when storage is unavailable.
+    }
 
     const detected = this.detectBrowserLanguage();
-    localStorage.setItem('selectedLanguage', detected);
+    this.memoryLanguage = detected;
+    try {
+      localStorage.setItem('selectedLanguage', detected);
+    } catch (error) {
+      // Language still works for the current document.
+    }
     return detected;
   },
   
   setCurrentLanguage: function(langCode) {
     if (this.translations[langCode]) {
-      localStorage.setItem('selectedLanguage', langCode);
+      this.memoryLanguage = langCode;
+      try {
+        localStorage.setItem('selectedLanguage', langCode);
+      } catch (error) {
+        // Language still works for the current document.
+      }
       return true;
     }
     return false;
@@ -460,9 +510,7 @@ const localization = {
   formatDuration: function(days) {
     if (days <= 0) return this.t('zero_days');
     
-    const years = Math.floor(days / 365);
-    const months = Math.floor((days % 365) / 30);
-    const remainingDays = days % 30;
+    const { years, months, remainingDays } = globalThis.bladeculatorCore.splitDuration(days);
     
     const parts = [];
     const NARROW_NO_BREAK_SPACE = '\u202F';
@@ -485,3 +533,7 @@ const localization = {
     return parts.join(' ');
   }
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = localization;
+}

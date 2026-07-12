@@ -1,9 +1,10 @@
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = `bladeculator-${CACHE_VERSION}`;
 const ASSETS = [
   './bladeculator.html',
   './style.css',
   './haptics.js',
+  './core.js',
   './calculator.js',
   './localization.js',
   './select-localize.js',
@@ -14,10 +15,13 @@ const ASSETS = [
   './images/soap.svg',
   './images/soap-color.svg',
   './images/check.svg',
+  './images/close.svg',
   './images/question.svg',
+  './images/reset.svg',
   './images/language.svg',
   './images/left-arrow.svg',
   './images/right-arrow.svg',
+  './images/icon-about.png',
   './images/favicon/favicon.ico',
   './images/favicon/icon.svg',
   './images/favicon/icon-192.png',
@@ -29,6 +33,7 @@ const CORE_ASSETS = [
   './bladeculator.html',
   './style.css',
   './haptics.js',
+  './core.js',
   './calculator.js',
   './localization.js',
   './select-localize.js',
@@ -143,14 +148,16 @@ self.addEventListener('fetch', (event) => {
 
   if (!isSameOrigin) return;
 
+  const updatePromise = fetch(request).then(async (response) => {
+    if (response && response.ok) {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  });
+
+  event.waitUntil(updatePromise.then(() => undefined).catch(() => undefined));
   event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
-      return fetch(request).then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-        return response;
-      });
-    })
+    caches.match(request).then((cached) => cached || updatePromise)
   );
 });

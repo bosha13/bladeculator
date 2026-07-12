@@ -2,9 +2,10 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bladeculator</title>
   <meta name="theme-color" content="#008080">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="icon" href="./images/favicon/favicon.ico" sizes="any">
@@ -21,24 +22,35 @@
   <main class="window">
     <header class="title-bar">
       <span data-i18n="app_title_blades">Калькулятор запаса лезвий</span>
-      <div class="about-button">
-        <img src="./images/question.svg" width="14" height="14" alt="about" data-i18n="about" data-i18n-attr="alt">
+      <div class="title-actions">
+        <button type="button" class="reset-button" hidden>
+          <img src="./images/reset.svg" width="12" height="12" alt="Сбросить значения" data-i18n="reset" data-i18n-attr="alt">
+        </button>
+        <button type="button" class="about-button">
+          <img src="./images/question.svg" width="14" height="14" alt="about" data-i18n="about" data-i18n-attr="alt">
+        </button>
       </div>
     </header>
     <form class="content">
       <section class="header-container">
         <div class="header-left"></div>
         <div class="header-icon">
-          <img src="./images/blade.svg" alt="Blade" width="86" height="48" class="mode-icon active" id="blade-icon" data-mode="blades" data-i18n="blade_icon" data-i18n-attr="alt">
-          <img src="./images/soap.svg" alt="Мыло" width="86" height="48" class="mode-icon" id="soap-icon" data-mode="soap" data-i18n="soap_icon" data-i18n-attr="alt">
+          <button type="button" class="mode-button active" data-mode="blades" aria-pressed="true">
+            <img src="./images/blade.svg" alt="Blade" width="86" height="48" id="blade-icon" data-i18n="blade_icon" data-i18n-attr="alt">
+          </button>
+          <button type="button" class="mode-button" data-mode="soap" aria-pressed="false">
+            <img src="./images/soap.svg" alt="Мыло" width="86" height="48" id="soap-icon" data-i18n="soap_icon" data-i18n-attr="alt">
+          </button>
         </div>
         <div class="header-right">
-          <label for="language-select" class="language-label">
-            <img src="./images/language.svg" width="16" height="16">
-          </label>
+          <span class="language-label">
+            <img src="./images/language.svg" width="16" height="16" alt="" aria-hidden="true">
+          </span>
           <div class="select-container">
-            <div class="custom-select" id="language-select">Русский</div>
-            <div class="select-dropdown" id="language-dropdown"></div>
+            <button type="button" class="custom-select" id="language-select" aria-haspopup="listbox" aria-expanded="false" aria-controls="language-dropdown" data-i18n="language" data-i18n-attr="aria-label">
+              <span id="language-select-label">Русский</span>
+            </button>
+            <div class="select-dropdown" id="language-dropdown" role="listbox" data-i18n="language" data-i18n-attr="aria-label"></div>
           </div>
         </div>
       </section>
@@ -309,7 +321,7 @@
             </div>
           </div>
           <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="soap_75">Остаток &lt;75%</div>
+            <div class="stock-label" data-i18n="soap_75">Остаток ≈75%</div>
             <div class="input-control-stock">
               <div class="spinner-button"
                 data-action="decrease"
@@ -327,7 +339,7 @@
             </div>
           </div>
           <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="soap_50">Остаток &lt;50%</div>
+            <div class="stock-label" data-i18n="soap_50">Остаток ≈50%</div>
             <div class="input-control-stock">
               <div class="spinner-button"
                 data-action="decrease"
@@ -345,7 +357,7 @@
             </div>
           </div>
           <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="soap_25">Остаток &lt;25%</div>
+            <div class="stock-label" data-i18n="soap_25">Остаток ≈25%</div>
             <div class="input-control-stock">
               <div class="spinner-button"
                 data-action="decrease"
@@ -374,13 +386,13 @@
       </section>
     </form>
   </main>
-  <div class="about-overlay" id="about-overlay">
+  <div class="about-overlay" id="about-overlay" aria-hidden="true">
     <div class="about-window" role="dialog" aria-modal="true" aria-labelledby="about-title">
       <header class="title-bar">
         <span id="about-title" data-i18n="about_title">О калькуляторе</span>
-        <div class="close-button about-close">
+        <button type="button" class="close-button about-close">
           <img src="./images/close.svg" width="11" height="11" alt="Закрыть" data-i18n="close" data-i18n-attr="alt">
-        </div>
+        </button>
       </header>
       <div class="about-content">
         <img src="./images/icon-about.png" width="64" height="64" alt="" class="about-icon" aria-hidden="true">
@@ -391,6 +403,7 @@
       </div>
     </div>
   </div>
+  <script src="core.js"></script>
   <script src="localization.js"></script>
   <script src="haptics.js"></script>
   <script src="calculator.js"></script>
