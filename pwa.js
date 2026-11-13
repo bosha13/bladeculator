@@ -1,6 +1,8 @@
 (() => {
   if (!('serviceWorker' in navigator)) return;
   let hasRefreshed = false;
+  // On the first visit the page gets its first controller via clients.claim(); that is not an update.
+  const hadController = Boolean(navigator.serviceWorker.controller);
 
   const triggerReload = () => {
     if (hasRefreshed) return;
@@ -17,7 +19,9 @@
     });
   });
 
-  navigator.serviceWorker.addEventListener('controllerchange', triggerReload);
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (hadController) triggerReload();
+  });
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'CACHE_UPDATED') {
       triggerReload();

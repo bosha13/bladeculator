@@ -61,35 +61,43 @@ const notifyClients = async () => {
   clients.forEach((client) => client.postMessage({ type: 'CACHE_UPDATED' }));
 };
 
-const cacheFirstWithRevalidate = async (request) => {
-  const cache = await caches.open(CACHE_NAME);
-  const cached = await cache.match(request);
-
-  const updatePromise = (async () => {
+// Core assets are revalidated as one set: either all of them are replaced or none,
+// so a reload never mixes old and new files and clients are notified only once.
+let revalidation = null;
+const revalidateCoreAssets = () => {
+  if (revalidation) return revalidation;
+  revalidation = (async () => {
     try {
-      const response = await fetch(request);
-      if (!response || !response.ok) return;
-      let shouldNotify = false;
-      if (cached) {
-        const [cachedBuffer, networkBuffer] = await Promise.all([
-          cached.clone().arrayBuffer(),
-          response.clone().arrayBuffer()
-        ]);
-        shouldNotify = !areBuffersEqual(cachedBuffer, networkBuffer);
-      } else {
-        shouldNotify = true;
+      const cache = await caches.open(CACHE_NAME);
+      const fresh = await Promise.all(CORE_ASSETS.map(async (asset) => {
+        const response = await fetch(asset, { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`${asset}: HTTP ${response.status}`);
+        return [asset, response];
+      }));
+
+      let changed = false;
+      for (const [asset, response] of fresh) {
+        const cached = await cache.match(asset);
+        if (!cached || !areBuffersEqual(
+          await cached.arrayBuffer(),
+          await response.clone().arrayBuffer()
+        )) {
+          changed = true;
+          break;
+        }
       }
-      await cache.put(request, response.clone());
-      if (shouldNotify) {
-        console.info('[SW] Cache updated:', request.url);
-        await notifyClients();
-      }
+      if (!changed) return;
+
+      await Promise.all(fresh.map(([asset, response]) => cache.put(asset, response)));
+      console.info('[SW] Core assets updated');
+      await notifyClients();
     } catch (error) {
-      // Ignore update errors; cached response is still served.
+      // Offline or partial failure: keep the current consistent cache.
+    } finally {
+      revalidation = null;
     }
   })();
-
-  return { cached, updatePromise };
+  return revalidation;
 };
 
 self.addEventListener('install', (event) => {
@@ -119,28 +127,21 @@ self.addEventListener('fetch', (event) => {
   const isCoreAsset = request.mode === 'navigate' || coreAssetPaths.has(url.pathname);
 
   if (isSameOrigin && isCoreAsset) {
+    if (request.mode === 'navigate') {
+      event.waitUntil(revalidateCoreAssets());
+    }
     event.respondWith(
       (async () => {
-        const { cached, updatePromise } = await cacheFirstWithRevalidate(request);
-        event.waitUntil(updatePromise);
+        const cache = await caches.open(CACHE_NAME);
+        const cached = await cache.match(request);
         if (cached) return cached;
         try {
           const response = await fetch(request);
-          if (!response || !response.ok) {
-            if (request.mode === 'navigate') {
-              return caches.match('./bladeculator.html');
-            }
-            return cached;
-          }
-          const cache = await caches.open(CACHE_NAME);
-          await cache.put(request, response.clone());
-          return response;
+          if (response.ok || request.mode !== 'navigate') return response;
         } catch (error) {
-          if (request.mode === 'navigate') {
-            return caches.match('./bladeculator.html');
-          }
-          return cached;
+          if (request.mode !== 'navigate') throw error;
         }
+        return cache.match('./bladeculator.html');
       })()
     );
     return;

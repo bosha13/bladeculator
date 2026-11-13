@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const delta = btn.dataset.action === 'increase' ? step : -step;
     const nextValue = clampValue(current + delta, min, max);
 
-    if (btn.dataset.action === 'decrease' && nextValue === current) {
+    if (nextValue === current) {
       return;
     }
 
