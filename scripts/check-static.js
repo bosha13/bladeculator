@@ -19,7 +19,7 @@ for (const match of html.matchAll(/\sdata-max-from="([^"]+)"/g)) {
 }
 
 const htmlAssets = Array.from(
-  html.matchAll(/(?:src|href)="\.\/([^"?#]+)"/g),
+  html.matchAll(/(?:src|href)="(?!https?:|\/\/|data:)(?:\.\/)?([^"?#]+)"/g),
   match => match[1]
 );
 const swAssetsBlock = sw.match(/const ASSETS = \[([\s\S]*?)\];/);
@@ -50,6 +50,69 @@ for (const [language, translations] of Object.entries(localization.translations)
     referenceKeys,
     `Набор ключей локализации ${language} отличается от en`
   );
+}
+
+// Translation keys: everything used must exist, everything defined must be used.
+// localization.js is scanned for t()/pluralize() calls only: its dictionaries contain every key.
+const readScript = file => fs.readFileSync(path.join(root, file), 'utf8');
+const htmlScripts = htmlAssets.filter(asset => asset.endsWith('.js'));
+assert.ok(htmlScripts.includes('localization.js'), 'localization.js не подключён в HTML');
+const appScripts = htmlScripts.filter(file => file !== 'localization.js').map(readScript);
+const allScripts = [...appScripts, readScript('localization.js')];
+const knownKeys = new Set(referenceKeys);
+const markupKeys = Array.from(
+  html.matchAll(/\sdata-(?:i18n|unit|action)="([^"]+)"/g),
+  match => match[1]
+);
+const calledKeys = allScripts.flatMap(source => Array.from(
+  source.matchAll(/\.t\('([^']+)'/g),
+  match => match[1]
+));
+for (const key of [...markupKeys, ...calledKeys]) {
+  assert.ok(knownKeys.has(key), `Ключ локализации не найден в словарях: ${key}`);
+}
+
+// Keys picked in ternaries or assigned to dataset appear in app scripts as plain literals.
+const scriptLiterals = new Set(appScripts.flatMap(source => Array.from(
+  source.matchAll(/'([a-z0-9_]+)'/g),
+  match => match[1]
+)));
+const usedKeys = new Set([...markupKeys, ...calledKeys, ...scriptLiterals]);
+for (const key of referenceKeys) {
+  if (key === 'plurals') continue;
+  assert.ok(usedKeys.has(key), `Ключ локализации нигде не используется: ${key}`);
+}
+
+// Plurals: same words in every language, every integer plural category covered,
+// and every pluralize(n, 'word') call refers to an existing word.
+const referenceWords = Object.keys(localization.translations.en.plurals).sort();
+for (const [language, translations] of Object.entries(localization.translations)) {
+  assert.deepEqual(
+    Object.keys(translations.plurals).sort(),
+    referenceWords,
+    `Набор слов plurals в ${language} отличается от en`
+  );
+  const rules = new Intl.PluralRules(language);
+  const integerCategories = new Set(Array.from({ length: 1001 }, (_, n) => rules.select(n)));
+  for (const [word, forms] of Object.entries(translations.plurals)) {
+    for (const category of integerCategories) {
+      assert.ok(
+        forms[category] ?? forms.other,
+        `plurals.${word} в ${language}: нет формы для категории ${category}`
+      );
+    }
+  }
+}
+const pluralizedWords = allScripts.flatMap(source => Array.from(
+  source.matchAll(/pluralize\([^,]+,\s*'([^']+)'\)/g),
+  match => match[1]
+));
+assert.ok(pluralizedWords.length > 0, 'Не найдены вызовы pluralize');
+for (const word of pluralizedWords) {
+  assert.ok(referenceWords.includes(word), `pluralize использует неизвестное слово: ${word}`);
+}
+for (const word of referenceWords) {
+  assert.ok(pluralizedWords.includes(word), `Слово plurals нигде не используется: ${word}`);
 }
 
 console.log('Статические контракты корректны');

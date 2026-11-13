@@ -118,6 +118,14 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// The page asks for revalidation after its load event, when all of its core assets
+// are already served, so a fresh set in the cache can never mix with an old page.
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'REVALIDATE') {
+    event.waitUntil(revalidateCoreAssets());
+  }
+});
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
@@ -127,9 +135,6 @@ self.addEventListener('fetch', (event) => {
   const isCoreAsset = request.mode === 'navigate' || coreAssetPaths.has(url.pathname);
 
   if (isSameOrigin && isCoreAsset) {
-    if (request.mode === 'navigate') {
-      event.waitUntil(revalidateCoreAssets());
-    }
     event.respondWith(
       (async () => {
         const cache = await caches.open(CACHE_NAME);

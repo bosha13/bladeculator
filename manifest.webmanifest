@@ -2,6 +2,7 @@
   "name": "Bladeculator",
   "short_name": "Bladeculator",
   "description": "Razor blade and soap stock calculator.",
+  "id": "/bladeculator/bladeculator.html",
   "start_url": "./bladeculator.html",
   "scope": "./",
   "display": "standalone",

@@ -12,6 +12,9 @@
   };
 
   window.addEventListener('load', () => {
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'REVALIDATE' });
+    }
     navigator.serviceWorker.register('./sw.js').then((registration) => {
       return registration.update();
     }).catch((error) => {

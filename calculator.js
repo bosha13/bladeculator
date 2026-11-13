@@ -81,6 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // Last normalized value of each input. Calculations read these, so an emptied
+  // or half-typed field never leaks into results or storage.
+  const committedValues = new Map();
+
   const normalizeInput = (input) => {
     const digitsOnly = input.value.replace(/[^0-9]/g, '');
     if (digitsOnly !== input.value) {
@@ -104,12 +108,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     input.value = String(value);
+    committedValues.set(input, value);
   };
 
   const getStateFromInputs = () => {
     const state = {};
     elements.inputs.forEach(input => {
-      state[input.dataset.key] = parseNumber(input.value, 0);
+      state[input.dataset.key] = committedValues.get(input) ?? parseNumber(input.value, 0);
     });
     return state;
   };
@@ -195,7 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
       elements.bladeResultTitle.textContent = localization.t('zero_blades');
     } else {
       const pluralBlade = localization.pluralize(totalBlades, 'blade');
-      elements.bladeResultTitle.textContent = localization.t('blades_will_last', {
+      const key = localization.getPluralCategory(totalBlades) === 'one'
+        ? 'blades_will_last_singular'
+        : 'blades_will_last';
+      elements.bladeResultTitle.textContent = localization.t(key, {
         count: localization.formatNumber(totalBlades),
         pluralBlade
       });
@@ -224,6 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleKey = mode === 'soap' ? 'app_title_soap' : 'app_title_blades';
     const title = localization.t(titleKey);
     if (elements.titleText) {
+      // Keep the key in sync so select-localize.js does not restore the blades title.
+      elements.titleText.dataset.i18n = titleKey;
       elements.titleText.textContent = title;
     }
     document.title = title;
@@ -256,7 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const handleInput = (event) => {
     const input = event.target;
-    if (input.dataset.allowEmptyOnInput === 'true' && input.value === '') {
+    // A cleared field stays empty while the user types; blur restores or commits it.
+    if (input.value === '') {
       updateResetVisibility();
       return;
     }
@@ -371,11 +382,15 @@ document.addEventListener('DOMContentLoaded', () => {
   elements.inputs.forEach(input => {
     input.addEventListener('input', handleInput);
     input.addEventListener('focus', () => setTimeout(() => input.select(), 10));
+    input.addEventListener('blur', () => {
+      if (input.value === '') {
+        input.value = String(committedValues.get(input) ?? '');
+        updateResetVisibility();
+        return;
+      }
+      commitInput(input);
+    });
     if (input.dataset.allowEmptyOnInput === 'true') {
-      input.addEventListener('blur', () => {
-        if (input.value === '') return;
-        commitInput(input);
-      });
       input.addEventListener('keydown', (event) => {
         if (event.key !== 'Enter') return;
         event.preventDefault();
@@ -436,6 +451,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateModeTitles(mode);
     updateResetVisibility();
     persistState();
+    // Modes have different heights, so the window must be re-centered.
+    updateWindowAnchor();
     return true;
   };
 
