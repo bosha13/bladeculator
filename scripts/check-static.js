@@ -52,4 +52,32 @@ for (const [language, translations] of Object.entries(localization.translations)
   );
 }
 
+// Translation keys: everything used must exist, everything defined must be used.
+const readScript = file => fs.readFileSync(path.join(root, file), 'utf8');
+const appScripts = ['calculator.js', 'select-localize.js'].map(readScript);
+const allScripts = [...appScripts, readScript('localization.js')];
+const knownKeys = new Set(referenceKeys);
+const markupKeys = Array.from(
+  html.matchAll(/\sdata-(?:i18n|unit|action)="([^"]+)"/g),
+  match => match[1]
+);
+const calledKeys = allScripts.flatMap(source => Array.from(
+  source.matchAll(/\.t\('([^']+)'/g),
+  match => match[1]
+));
+for (const key of [...markupKeys, ...calledKeys]) {
+  assert.ok(knownKeys.has(key), `Ключ локализации не найден в словарях: ${key}`);
+}
+
+// Keys picked in ternaries or assigned to dataset appear in app scripts as plain literals.
+const scriptLiterals = new Set(appScripts.flatMap(source => Array.from(
+  source.matchAll(/'([a-z0-9_]+)'/g),
+  match => match[1]
+)));
+const usedKeys = new Set([...markupKeys, ...calledKeys, ...scriptLiterals]);
+for (const key of referenceKeys) {
+  if (key === 'plurals') continue;
+  assert.ok(usedKeys.has(key), `Ключ локализации нигде не используется: ${key}`);
+}
+
 console.log('Статические контракты корректны');
