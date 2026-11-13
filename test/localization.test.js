@@ -11,6 +11,12 @@ Object.defineProperty(globalThis, 'localStorage', {
     }
   }
 });
+// Node 21+ exposes navigator.languages from the system locale; pin it so the
+// default-language fallback does not depend on where the tests run.
+Object.defineProperty(globalThis, 'navigator', {
+  configurable: true,
+  value: { languages: [], language: '' }
+});
 require('../core.js');
 const localization = require('../localization.js');
 
