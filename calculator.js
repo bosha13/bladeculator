@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     modeSections: Array.from(document.querySelectorAll('[data-mode-section]')),
     stockSizeElements: Array.from(document.querySelectorAll('.stock-size')),
     aboutButton: document.querySelector('.about-button'),
-    aboutOverlay: document.getElementById('about-overlay'),
     aboutWindow: document.querySelector('.about-window'),
     aboutClose: document.querySelector('.about-close'),
     resetButton: document.querySelector('.reset-button')
@@ -221,26 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  let aboutTrigger = null;
-  const openAbout = () => {
-    if (!elements.aboutOverlay) return;
-    aboutTrigger = document.activeElement;
-    elements.aboutOverlay.classList.add('is-open');
-    elements.aboutOverlay.setAttribute('aria-hidden', 'false');
-    if (elements.window) elements.window.inert = true;
-    requestAnimationFrame(() => elements.aboutClose?.focus());
-  };
-
-  const closeAbout = () => {
-    if (!elements.aboutOverlay) return;
-    elements.aboutOverlay.classList.remove('is-open');
-    elements.aboutOverlay.setAttribute('aria-hidden', 'true');
-    if (elements.window) elements.window.inert = false;
-    if (aboutTrigger && typeof aboutTrigger.focus === 'function') {
-      aboutTrigger.focus();
-    }
-  };
-
   const updateModeTitles = (mode) => {
     const titleKey = mode === 'soap' ? 'app_title_soap' : 'app_title_blades';
     const title = localization.t(titleKey);
@@ -320,56 +299,26 @@ document.addEventListener('DOMContentLoaded', () => {
     input.dispatchEvent(new Event('input'));
   });
 
-  elements.form.addEventListener('keydown', (event) => {
-    const control = event.target.closest('[data-action]');
-    if (!control || (event.key !== 'Enter' && event.key !== ' ')) return;
-    event.preventDefault();
-    control.click();
-  });
-
-  if (elements.aboutButton) {
+  // Native modal <dialog> handles focus trapping, Escape, background inertness and focus restore.
+  if (elements.aboutButton && elements.aboutWindow) {
     elements.aboutButton.addEventListener('click', () => {
       triggerHaptic('selection');
-      openAbout();
+      elements.aboutWindow.showModal();
     });
   }
-  if (elements.aboutClose) {
-    elements.aboutClose.addEventListener('click', closeAbout);
+  if (elements.aboutClose && elements.aboutWindow) {
+    elements.aboutClose.addEventListener('click', () => elements.aboutWindow.close());
   }
-  if (elements.aboutOverlay) {
-    elements.aboutOverlay.addEventListener('click', (event) => {
-      if (event.target === elements.aboutOverlay) {
-        closeAbout();
-      }
+  if (elements.aboutWindow) {
+    elements.aboutWindow.addEventListener('click', (event) => {
+      // Clicks on the backdrop are dispatched to the dialog itself, outside its box.
+      if (event.target !== elements.aboutWindow) return;
+      const rect = elements.aboutWindow.getBoundingClientRect();
+      const inside = event.clientX >= rect.left && event.clientX <= rect.right
+        && event.clientY >= rect.top && event.clientY <= rect.bottom;
+      if (!inside) elements.aboutWindow.close();
     });
   }
-  document.addEventListener('keydown', (event) => {
-    if (!elements.aboutOverlay?.classList.contains('is-open')) return;
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      closeAbout();
-      return;
-    }
-    if (event.key !== 'Tab' || !elements.aboutWindow) return;
-
-    const focusable = Array.from(
-      elements.aboutWindow.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
-    ).filter(element => !element.disabled && !element.hidden);
-    if (focusable.length === 0) {
-      event.preventDefault();
-      return;
-    }
-
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  });
   if (elements.resetButton) {
     elements.resetButton.addEventListener('click', () => {
       const currentInputs = getCurrentModeInputs();

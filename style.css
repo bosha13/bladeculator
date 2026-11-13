@@ -174,20 +174,12 @@ body {
   padding: 0;
 }
 
-.about-overlay {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.about-overlay.is-open {
-  display: flex;
+.about-window::backdrop {
+  background: transparent;
 }
 
 .about-window {
+  color: inherit;
   background-color: var(--color-gray);
   border: var(--window-border) solid;
   border-color: var(--color-white) var(--color-dark-gray) var(--color-dark-gray) var(--color-white);
@@ -285,6 +277,7 @@ input, button, textarea, select {
   box-sizing: border-box;
   width: var(--button-size-desktop);
   height: var(--button-size-desktop);
+  padding: 0;
   cursor: pointer;
   position: relative;
   outline: none;
@@ -537,7 +530,6 @@ input, button, textarea, select {
 
 input:focus-visible,
 button:focus-visible,
-[role="button"]:focus-visible,
 select:focus-visible {
   outline: 2px solid var(--color-navy);
   outline-offset: 2px;

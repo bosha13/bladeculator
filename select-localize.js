@@ -22,8 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const input = document.getElementById(control.dataset.target);
       const action = localization.t(control.dataset.action);
       const label = input ? getInputLabel(input) : '';
-      control.setAttribute('role', 'button');
-      control.setAttribute('tabindex', '0');
       control.setAttribute('aria-label', `${action}: ${label}`);
     });
   };
