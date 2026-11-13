@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const core = window.bladeculatorCore;
   const haptics = window.appHaptics;
   const elements = {
     form: document.querySelector('form'),
@@ -14,12 +15,22 @@ document.addEventListener('DOMContentLoaded', () => {
     modeSections: Array.from(document.querySelectorAll('[data-mode-section]')),
     stockSizeElements: Array.from(document.querySelectorAll('.stock-size')),
     aboutButton: document.querySelector('.about-button'),
-    aboutOverlay: document.getElementById('about-overlay'),
     aboutWindow: document.querySelector('.about-window'),
-    aboutClose: document.querySelector('.about-close')
+    aboutClose: document.querySelector('.about-close'),
+    resetButton: document.querySelector('.reset-button')
   };
 
+  const STATE_STORAGE_KEY = 'bladeculatorStateV1';
+  const defaultInputValues = new Map(
+    elements.inputs.map(input => [input.dataset.key, input.defaultValue])
+  );
+
   const stockInputs = elements.inputs.filter(input => input.dataset.multiplier);
+  const stockConfig = stockInputs.map(input => ({
+    key: input.dataset.key,
+    multiplier: parseInt(input.dataset.multiplier, 10) || 0,
+    bladeType: input.dataset.bladeType || 'de'
+  }));
   const maxFromMap = elements.inputs.reduce((acc, input) => {
     const key = input.dataset.maxFrom;
     if (!key) return acc;
@@ -61,12 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return step > 0 ? step : 1;
   };
 
-  const clampToStep = (value, min, step) => {
-    if (!Number.isFinite(step) || step <= 0) return value;
-    const offset = value - min;
-    return Math.round(offset / step) * step + min;
-  };
-
   const clampValue = (value, min, max) => Math.min(max, Math.max(min, value));
 
   const triggerHaptic = (pattern) => {
@@ -91,10 +96,12 @@ document.addEventListener('DOMContentLoaded', () => {
       value = min;
     }
 
-    if (input.dataset.stepClamp !== 'false') {
-      value = clampToStep(value, min, step);
-    }
-    value = clampValue(value, min, max);
+    value = core.normalizeNumericValue(value, {
+      min,
+      max,
+      step,
+      clampStep: input.dataset.stepClamp !== 'false'
+    });
 
     input.value = String(value);
   };
@@ -107,43 +114,66 @@ document.addEventListener('DOMContentLoaded', () => {
     return state;
   };
 
-  const calculateBladeTotals = (state) => {
-    const daysPerShave = Math.max(1, state.days || 1);
-    const deUses = Math.max(1, state.deUses || 1);
-    const seUses = Math.max(1, state.seUses || 1);
-
-    const totals = stockInputs.reduce((acc, input) => {
-      const multiplier = parseNumber(input.dataset.multiplier, 0);
-      const value = parseNumber(state[input.dataset.key], 0);
-      const blades = value * multiplier;
-      const bladeType = input.dataset.bladeType || 'de';
-      const usesPerBlade = bladeType === 'se' ? seUses : deUses;
-
-      acc.totalBlades += blades;
-      acc.totalDays += blades * usesPerBlade * daysPerShave;
-      return acc;
-    }, { totalBlades: 0, totalDays: 0 });
-
-    return totals;
+  const readStoredState = () => {
+    try {
+      const raw = localStorage.getItem(STATE_STORAGE_KEY);
+      if (!raw) return null;
+      const stored = JSON.parse(raw);
+      if (
+        !stored ||
+        stored.version !== 1 ||
+        !stored.values ||
+        typeof stored.values !== 'object' ||
+        Array.isArray(stored.values)
+      ) {
+        return null;
+      }
+      return stored;
+    } catch (error) {
+      return null;
+    }
   };
 
-  const calculateSoapTotals = (state) => {
-    const daysPerShave = Math.max(1, state.days || 1);
-    const gramsPerShave = Math.max(1, state.soapGramsPerShave || 1);
-    const jarWeight = Math.max(1, state.soapJarWeight || 0);
+  const restoreState = () => {
+    const stored = readStoredState();
+    if (!stored) return 'blades';
 
-    const full = parseNumber(state.soapFull, 0);
-    const rest75 = parseNumber(state.soap75, 0);
-    const rest50 = parseNumber(state.soap50, 0);
-    const rest25 = parseNumber(state.soap25, 0);
+    elements.inputs.forEach(input => {
+      const value = stored.values[input.dataset.key];
+      if (Number.isFinite(value)) {
+        input.value = String(value);
+      }
+    });
 
-    const totalJars = full + rest75 * 0.75 + rest50 * 0.5 + rest25 * 0.25;
-    const totalContainers = full + rest75 + rest50 + rest25;
-    const totalGrams = jarWeight * totalJars;
-    const shaves = gramsPerShave > 0 ? Math.floor(totalGrams / gramsPerShave) : 0;
-    const totalDays = shaves * daysPerShave;
+    return stored.mode === 'soap' ? 'soap' : 'blades';
+  };
 
-    return { totalDays, totalGrams, totalContainers };
+  let currentMode = null;
+  const persistState = () => {
+    try {
+      localStorage.setItem(STATE_STORAGE_KEY, JSON.stringify({
+        version: 1,
+        mode: currentMode || 'blades',
+        values: getStateFromInputs()
+      }));
+    } catch (error) {
+      // Storage can be unavailable; calculations must keep working in memory.
+    }
+  };
+
+  const calculateBladeTotals = (state) => core.calculateBladeTotals(state, stockConfig);
+  const calculateSoapTotals = (state) => core.calculateSoapTotals(state);
+
+  const getCurrentModeInputs = () => elements.inputs.filter(input => {
+    const modeSection = input.closest('[data-mode-section]');
+    return !modeSection || modeSection.dataset.modeSection === currentMode;
+  });
+
+  const updateResetVisibility = () => {
+    if (!elements.resetButton || !currentMode) return;
+    elements.resetButton.hidden = !getCurrentModeInputs().some(input => (
+      input.value !== (defaultInputValues.get(input.dataset.key) ?? '')
+    ));
   };
 
   const formatAmount = (value) => {
@@ -178,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.soapResult.textContent = localization.formatDuration(totalDays);
 
     if (elements.soapResultTitle) {
-      const isSingular = totalContainers === 1;
+      const isSingular = localization.getPluralCategory(totalContainers) === 'one';
       const key = isSingular
         ? 'soap_will_last_with_count_singular'
         : 'soap_will_last_with_count_plural';
@@ -188,16 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
         pluralJar
       });
     }
-  };
-
-  const openAbout = () => {
-    if (!elements.aboutOverlay) return;
-    elements.aboutOverlay.classList.add('is-open');
-  };
-
-  const closeAbout = () => {
-    if (!elements.aboutOverlay) return;
-    elements.aboutOverlay.classList.remove('is-open');
   };
 
   const updateModeTitles = (mode) => {
@@ -211,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let lastSignature = null;
   const updateResults = ({ force = false } = {}) => {
+    updateResetVisibility();
     const state = getStateFromInputs();
     const signature = JSON.stringify(state);
 
@@ -221,11 +242,22 @@ document.addEventListener('DOMContentLoaded', () => {
     lastSignature = signature;
     renderBladeResults(calculateBladeTotals(state));
     renderSoapResults(calculateSoapTotals(state));
+    persistState();
+  };
+
+  const commitInput = (input) => {
+    normalizeInput(input);
+    const key = input.dataset.key;
+    if (key && maxFromMap.has(key)) {
+      maxFromMap.get(key).forEach(normalizeInput);
+    }
+    updateResults();
   };
 
   const handleInput = (event) => {
     const input = event.target;
     if (input.dataset.allowEmptyOnInput === 'true' && input.value === '') {
+      updateResetVisibility();
       return;
     }
     if (input.dataset.allowEmptyOnInput === 'true') {
@@ -234,25 +266,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (digitsOnly !== input.value) {
           input.value = digitsOnly;
         }
+        updateResetVisibility();
         return;
       }
-      normalizeInput(input);
-    } else {
-      normalizeInput(input);
+      commitInput(input);
+      return;
     }
-    const key = input.dataset.key;
-    if (key && maxFromMap.has(key)) {
-      maxFromMap.get(key).forEach(normalizeInput);
-    }
-    updateResults();
+    commitInput(input);
   };
 
-  elements.form.addEventListener('click', (event) => {
-    const btn = event.target.closest('[data-action]');
-    if (!btn) return;
-
+  // Returns false when the value is already at its limit.
+  const stepInput = (btn) => {
     const input = document.getElementById(btn.dataset.target);
-    if (!input) return;
+    if (!input) return false;
 
     const min = getMin(input);
     const max = getMax(input);
@@ -261,30 +287,84 @@ document.addEventListener('DOMContentLoaded', () => {
     const delta = btn.dataset.action === 'increase' ? step : -step;
     const nextValue = clampValue(current + delta, min, max);
 
-    if (btn.dataset.action === 'decrease' && nextValue === current) {
-      return;
+    if (nextValue === current) {
+      return false;
     }
 
     triggerHaptic('selection');
 
     input.value = String(nextValue);
     input.dispatchEvent(new Event('input'));
+    return true;
+  };
+
+  const HOLD_DELAY = 400;
+  const HOLD_INTERVAL = 80;
+  let holdTimer = null;
+  let holdRepeated = false;
+  const stopHold = () => {
+    clearTimeout(holdTimer);
+    holdTimer = null;
+  };
+
+  elements.form.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-action]');
+    if (!btn) return;
+    // The pointer click that ends a press-and-hold must not add one more step.
+    // Keyboard clicks have detail 0 and are never suppressed.
+    if (event.detail !== 0 && holdRepeated) return;
+    stepInput(btn);
   });
 
-  if (elements.aboutButton) {
+  elements.form.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0) return;
+      stopHold();
+      holdRepeated = false;
+      const repeat = () => {
+        holdRepeated = true;
+        holdTimer = stepInput(btn) ? setTimeout(repeat, HOLD_INTERVAL) : null;
+      };
+      holdTimer = setTimeout(repeat, HOLD_DELAY);
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+      btn.addEventListener(type, stopHold);
+    });
+    // Long press must not open the image context menu on touch devices.
+    btn.addEventListener('contextmenu', event => event.preventDefault());
+  });
+
+  // Native modal <dialog> handles focus trapping, Escape, background inertness and focus restore.
+  if (elements.aboutButton && elements.aboutWindow) {
     elements.aboutButton.addEventListener('click', () => {
       triggerHaptic('selection');
-      openAbout();
+      elements.aboutWindow.showModal();
     });
   }
-  if (elements.aboutClose) {
-    elements.aboutClose.addEventListener('click', closeAbout);
+  if (elements.aboutClose && elements.aboutWindow) {
+    elements.aboutClose.addEventListener('click', () => elements.aboutWindow.close());
   }
-  if (elements.aboutOverlay) {
-    elements.aboutOverlay.addEventListener('click', (event) => {
-      if (event.target === elements.aboutOverlay) {
-        closeAbout();
-      }
+  if (elements.aboutWindow) {
+    elements.aboutWindow.addEventListener('click', (event) => {
+      // Clicks on the backdrop are dispatched to the dialog itself, outside its box.
+      if (event.target !== elements.aboutWindow) return;
+      const rect = elements.aboutWindow.getBoundingClientRect();
+      const inside = event.clientX >= rect.left && event.clientX <= rect.right
+        && event.clientY >= rect.top && event.clientY <= rect.bottom;
+      if (!inside) elements.aboutWindow.close();
+    });
+  }
+  if (elements.resetButton) {
+    elements.resetButton.addEventListener('click', () => {
+      const currentInputs = getCurrentModeInputs();
+      currentInputs.forEach(input => {
+        input.value = defaultInputValues.get(input.dataset.key) ?? '';
+      });
+      currentInputs.forEach(input => {
+        normalizeInput(input);
+      });
+      updateResults({ force: true });
+      triggerHaptic('selection');
     });
   }
 
@@ -294,21 +374,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (input.dataset.allowEmptyOnInput === 'true') {
       input.addEventListener('blur', () => {
         if (input.value === '') return;
-        normalizeInput(input);
-        updateResults();
+        commitInput(input);
       });
       input.addEventListener('keydown', (event) => {
         if (event.key !== 'Enter') return;
         event.preventDefault();
         if (input.value === '') return;
-        normalizeInput(input);
-        updateResults();
+        commitInput(input);
         input.blur();
       });
     }
   });
 
-  let currentMode = null;
   const applyModeVisibility = (mode) => {
     elements.modeSections.forEach(section => {
       section.hidden = section.dataset.modeSection !== mode;
@@ -346,6 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyModeVisibility(mode);
     elements.modeIcons.forEach(icon => {
       icon.classList.toggle('active', icon.dataset.mode === mode);
+      icon.setAttribute('aria-pressed', String(icon.dataset.mode === mode));
     });
     const bladeIcon = document.getElementById('blade-icon');
     if (bladeIcon) {
@@ -356,6 +434,8 @@ document.addEventListener('DOMContentLoaded', () => {
       soapIcon.src = mode === 'soap' ? './images/soap-color.svg' : './images/soap.svg';
     }
     updateModeTitles(mode);
+    updateResetVisibility();
+    persistState();
     return true;
   };
 
@@ -374,8 +454,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateWindowAnchor();
   });
 
+  const restoredMode = restoreState();
   elements.inputs.forEach(normalizeInput);
-  setMode('blades');
+  setMode(restoredMode);
   updateStockSizes();
   updateResults({ force: true });
 

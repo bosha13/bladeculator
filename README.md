@@ -4,7 +4,7 @@
 Razor blade and shaving soap stock calculator. Single-page app with no build step or dependencies.
 
 **Demo**
-[Demo ▶](https://htmlpreview.github.io/?https://github.com/bosha13/bladeculator/blob/main/bladeculator.html)
+[Demo ▶](https://bosha13.github.io/bladeculator/bladeculator.html)
 
 <img width="800" alt="Bladeculator" src="https://github.com/user-attachments/assets/c0fbdf8a-b449-4215-89e9-6032f9df3a47" />
 

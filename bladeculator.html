@@ -2,9 +2,10 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bladeculator</title>
   <meta name="theme-color" content="#008080">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="icon" href="./images/favicon/favicon.ico" sizes="any">
@@ -21,24 +22,35 @@
   <main class="window">
     <header class="title-bar">
       <span data-i18n="app_title_blades">Калькулятор запаса лезвий</span>
-      <div class="about-button">
-        <img src="./images/question.svg" width="14" height="14" alt="about" data-i18n="about" data-i18n-attr="alt">
+      <div class="title-actions">
+        <button type="button" class="reset-button" hidden>
+          <img src="./images/reset.svg" width="12" height="12" alt="Сбросить значения" data-i18n="reset" data-i18n-attr="alt">
+        </button>
+        <button type="button" class="about-button">
+          <img src="./images/question.svg" width="14" height="14" alt="about" data-i18n="about" data-i18n-attr="alt">
+        </button>
       </div>
     </header>
     <form class="content">
       <section class="header-container">
         <div class="header-left"></div>
         <div class="header-icon">
-          <img src="./images/blade.svg" alt="Blade" width="86" height="48" class="mode-icon active" id="blade-icon" data-mode="blades" data-i18n="blade_icon" data-i18n-attr="alt">
-          <img src="./images/soap.svg" alt="Мыло" width="86" height="48" class="mode-icon" id="soap-icon" data-mode="soap" data-i18n="soap_icon" data-i18n-attr="alt">
+          <button type="button" class="mode-button active" data-mode="blades" aria-pressed="true">
+            <img src="./images/blade.svg" alt="Blade" width="86" height="48" id="blade-icon" data-i18n="blade_icon" data-i18n-attr="alt">
+          </button>
+          <button type="button" class="mode-button" data-mode="soap" aria-pressed="false">
+            <img src="./images/soap.svg" alt="Мыло" width="86" height="48" id="soap-icon" data-i18n="soap_icon" data-i18n-attr="alt">
+          </button>
         </div>
         <div class="header-right">
-          <label for="language-select" class="language-label">
-            <img src="./images/language.svg" width="16" height="16">
-          </label>
+          <span class="language-label">
+            <img src="./images/language.svg" width="16" height="16" alt="" aria-hidden="true">
+          </span>
           <div class="select-container">
-            <div class="custom-select" id="language-select">Русский</div>
-            <div class="select-dropdown" id="language-dropdown"></div>
+            <button type="button" class="custom-select" id="language-select" aria-haspopup="listbox" aria-expanded="false" aria-controls="language-dropdown" data-i18n="language" data-i18n-attr="aria-label">
+              <span id="language-select-label">Русский</span>
+            </button>
+            <div class="select-dropdown" id="language-dropdown" role="listbox" data-i18n="language" data-i18n-attr="aria-label"></div>
           </div>
         </div>
       </section>
@@ -46,19 +58,19 @@
         <div class="input-group">
           <div class="input-label" data-i18n="shave_frequency">Я бреюсь раз в</div>
           <div class="input-control">
-            <div class="spinner-button" 
+            <button type="button" class="spinner-button" 
               data-action="decrease" 
               data-target="days-input">
               <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-            </div>
+            </button>
             <div class="spinner">
               <input type="number" inputmode="numeric" min="1" id="days-input" value="1" data-key="days" data-min="1">
             </div>
-            <div class="spinner-button" 
+            <button type="button" class="spinner-button" 
               data-action="increase" 
               data-target="days-input">
               <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -66,37 +78,37 @@
         <div class="input-group">
           <div class="input-label" data-i18n="soap_usage">Расход мыла на бритье, г</div>
           <div class="input-control">
-            <div class="spinner-button"
+            <button type="button" class="spinner-button"
               data-action="decrease"
               data-target="soap-grams-input">
               <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-            </div>
+            </button>
             <div class="spinner">
               <input type="number" inputmode="numeric" min="1" id="soap-grams-input" value="2" data-key="soapGramsPerShave" data-min="1" data-step="1" data-max-from="soapJarWeight">
             </div>
-            <div class="spinner-button"
+            <button type="button" class="spinner-button"
               data-action="increase"
               data-target="soap-grams-input">
               <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-            </div>
+            </button>
           </div>
         </div>
         <div class="input-group">
           <div class="input-label" data-i18n="soap_jar_weight">Средний вес мыла в банке, г</div>
           <div class="input-control">
-            <div class="spinner-button"
+            <button type="button" class="spinner-button"
               data-action="decrease"
               data-target="soap-jar-weight-input">
               <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-            </div>
+            </button>
             <div class="spinner">
               <input type="number" inputmode="numeric" min="5" id="soap-jar-weight-input" value="120" data-key="soapJarWeight" data-min="5" data-step="5" data-step-clamp="false" data-allow-empty-on-input="true">
             </div>
-            <div class="spinner-button"
+            <button type="button" class="spinner-button"
               data-action="increase"
               data-target="soap-jar-weight-input">
               <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -106,38 +118,38 @@
             <div class="input-group">
               <div class="input-label" data-i18n="de_blade_usage">DE лезвие используется раз</div>
               <div class="input-control">
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="decrease" 
                   data-target="de-uses-input">
                   <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-                </div>
+                </button>
                 <div class="spinner">
                   <input type="number" inputmode="numeric" min="1" id="de-uses-input" value="1" data-key="deUses" data-min="1">
                 </div>
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="increase" 
                   data-target="de-uses-input">
                   <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-                </div>
+                </button>
               </div>
             </div>
             <div class="input-group stock-item">
               <div class="stock-label" data-i18n="blocks">Блоки</div>
               <div class="stock-size" data-size="100" data-unit="pieces">100 шт. ×</div>
               <div class="input-control-stock">
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="decrease" 
                   data-target="pack100-input">
                   <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-                </div>
+                </button>
                 <div class="spinner">
                   <input type="number" inputmode="numeric" min="0" id="pack100-input" value="0" data-key="pack100" data-min="0" data-multiplier="100" data-blade-type="de">
                 </div>
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="increase" 
                   data-target="pack100-input">
                   <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-                </div>
+                </button>
               </div>
             </div>
             
@@ -145,19 +157,19 @@
               <div class="stock-label" data-i18n="packs">Пачки</div>
               <div class="stock-size" data-size="10" data-unit="pieces">10 шт. ×</div>
               <div class="input-control-stock">
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="decrease" 
                   data-target="pack10-input">
                   <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-                </div>
+                </button>
                 <div class="spinner">
                   <input type="number" inputmode="numeric" min="0" id="pack10-input" value="0" data-key="pack10" data-min="0" data-multiplier="10" data-blade-type="de">
                 </div>
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="increase" 
                   data-target="pack10-input">
                   <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-                </div>
+                </button>
               </div>
             </div>
             
@@ -165,19 +177,19 @@
               <div class="stock-label" data-i18n="packs">Пачки</div>
               <div class="stock-size" data-size="5" data-unit="pieces">5 шт. ×</div>
               <div class="input-control-stock">
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="decrease" 
                   data-target="pack5-input">
                   <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-                </div>
+                </button>
                 <div class="spinner">
                   <input type="number" inputmode="numeric" min="0" id="pack5-input" value="0" data-key="pack5" data-min="0" data-multiplier="5" data-blade-type="de">
                 </div>
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="increase" 
                   data-target="pack5-input">
                   <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-                </div>
+                </button>
               </div>
             </div>
             
@@ -185,19 +197,19 @@
               <div class="stock-label" data-i18n="individually">Поштучно</div>
               <div class="stock-size" data-size="1" data-unit="pieces">1 шт. ×</div>
               <div class="input-control-stock">
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="decrease" 
                   data-target="single-input">
                   <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-                </div>
+                </button>
                 <div class="spinner">
                   <input type="number" inputmode="numeric" min="0" id="single-input" value="0" data-key="single" data-min="0" data-multiplier="1" data-blade-type="de">
                 </div>
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="increase" 
                   data-target="single-input">
                   <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-                </div>
+                </button>
               </div>
             </div>
           </div>
@@ -209,19 +221,19 @@
             <div class="input-group">
               <div class="input-label" data-i18n="se_blade_usage">SE лезвия используются раз</div>
               <div class="input-control">
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="decrease" 
                   data-target="se-uses-input">
                   <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-                </div>
+                </button>
                 <div class="spinner">
                   <input type="number" inputmode="numeric" min="1" id="se-uses-input" value="1" data-key="seUses" data-min="1">
                 </div>
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="increase" 
                   data-target="se-uses-input">
                   <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-                </div>
+                </button>
               </div>
             </div>
 
@@ -229,19 +241,19 @@
               <div class="stock-label" data-i18n="se_containers">Контейнеры</div>
               <div class="stock-size" data-size="30" data-unit="pieces">30 шт. ×</div>
               <div class="input-control-stock">
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="decrease" 
                   data-target="packse30-input">
                   <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-                </div>
+                </button>
                 <div class="spinner">
                   <input type="number" inputmode="numeric" min="0" id="packse30-input" value="0" data-key="packse30" data-min="0" data-multiplier="30" data-blade-type="se">
                 </div>
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="increase" 
                   data-target="packse30-input">
                   <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-                </div>
+                </button>
               </div>
             </div>
 
@@ -249,19 +261,19 @@
               <div class="stock-label" data-i18n="se_containers">Контейнеры</div>
               <div class="stock-size" data-size="20" data-unit="pieces">20 шт. ×</div>
               <div class="input-control-stock">
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="decrease" 
                   data-target="packse20-input">
                   <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-                </div>
+                </button>
                 <div class="spinner">
                   <input type="number" inputmode="numeric" min="0" id="packse20-input" value="0" data-key="packse20" data-min="0" data-multiplier="20" data-blade-type="se">
                 </div>
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="increase" 
                   data-target="packse20-input">
                   <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-                </div>
+                </button>
               </div>
             </div>
 
@@ -269,19 +281,19 @@
               <div class="stock-label" data-i18n="se_containers">Контейнеры</div>
               <div class="stock-size" data-size="15" data-unit="pieces">15 шт. ×</div>
               <div class="input-control-stock">
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="decrease" 
                   data-target="packse15-input">
                   <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-                </div>
+                </button>
                 <div class="spinner">
                   <input type="number" inputmode="numeric" min="0" id="packse15-input" value="0" data-key="packse15" data-min="0" data-multiplier="15" data-blade-type="se">
                 </div>
-                <div class="spinner-button" 
+                <button type="button" class="spinner-button" 
                   data-action="increase" 
                   data-target="packse15-input">
                   <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-                </div>
+                </button>
               </div>
             </div>
           </div>
@@ -293,73 +305,73 @@
           <div class="input-group stock-item">
             <div class="stock-label" data-i18n="soap_full">Полных</div>
             <div class="input-control-stock">
-              <div class="spinner-button"
+              <button type="button" class="spinner-button"
                 data-action="decrease"
                 data-target="soap-full-input">
                 <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-              </div>
+              </button>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="soap-full-input" value="0" data-key="soapFull" data-min="0">
               </div>
-              <div class="spinner-button"
+              <button type="button" class="spinner-button"
                 data-action="increase"
                 data-target="soap-full-input">
                 <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-              </div>
+              </button>
             </div>
           </div>
           <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="soap_75">Остаток &lt;75%</div>
+            <div class="stock-label" data-i18n="soap_75">Остаток ≈75%</div>
             <div class="input-control-stock">
-              <div class="spinner-button"
+              <button type="button" class="spinner-button"
                 data-action="decrease"
                 data-target="soap-75-input">
                 <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-              </div>
+              </button>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="soap-75-input" value="0" data-key="soap75" data-min="0">
               </div>
-              <div class="spinner-button"
+              <button type="button" class="spinner-button"
                 data-action="increase"
                 data-target="soap-75-input">
                 <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-              </div>
+              </button>
             </div>
           </div>
           <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="soap_50">Остаток &lt;50%</div>
+            <div class="stock-label" data-i18n="soap_50">Остаток ≈50%</div>
             <div class="input-control-stock">
-              <div class="spinner-button"
+              <button type="button" class="spinner-button"
                 data-action="decrease"
                 data-target="soap-50-input">
                 <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-              </div>
+              </button>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="soap-50-input" value="0" data-key="soap50" data-min="0">
               </div>
-              <div class="spinner-button"
+              <button type="button" class="spinner-button"
                 data-action="increase"
                 data-target="soap-50-input">
                 <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-              </div>
+              </button>
             </div>
           </div>
           <div class="input-group stock-item">
-            <div class="stock-label" data-i18n="soap_25">Остаток &lt;25%</div>
+            <div class="stock-label" data-i18n="soap_25">Остаток ≈25%</div>
             <div class="input-control-stock">
-              <div class="spinner-button"
+              <button type="button" class="spinner-button"
                 data-action="decrease"
                 data-target="soap-25-input">
                 <img src="./images/left-arrow.svg" alt="Decrease" width="16" height="16">
-              </div>
+              </button>
               <div class="spinner">
                 <input type="number" inputmode="numeric" min="0" id="soap-25-input" value="0" data-key="soap25" data-min="0">
               </div>
-              <div class="spinner-button"
+              <button type="button" class="spinner-button"
                 data-action="increase"
                 data-target="soap-25-input">
                 <img src="./images/right-arrow.svg" alt="Increase" width="16" height="16">
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -374,23 +386,22 @@
       </section>
     </form>
   </main>
-  <div class="about-overlay" id="about-overlay">
-    <div class="about-window" role="dialog" aria-modal="true" aria-labelledby="about-title">
-      <header class="title-bar">
-        <span id="about-title" data-i18n="about_title">О калькуляторе</span>
-        <div class="close-button about-close">
-          <img src="./images/close.svg" width="11" height="11" alt="Закрыть" data-i18n="close" data-i18n-attr="alt">
-        </div>
-      </header>
-      <div class="about-content">
-        <img src="./images/icon-about.png" width="64" height="64" alt="" class="about-icon" aria-hidden="true">
-        <div class="about-names" data-i18n="about_names">Калькулятор запаса лезвий
+  <dialog class="about-window" aria-labelledby="about-title">
+    <header class="title-bar">
+      <span id="about-title" data-i18n="about_title">О калькуляторе</span>
+      <button type="button" class="close-button about-close">
+        <img src="./images/close.svg" width="11" height="11" alt="Закрыть" data-i18n="close" data-i18n-attr="alt">
+      </button>
+    </header>
+    <div class="about-content">
+      <img src="./images/icon-about.png" width="64" height="64" alt="" class="about-icon" aria-hidden="true">
+      <div class="about-names" data-i18n="about_names">Калькулятор запаса лезвий
 Калькулятор запаса мыла для бритья</div>
-        <div class="about-description" data-i18n="about_description">Узнайте на сколько хватит ваших лезвий и мыла.
+      <div class="about-description" data-i18n="about_description">Узнайте на сколько хватит ваших лезвий и мыла.
 Александр Бохан, 2026</div>
-      </div>
     </div>
-  </div>
+  </dialog>
+  <script src="core.js"></script>
   <script src="localization.js"></script>
   <script src="haptics.js"></script>
   <script src="calculator.js"></script>

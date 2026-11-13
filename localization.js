@@ -1,4 +1,5 @@
 const localization = {
+  memoryLanguage: null,
   defaultLanguage: 'en',
   languages: {
     'ru': 'Русский',
@@ -38,10 +39,9 @@ const localization = {
       'soap_jar_weight': 'Ср. вес мыла в банках, г',
       'soap_stock_title': 'Количество банок:',
       'soap_full': 'Практически полных',
-      'soap_75': 'Остаток <75%',
-      'soap_50': 'Остаток <50%',
-      'soap_25': 'Остаток <25%',
-      'soap_will_last': '{count} {pluralJar} мыла хватит на:',
+      'soap_75': 'Остаток ≈75%',
+      'soap_50': 'Остаток ≈50%',
+      'soap_25': 'Остаток ≈25%',
       'soap_will_last_with_count_singular': '{count} {pluralJar} мыла хватит на:',
       'soap_will_last_with_count_plural': '{count} {pluralJar} мыла хватит на:',
       'blade_icon': 'Лезвия',
@@ -52,25 +52,21 @@ const localization = {
       'about_description': 'Узнайте на сколько хватит ваших лезвий и мыла.\nАлександр Бохан, 2026',
       'close': 'Закрыть',
       'selected': 'Выбрано',
+      'language': 'Язык',
+      'increase': 'Увеличить',
+      'decrease': 'Уменьшить',
+      'reset': 'Сбросить значения',
       
       'blades_will_last': '{count} {pluralBlade} хватит на:',
       'zero_blades': '0 лезвий хватит на:',
       'zero_days': '0 дней',
       
       'plurals': {
-        'day': ['день', 'дня', 'дней'],
-        'month': ['месяц', 'месяца', 'месяцев'],
-        'year': ['год', 'года', 'лет'],
-        'blade': ['лезвие', 'лезвия', 'лезвий'],
-        'jar': ['банка', 'банки', 'банок']
-      },
-      
-      'getPluralForm': function(number, forms) {
-        let n = Math.abs(number);
-        n %= 100;
-        if (n >= 5 && n <= 20) return forms[2];
-        n %= 10;
-        return n === 1 ? forms[0] : n >= 2 && n <= 4 ? forms[1] : forms[2];
+        'day': { one: 'день', few: 'дня', many: 'дней' },
+        'month': { one: 'месяц', few: 'месяца', many: 'месяцев' },
+        'year': { one: 'год', few: 'года', many: 'лет' },
+        'blade': { one: 'лезвие', few: 'лезвия', many: 'лезвий' },
+        'jar': { one: 'банка', few: 'банки', many: 'банок' }
       }
     },
     
@@ -90,10 +86,9 @@ const localization = {
       'soap_jar_weight': 'Average soap weight (g)',
       'soap_stock_title': 'Jars total:',
       'soap_full': 'Almost full',
-      'soap_75': '<75% left',
-      'soap_50': '<50% left',
-      'soap_25': '<25% left',
-      'soap_will_last': '{count} {pluralJar} will last for:',
+      'soap_75': '≈75% left',
+      'soap_50': '≈50% left',
+      'soap_25': '≈25% left',
       'soap_will_last_with_count_singular': '{count} {pluralJar} will last for:',
       'soap_will_last_with_count_plural': '{count} {pluralJar} will last for:',
       'blade_icon': 'Blades',
@@ -104,21 +99,21 @@ const localization = {
       'about_description': 'Find out how long your blades and soap will last.\nAlexander Bokhan, 2026',
       'close': 'Close',
       'selected': 'Selected',
+      'language': 'Language',
+      'increase': 'Increase',
+      'decrease': 'Decrease',
+      'reset': 'Reset values',
       
       'blades_will_last': '{count} {pluralBlade} will last for:',
       'zero_blades': '0 blades will last for:',
       'zero_days': '0 days',
       
       'plurals': {
-        'day': ['day', 'days'],
-        'month': ['month', 'months'],
-        'year': ['year', 'years'],
-        'blade': ['blade', 'blades'],
-        'jar': ['jar', 'jars']
-      },
-      
-      'getPluralForm': function(number, forms) {
-        return number === 1 ? forms[0] : forms[1];
+        'day': { one: 'day', other: 'days' },
+        'month': { one: 'month', other: 'months' },
+        'year': { one: 'year', other: 'years' },
+        'blade': { one: 'blade', other: 'blades' },
+        'jar': { one: 'jar', other: 'jars' }
       }
     },
     
@@ -138,10 +133,9 @@ const localization = {
       'soap_jar_weight': 'Peso medio del jabón (g)',
       'soap_stock_title': 'Tarros totales:',
       'soap_full': 'Casi llenos',
-      'soap_75': '<75% restante',
-      'soap_50': '<50% restante',
-      'soap_25': '<25% restante',
-      'soap_will_last': '{count} {pluralJar} de jabón durará:',
+      'soap_75': '≈75% restante',
+      'soap_50': '≈50% restante',
+      'soap_25': '≈25% restante',
       'soap_will_last_with_count_singular': '{count} {pluralJar} de jabón durará:',
       'soap_will_last_with_count_plural': '{count} {pluralJar} de jabón durarán:',
       'blade_icon': 'Cuchillas',
@@ -152,21 +146,21 @@ const localization = {
       'about_description': 'Descubre cuánto te durarán tus cuchillas y tu jabón.\nAlexander Bokhan, 2026',
       'close': 'Cerrar',
       'selected': 'Seleccionado',
+      'language': 'Idioma',
+      'increase': 'Aumentar',
+      'decrease': 'Disminuir',
+      'reset': 'Restablecer valores',
       
       'blades_will_last': '{count} {pluralBlade} durarán:',
       'zero_blades': '0 cuchillas durarán:',
       'zero_days': '0 días',
       
       'plurals': {
-        'day': ['día', 'días'],
-        'month': ['mes', 'meses'],
-        'year': ['año', 'años'],
-        'blade': ['cuchilla', 'cuchillas'],
-        'jar': ['tarro', 'tarros']
-      },
-      
-      'getPluralForm': function(number, forms) {
-        return number === 1 ? forms[0] : forms[1];
+        'day': { one: 'día', other: 'días' },
+        'month': { one: 'mes', other: 'meses' },
+        'year': { one: 'año', other: 'años' },
+        'blade': { one: 'cuchilla', other: 'cuchillas' },
+        'jar': { one: 'tarro', other: 'tarros' }
       }
     },
     
@@ -186,10 +180,9 @@ const localization = {
       'soap_jar_weight': 'Seifengewicht (g)',
       'soap_stock_title': 'Dosen gesamt:',
       'soap_full': 'Fast voll',
-      'soap_75': '<75% Rest',
-      'soap_50': '<50% Rest',
-      'soap_25': '<25% Rest',
-      'soap_will_last': '{count} {pluralJar} Seife reicht für:',
+      'soap_75': '≈75% Rest',
+      'soap_50': '≈50% Rest',
+      'soap_25': '≈25% Rest',
       'soap_will_last_with_count_singular': '{count} {pluralJar} Seife reicht für:',
       'soap_will_last_with_count_plural': '{count} {pluralJar} Seife reichen für:',
       'blade_icon': 'Klingen',
@@ -204,19 +197,19 @@ const localization = {
       'zero_days': '0 Tage',
       
       'plurals': {
-        'day': ['Tag', 'Tage'],
-        'month': ['Monat', 'Monate'],
-        'year': ['Jahr', 'Jahre'],
-        'blade': ['Klinge', 'Klingen'],
-        'jar': ['Dose', 'Dosen']
+        'day': { one: 'Tag', other: 'Tage' },
+        'month': { one: 'Monat', other: 'Monate' },
+        'year': { one: 'Jahr', other: 'Jahre' },
+        'blade': { one: 'Klinge', other: 'Klingen' },
+        'jar': { one: 'Dose', other: 'Dosen' }
       },
       
       'close': 'Schließen',
       'selected': 'Ausgewählt',
-      
-      'getPluralForm': function(number, forms) {
-        return number === 1 ? forms[0] : forms[1];
-      }
+      'language': 'Sprache',
+      'increase': 'Erhöhen',
+      'decrease': 'Verringern',
+      'reset': 'Werte zurücksetzen'
     },
     
     'fr': {
@@ -235,10 +228,9 @@ const localization = {
       'soap_jar_weight': 'Poids moyen du savon (g)',
       'soap_stock_title': 'Pots au total :',
       'soap_full': 'Presque pleins',
-      'soap_75': '<75% restants',
-      'soap_50': '<50% restants',
-      'soap_25': '<25% restants',
-      'soap_will_last': '{count} {pluralJar} de savon durera :',
+      'soap_75': '≈75% restants',
+      'soap_50': '≈50% restants',
+      'soap_25': '≈25% restants',
       'soap_will_last_with_count_singular': '{count} {pluralJar} de savon durera :',
       'soap_will_last_with_count_plural': '{count} {pluralJar} de savon dureront :',
       'blade_icon': 'Lames',
@@ -253,19 +245,19 @@ const localization = {
       'zero_days': '0 jours',
       
       'plurals': {
-        'day': ['jour', 'jours'],
-        'month': ['mois', 'mois'],
-        'year': ['an', 'ans'],
-        'blade': ['lame', 'lames'],
-        'jar': ['pot', 'pots']
+        'day': { one: 'jour', other: 'jours' },
+        'month': { one: 'mois', other: 'mois' },
+        'year': { one: 'an', other: 'ans' },
+        'blade': { one: 'lame', other: 'lames' },
+        'jar': { one: 'pot', other: 'pots' }
       },
       
       'close': 'Fermer',
       'selected': 'Sélectionné',
-      
-      'getPluralForm': function(number, forms) {
-        return number === 1 ? forms[0] : forms[1];
-      }
+      'language': 'Langue',
+      'increase': 'Augmenter',
+      'decrease': 'Diminuer',
+      'reset': 'Réinitialiser'
     },
     
     'zh': {
@@ -284,10 +276,9 @@ const localization = {
       'soap_jar_weight': '每罐剃须皂平均重量（克）',
       'soap_stock_title': '罐装数量：',
       'soap_full': '几乎满',
-      'soap_75': '剩余<75%',
-      'soap_50': '剩余<50%',
-      'soap_25': '剩余<25%',
-      'soap_will_last': '{count}{pluralJar}剃须皂可用：',
+      'soap_75': '剩余≈75%',
+      'soap_50': '剩余≈50%',
+      'soap_25': '剩余≈25%',
       'soap_will_last_with_count_singular': '{count}{pluralJar}剃须皂可用：',
       'soap_will_last_with_count_plural': '{count}{pluralJar}剃须皂可用：',
       'blade_icon': '刀片',
@@ -298,21 +289,21 @@ const localization = {
       'about_description': '了解您的刀片和剃须皂能用多久。\nAlexander Bokhan, 2026',
       'close': '关闭',
       'selected': '已选择',
+      'language': '语言',
+      'increase': '增加',
+      'decrease': '减少',
+      'reset': '重置数值',
       
       'blades_will_last': '{count}个{pluralBlade}可使用：',
       'zero_blades': '0个刀片可使用：',
       'zero_days': '0天',
       
       'plurals': {
-        'day': ['天'],
-        'month': ['个月'],
-        'year': ['年'],
-        'blade': ['刀片'],
-        'jar': ['罐']
-      },
-      
-      'getPluralForm': function(number, forms) {
-        return forms[0];
+        'day': { other: '天' },
+        'month': { other: '个月' },
+        'year': { other: '年' },
+        'blade': { other: '刀片' },
+        'jar': { other: '罐' }
       }
     },
 
@@ -332,10 +323,9 @@ const localization = {
       'soap_jar_weight': '비누 평균 무게(g)',
       'soap_stock_title': '총 비누 용기 수:',
       'soap_full': '거의 가득 참',
-      'soap_75': '<75% 남음',
-      'soap_50': '<50% 남음',
-      'soap_25': '<25% 남음',
-      'soap_will_last': '{count}{pluralJar} 비누로 사용 가능한 기간:',
+      'soap_75': '≈75% 남음',
+      'soap_50': '≈50% 남음',
+      'soap_25': '≈25% 남음',
       'soap_will_last_with_count_singular': '{count}{pluralJar} 비누로 사용 가능한 기간:',
       'soap_will_last_with_count_plural': '{count}{pluralJar} 비누로 사용 가능한 기간:',
       'blade_icon': '면도날',
@@ -346,18 +336,19 @@ const localization = {
       'about_description': '면도날과 면도 비누가 얼마나 오래가는지 확인하세요.\nAlexander Bokhan, 2026',
       'close': '닫기',
       'selected': '선택됨',
+      'language': '언어',
+      'increase': '늘리기',
+      'decrease': '줄이기',
+      'reset': '값 초기화',
       'blades_will_last': '{count}{pluralBlade} 면도날로 사용 가능한 기간:',
       'zero_blades': '0개 면도날로 사용 가능한 기간:',
       'zero_days': '0일',
       'plurals': {
-        'day': ['일'],
-        'month': ['개월'],
-        'year': ['년'],
-        'blade': ['개'],
-        'jar': ['개']
-      },
-      'getPluralForm': function(number, forms) {
-        return forms[0];
+        'day': { other: '일' },
+        'month': { other: '개월' },
+        'year': { other: '년' },
+        'blade': { other: '개' },
+        'jar': { other: '개' }
       }
     }
   },
@@ -388,17 +379,38 @@ const localization = {
   },
   
   getCurrentLanguage: function() {
-    const stored = localStorage.getItem('selectedLanguage');
-    if (stored) return stored;
+    if (this.memoryLanguage && this.translations[this.memoryLanguage]) {
+      return this.memoryLanguage;
+    }
+
+    try {
+      const stored = localStorage.getItem('selectedLanguage');
+      if (stored && this.translations[stored]) {
+        this.memoryLanguage = stored;
+        return stored;
+      }
+    } catch (error) {
+      // Fall back to an in-memory value when storage is unavailable.
+    }
 
     const detected = this.detectBrowserLanguage();
-    localStorage.setItem('selectedLanguage', detected);
+    this.memoryLanguage = detected;
+    try {
+      localStorage.setItem('selectedLanguage', detected);
+    } catch (error) {
+      // Language still works for the current document.
+    }
     return detected;
   },
   
   setCurrentLanguage: function(langCode) {
     if (this.translations[langCode]) {
-      localStorage.setItem('selectedLanguage', langCode);
+      this.memoryLanguage = langCode;
+      try {
+        localStorage.setItem('selectedLanguage', langCode);
+      } catch (error) {
+        // Language still works for the current document.
+      }
       return true;
     }
     return false;
@@ -423,46 +435,34 @@ const localization = {
     return text;
   },
   
+  // CLDR plural category: 'one', 'few', 'many', 'other', ...
+  getPluralCategory: function(number) {
+    return new Intl.PluralRules(this.getCurrentLanguage()).select(number);
+  },
+
   pluralize: function(number, key) {
     const currentLang = this.getCurrentLanguage();
     const translations = this.translations[currentLang];
-    
+
     if (!translations || !translations.plurals || !translations.plurals[key]) {
       console.warn(`Pluralization missing for key: ${key} in language: ${currentLang}`);
       return key;
     }
-    
-    const pluralForms = translations.plurals[key];
-    return translations.getPluralForm(number, pluralForms);
+
+    const forms = translations.plurals[key];
+    return forms[this.getPluralCategory(number)] ?? forms.other;
   },
   
-  // Thousands separators
+  // Locale-specific thousands separators
   formatNumber: function(number) {
-    const str = String(number);
-    if (str.length <= 3) return str;
-    
-    const result = [];
-    const len = str.length;
-    const NARROW_SPACE = '\u202F';
-    
-    for (let i = 0; i < len; i++) {
-      result.push(str[i]);
-      const remaining = len - i - 1;
-      if (remaining > 0 && remaining % 3 === 0) {
-        result.push(NARROW_SPACE);
-      }
-    }
-    
-    return result.join('');
+    return new Intl.NumberFormat(this.getCurrentLanguage()).format(number);
   },
   
   // Duration in days to a human-readable string
   formatDuration: function(days) {
     if (days <= 0) return this.t('zero_days');
     
-    const years = Math.floor(days / 365);
-    const months = Math.floor((days % 365) / 30);
-    const remainingDays = days % 30;
+    const { years, months, remainingDays } = globalThis.bladeculatorCore.splitDuration(days);
     
     const parts = [];
     const NARROW_NO_BREAK_SPACE = '\u202F';
@@ -485,3 +485,7 @@ const localization = {
     return parts.join(' ');
   }
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = localization;
+}
