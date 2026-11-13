@@ -11,15 +11,6 @@ const localization = {
     'ko': '한국어'
   },
 
-  localeAliases: {
-    'pt-br': 'pt',
-    'pt-pt': 'pt',
-    'iw': 'he',
-    'ji': 'yi',
-    'in': 'id',
-    'no': 'nb'
-  },
-  
   languageOrder: ['ru', 'en', 'es', 'de', 'fr', 'zh', 'ko'],
   
   translations: {
@@ -57,6 +48,7 @@ const localization = {
       'reset': 'Сбросить значения',
       
       'blades_will_last': '{count} {pluralBlade} хватит на:',
+      'blades_will_last_singular': '{count} {pluralBlade} хватит на:',
       'zero_blades': '0 лезвий хватит на:',
       'zero_days': '0 дней',
       
@@ -103,6 +95,7 @@ const localization = {
       'reset': 'Reset values',
       
       'blades_will_last': '{count} {pluralBlade} will last for:',
+      'blades_will_last_singular': '{count} {pluralBlade} will last for:',
       'zero_blades': '0 blades will last for:',
       'zero_days': '0 days',
       
@@ -149,6 +142,7 @@ const localization = {
       'reset': 'Restablecer valores',
       
       'blades_will_last': '{count} {pluralBlade} durarán:',
+      'blades_will_last_singular': '{count} {pluralBlade} durará:',
       'zero_blades': '0 cuchillas durarán:',
       'zero_days': '0 días',
       
@@ -189,6 +183,7 @@ const localization = {
       'about_description': 'Erfahren Sie, wie lange Ihre Klingen und Ihre Rasierseife reichen.\nAlexander Bokhan, 2026',
       
       'blades_will_last': '{count} {pluralBlade} reichen für:',
+      'blades_will_last_singular': '{count} {pluralBlade} reicht für:',
       'zero_blades': '0 Klingen reichen für:',
       'zero_days': '0 Tage',
       
@@ -236,6 +231,7 @@ const localization = {
       'about_description': 'Découvrez combien de temps vos lames et votre savon vous dureront.\nAlexander Bokhan, 2026',
       
       'blades_will_last': '{count} {pluralBlade} dureront :',
+      'blades_will_last_singular': '{count} {pluralBlade} durera :',
       'zero_blades': '0 lames dureront :',
       'zero_days': '0 jours',
       
@@ -289,6 +285,7 @@ const localization = {
       'reset': '重置数值',
       
       'blades_will_last': '{count}个{pluralBlade}可使用：',
+      'blades_will_last_singular': '{count}个{pluralBlade}可使用：',
       'zero_blades': '0个刀片可使用：',
       'zero_days': '0天',
       
@@ -334,6 +331,7 @@ const localization = {
       'decrease': '줄이기',
       'reset': '값 초기화',
       'blades_will_last': '{count}{pluralBlade} 면도날로 사용 가능한 기간:',
+      'blades_will_last_singular': '{count}{pluralBlade} 면도날로 사용 가능한 기간:',
       'zero_blades': '0개 면도날로 사용 가능한 기간:',
       'zero_days': '0일',
       'plurals': {
@@ -360,12 +358,8 @@ const localization = {
       if (!lang) continue;
       const normalized = String(lang).toLowerCase();
       if (this.translations[normalized]) return normalized;
-      const alias = this.localeAliases[normalized];
-      if (alias && this.translations[alias]) return alias;
       const base = normalized.split('-')[0];
       if (this.translations[base]) return base;
-      const baseAlias = this.localeAliases[base];
-      if (baseAlias && this.translations[baseAlias]) return baseAlias;
     }
 
     return this.defaultLanguage;

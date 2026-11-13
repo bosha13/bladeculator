@@ -200,7 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
       elements.bladeResultTitle.textContent = localization.t('zero_blades');
     } else {
       const pluralBlade = localization.pluralize(totalBlades, 'blade');
-      elements.bladeResultTitle.textContent = localization.t('blades_will_last', {
+      const key = localization.getPluralCategory(totalBlades) === 'one'
+        ? 'blades_will_last_singular'
+        : 'blades_will_last';
+      elements.bladeResultTitle.textContent = localization.t(key, {
         count: localization.formatNumber(totalBlades),
         pluralBlade
       });
