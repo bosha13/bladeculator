@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
 const CACHE_NAME = `bladeculator-${CACHE_VERSION}`;
 const ASSETS = [
   './bladeculator.html',
@@ -103,7 +103,9 @@ const revalidateCoreAssets = () => {
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(ASSETS))
+      // Bypass the HTTP cache (GitHub Pages sends max-age=600): otherwise a new
+      // worker can install stale files next to fresh ones.
+      .then((cache) => cache.addAll(ASSETS.map((asset) => new Request(asset, { cache: 'reload' }))))
       .then(() => self.skipWaiting())
   );
 });
