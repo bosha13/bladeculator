@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.soapResult.textContent = localization.formatDuration(totalDays);
 
     if (elements.soapResultTitle) {
-      const isSingular = totalContainers === 1;
+      const isSingular = localization.getPluralCategory(totalContainers) === 'one';
       const key = isSingular
         ? 'soap_will_last_with_count_singular'
         : 'soap_will_last_with_count_plural';
@@ -275,12 +275,10 @@ document.addEventListener('DOMContentLoaded', () => {
     commitInput(input);
   };
 
-  elements.form.addEventListener('click', (event) => {
-    const btn = event.target.closest('[data-action]');
-    if (!btn) return;
-
+  // Returns false when the value is already at its limit.
+  const stepInput = (btn) => {
     const input = document.getElementById(btn.dataset.target);
-    if (!input) return;
+    if (!input) return false;
 
     const min = getMin(input);
     const max = getMax(input);
@@ -290,13 +288,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextValue = clampValue(current + delta, min, max);
 
     if (nextValue === current) {
-      return;
+      return false;
     }
 
     triggerHaptic('selection');
 
     input.value = String(nextValue);
     input.dispatchEvent(new Event('input'));
+    return true;
+  };
+
+  const HOLD_DELAY = 400;
+  const HOLD_INTERVAL = 80;
+  let holdTimer = null;
+  let holdRepeated = false;
+  const stopHold = () => {
+    clearTimeout(holdTimer);
+    holdTimer = null;
+  };
+
+  elements.form.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-action]');
+    if (!btn) return;
+    // The pointer click that ends a press-and-hold must not add one more step.
+    // Keyboard clicks have detail 0 and are never suppressed.
+    if (event.detail !== 0 && holdRepeated) return;
+    stepInput(btn);
+  });
+
+  elements.form.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0) return;
+      stopHold();
+      holdRepeated = false;
+      const repeat = () => {
+        holdRepeated = true;
+        holdTimer = stepInput(btn) ? setTimeout(repeat, HOLD_INTERVAL) : null;
+      };
+      holdTimer = setTimeout(repeat, HOLD_DELAY);
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+      btn.addEventListener(type, stopHold);
+    });
+    // Long press must not open the image context menu on touch devices.
+    btn.addEventListener('contextmenu', event => event.preventDefault());
   });
 
   // Native modal <dialog> handles focus trapping, Escape, background inertness and focus restore.
